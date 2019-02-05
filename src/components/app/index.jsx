@@ -5,6 +5,7 @@ import NotFound from "../notFound";
 import { Home, Training } from "../pages/";
 
 import "./index.scss";
+import 'font-awesome/css/font-awesome.min.css'
 
 const App = () => {
   return (

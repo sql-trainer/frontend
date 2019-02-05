@@ -1,0 +1,37 @@
+.header {
+
+    .content {
+        display: flex;
+        height: 60px;
+        width: 1440px;
+        margin: 0 auto;
+        justify-content: space-between;
+
+        .header__logo {
+            display: flex;
+            align-items: center;
+
+            .logo {
+                height: 40px;
+                width: 150px;
+                background: #8190a5;
+                border-radius: 5px;
+            }
+        }
+
+        .header__nav {
+            display: flex;
+            align-items: center;
+
+            .nav-item {
+                margin-right: 30px;
+
+                a {
+                    font-size: 1.05em;
+                    color: #3d3d3d;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}
