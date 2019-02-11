@@ -1,11 +1,15 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import "./index.scss";
+import './index.scss';
 
 class Training extends Component {
-  render() {
-    return <h2>Training</h2>;
-  }
+    componentDidMount() {
+        document.title = 'Training';
+    }
+
+    render() {
+        return <h2>Training</h2>;
+    }
 }
 
 export default Training;

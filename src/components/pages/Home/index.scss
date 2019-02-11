@@ -1,51 +1,55 @@
 .home {
     .wrap {
-        background: #e5e9f2;
+        background: #f0f0f0;
         height: 100vh;
 
-        >.content {
+        > .content {
             display: flex;
             align-items: center;
             justify-content: center;
             height: calc(100vh - 60px);
-            width: 1440px;
             margin: 0 auto;
 
             .main {
-
-                .subtitle {
-                    font-size: 1.2em;
-                    text-align: center;
+                .subtitle,
+                .title {
                     color: #3d3d3d;
+                    text-align: center;
+                    padding: 0 30px;
+                }
+                .subtitle {
+                    font-size: 1.5em;
+                    text-align: center;
                     letter-spacing: 0.5px;
                 }
 
                 .title {
-                    font-size: 4em;
-                    color: #3d3d3d;
+                    font-size: 2.8em;
                     margin-top: 20px;
                     font-weight: 550;
                     letter-spacing: 5px;
                 }
 
                 .buttons {
-                    margin: 90px;
+                    margin: 90px 0;
                     text-align: center;
                     letter-spacing: 1px;
 
                     a {
-                        padding: 25px 40px;
+                        padding: 20px 35px;
                         background: #47525e;
-                        border-radius: 10px;
+                        border-radius: 7px;
                         font-size: 1.1em;
                         text-decoration: none;
                         color: #e5e9f2;
-                        transition: box-shadow .3s ease;
-                        box-shadow: 0px 0px 5px 2px #aaa;
+                        transition: box-shadow 0.3s ease;
+                        box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.2);
+                        text-transform: uppercase;
+                        white-space: nowrap;
                     }
 
                     a:hover {
-                        box-shadow: 0px 2px 10px 5px #aaa;
+                        box-shadow: 0px 2px 7px 2px rgba(0, 0, 0, 0.4);
                     }
                 }
             }
@@ -61,14 +65,14 @@
                 }
 
                 &__text {
-                    font-size: 1.05em;
+                    font-size: 1em;
                     margin: 10px;
+                    text-transform: uppercase;
                 }
 
                 &__icon {
                     font-size: 2em;
                 }
-
             }
         }
     }
@@ -77,10 +81,56 @@
         background: #343f4b;
 
         .content {
-            width: 1440px;
             margin: 0 auto;
-            padding: 20px 0;
+            padding: 20px 30px;
             color: #e5e9f2;
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .home .wrap > .content {
+        align-items: flex-start;
+        padding-top: 70px;
+        height: calc(100vh - 120px);
+        .main {
+            .title {
+                font-size: 2.5em;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 890px) {
+    .home .wrap > .content {
+        .main {
+            .title {
+                max-width: 500px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .home .wrap > .content {
+        .main {
+            .title {
+                font-size: 2.2em;
+            }
+            .buttons {
+                a {
+                    font-size: 1em;
+                    padding: 17px 30px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-height: 568px) {
+    .more {
+        .more__text {
+            display: none;
         }
     }
 }
