@@ -9,6 +9,7 @@
         .header__logo {
             display: flex;
             align-items: center;
+            position: relative;
 
             .logo {
                 height: 40px;
@@ -57,6 +58,7 @@
                 &.login-button {
                     border-left: 1px solid;
                     padding-left: 20px;
+                    position: relative;
                 }
 
                 a {
@@ -64,11 +66,9 @@
                     color: #3d3d3d;
                     text-decoration: none;
                     text-transform: uppercase;
+                    font-weight: 500;
                     &:hover {
                         text-decoration: underline;
-                    }
-                    &.nav-item_active {
-                        font-weight: 600;
                     }
                 }
             }
@@ -76,29 +76,33 @@
     }
 }
 
-@keyframes logoWidthChange {
-    from {
-        grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
-    }
-    to {
-        grid-template-columns: calc(20% - 4px) calc(14% - 4px) calc(25% - 4px) 41%;
-    }
+.scrollbar-container {
+    height: auto;
 }
 
-@media screen and (max-width: 600px) {
+.ps__rail-x {
+    background: transparent;
+    height: 0;
+    position: absolute;
+}
+
+@media screen and (max-width: 646px) {
     .header {
         .content {
             flex-direction: column;
             align-items: center;
             padding-top: 20px;
             .header__nav {
-                margin-top: 10px;
-                .nav-item {
-                    margin-right: 10px !important;
-                    &.login-button {
-                        box-shadow: -5px 0 15px 0 #f0f0f0;
-                        border-left-color: #aaa;
+                margin-top: 15px;
+                .nav-links {
+                    .nav-item:nth-last-child(3) {
+                        padding-right: 20px;
+                        margin-right: 0px;
                     }
+                }
+                .nav-item.login-button {
+                    box-shadow: -5px 0 15px 0 white;
+                    border-left-color: #aaa;
                 }
             }
         }

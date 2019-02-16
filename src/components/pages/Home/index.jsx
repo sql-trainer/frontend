@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Header } from '../../common';
+import { Header, Footer } from '../../common';
+
+import Features from './Features';
+import Steps from './Steps';
+import AboutUs from './AboutUs';
 
 import './index.scss';
 
@@ -12,31 +16,25 @@ class Home extends Component {
     render() {
         return (
             <div className="home">
-                <div className="wrap">
-                    <Header />
-                    <div className="content">
-                        <main className="main">
-                            {/* <div className="subtitle">От последователей самого <b>Хозяинова</b></div>*/}
-                            <div className="title">Система контроля знаний SQL</div>
-                            <div className="buttons">
-                                <Link to="/training">Начать работу</Link>
+                <Header />
+                <main className="main">
+                    <div className="first-screen">
+                        <div className="content">
+                            <div className="title">
+                                Система контроля знаний BLABLABLA
+                                <br />
+                                <Link to="/training">Попробовать</Link>
                             </div>
-                        </main>
-                        <div className="more">
-                            <a href="#footer">
-                                <div className="more__text">Узнать больше</div>
-                                <div className="more__icon">
-                                    <i className="fa fa-chevron-circle-down" />
-                                </div>
-                            </a>
                         </div>
                     </div>
-                </div>
-                <footer id="footer" className="footer">
-                    <div className="content">
-                        <div className="col">© 2019 sqllearning.ru Все права защищены.</div>
-                    </div>
-                </footer>
+
+                    <Features />
+
+                    <AboutUs />
+
+                    <Steps />
+                </main>
+                <Footer />
             </div>
         );
     }

@@ -4,9 +4,10 @@ import { Route, Switch } from 'react-router-dom';
 import NotFound from '../pages/NotFound';
 import { Home, Training, LogoPresentation } from '../pages/';
 
-import './index.scss';
 import '../../styles/vars.scss';
-import 'font-awesome/css/font-awesome.min.css';
+import './index.scss';
+
+import '../../icons';
 
 const App = () => {
     return (

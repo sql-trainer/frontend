@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import PerfectScrollbar from 'react-perfect-scrollbar';
+
+// import 'react-perfect-scrollbar/dist/css/styles.css';
 import './index.scss';
 
 const Header = props => (
@@ -15,7 +18,7 @@ const Header = props => (
                 </div>
             </div>
             <nav className="header__nav">
-                <div className="nav-links">
+                <PerfectScrollbar className="nav-links" suppressScrollY={true}>
                     <div className="nav-item">
                         <Link to="/training">Тренажер</Link>
                     </div>
@@ -25,7 +28,7 @@ const Header = props => (
                     <div className="nav-item">
                         <a href="/#">О проекте</a>
                     </div>
-                </div>
+                </PerfectScrollbar>
                 <div className="nav-item login-button">
                     <a href="/#">Войти</a>
                 </div>
