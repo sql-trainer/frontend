@@ -1,0 +1,23 @@
+{
+  "main.css": "/frontend/build/static/css/main.75bc71fd.chunk.css",
+  "main.js": "/frontend/build/static/js/main.76d3b037.chunk.js",
+  "main.js.map": "/frontend/build/static/js/main.76d3b037.chunk.js.map",
+  "static/css/1.f7f1b9bc.chunk.css": "/frontend/build/static/css/1.f7f1b9bc.chunk.css",
+  "static/js/1.69ffd9a9.chunk.js": "/frontend/build/static/js/1.69ffd9a9.chunk.js",
+  "static/js/1.69ffd9a9.chunk.js.map": "/frontend/build/static/js/1.69ffd9a9.chunk.js.map",
+  "runtime~main.js": "/frontend/build/static/js/runtime~main.589be861.js",
+  "runtime~main.js.map": "/frontend/build/static/js/runtime~main.589be861.js.map",
+  "static/media/feathers.svg": "/frontend/build/static/media/feathers.5d1604d7.svg",
+  "static/media/sweat.svg": "/frontend/build/static/media/sweat.252f084c.svg",
+  "static/media/layers.svg": "/frontend/build/static/media/layers.3270f283.svg",
+  "static/media/graph.svg": "/frontend/build/static/media/graph.8eb825b9.svg",
+  "static/media/list.svg": "/frontend/build/static/media/list.b5dde3a0.svg",
+  "static/media/log-in.svg": "/frontend/build/static/media/log-in.47590da8.svg",
+  "static/media/test.svg": "/frontend/build/static/media/test.7a5e162d.svg",
+  "static/media/reflection.svg": "/frontend/build/static/media/reflection.12ac7e5e.svg",
+  "static/css/1.f7f1b9bc.chunk.css.map": "/frontend/build/static/css/1.f7f1b9bc.chunk.css.map",
+  "static/css/main.75bc71fd.chunk.css.map": "/frontend/build/static/css/main.75bc71fd.chunk.css.map",
+  "index.html": "/frontend/build/index.html",
+  "precache-manifest.d4d4d17257f2e6fce21d8aed980bfc6f.js": "/frontend/build/precache-manifest.d4d4d17257f2e6fce21d8aed980bfc6f.js",
+  "service-worker.js": "/frontend/build/service-worker.js"
+}
