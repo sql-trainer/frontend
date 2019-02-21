@@ -2,6 +2,7 @@
     "name": "sql",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://sql-trainer.github.io/frontend/",
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.14",
         "@fortawesome/free-solid-svg-icons": "^5.7.1",
