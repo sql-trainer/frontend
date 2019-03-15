@@ -1,10 +1,12 @@
-$arrow-color: #8255ca;
-$arrow-hover-color: #444;
+$icon-color: #8255ca;
+$icon-hover-color: #723dc7;
 $arrow-size: 6px;
+$min-width: 900px;
 
 @import '../../../styles/vars.scss';
 @import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import '@fortawesome/fontawesome-free/scss/solid.scss';
+@import '@fortawesome/fontawesome-free/scss/_animated.scss';
 
 @import url('https://fonts.googleapis.com/css?family=Fira+Mono');
 
@@ -12,6 +14,8 @@ $arrow-size: 6px;
     display: grid;
     grid-template-columns: 400px 1fr;
     height: calc(100vh - 60px);
+    overflow-y: hidden;
+    min-width: $min-width;
 
     & > div {
         background: white;
@@ -36,7 +40,7 @@ $arrow-size: 6px;
         }
 
         & > div {
-            &:not(:last-child) {
+            &:nth-last-child(n + 4) {
                 padding-bottom: 10px;
             }
             .title,
@@ -73,7 +77,7 @@ $arrow-size: 6px;
                     &:hover {
                         &:before,
                         &:after {
-                            background: $arrow-hover-color;
+                            background: $icon-hover-color;
                         }
                     }
 
@@ -82,7 +86,7 @@ $arrow-size: 6px;
                         content: '';
                         width: 20px;
                         height: 2px;
-                        background: $arrow-color;
+                        background: $icon-color;
                         position: absolute;
                     }
 
@@ -96,10 +100,10 @@ $arrow-size: 6px;
                     height: 15px;
                     justify-self: left;
                     cursor: pointer;
-                    color: $arrow-color;
+                    color: $icon-color;
 
                     &:hover {
-                        color: $arrow-hover-color;
+                        color: $icon-hover-color;
                     }
                 }
             }
@@ -110,6 +114,7 @@ $arrow-size: 6px;
                 }
             }
         }
+
         .tablesbox {
             .title {
                 display: flex;
@@ -118,7 +123,10 @@ $arrow-size: 6px;
 
                 .db-diagram-icon {
                     width: 15px;
-                    color: $arrow-color;
+                    color: $icon-color;
+                    &:hover {
+                        color: $icon-hover-color;
+                    }
                 }
             }
 
@@ -130,22 +138,25 @@ $arrow-size: 6px;
                     justify-content: space-between;
                     align-items: center;
                     position: relative;
+                    font-weight: 600;
+                    color: #555;
 
                     &:after {
                         @extend %fa-icon;
                         @extend .fas;
                         content: fa-content($fa-var-angle-down);
-                        color: $arrow-color;
+                        color: $icon-color;
                     }
 
                     &:hover {
                         &:after {
-                            color: $arrow-hover-color;
+                            color: $icon-hover-color;
                         }
                     }
 
                     &.active {
                         background: #fafafa;
+                        color: #333;
 
                         &:after {
                             transform: rotateZ(180deg);
@@ -182,7 +193,7 @@ $arrow-size: 6px;
                                 left: 12px;
                                 margin-top: 4px;
                                 font-size: 14px;
-                                // color: yellow;
+                                color: #d6d639;
                             }
                         }
                     }
@@ -191,39 +202,72 @@ $arrow-size: 6px;
         }
 
         .inputbox {
-            position: sticky;
-            top: 0;
             z-index: 2;
             background: white;
+
+            &.pinned {
+                position: sticky;
+                top: 0;
+            }
+
             .tabs {
                 display: flex;
+                justify-content: space-between;
                 align-items: center;
                 border-bottom: 2px solid #efefef;
-                height: 42px;
-                .tab {
-                    // padding: 10px 15px;
-                    list-style: none;
-                    font-weight: 600;
-                    font-size: 17px;
-                    padding: 10px;
-                    margin-right: 5px;
-                    border-radius: 3px 3px 0 0;
-                    cursor: pointer;
-                    &:hover {
-                        background: #fafafa;
-                    }
-                    &.active {
-                        background: #f6f6f6;
+                & > div {
+                    display: flex;
+                    align-items: center;
+
+                    .tab {
+                        list-style: none;
+                        font-weight: 600;
+                        font-size: 17px;
+                        padding: 10px;
+                        margin-right: 5px;
+                        border-radius: 3px 3px 0 0;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        &:hover {
+                            background: #fafafa;
+                        }
+                        &.active {
+                            background: #f6f6f6;
+                            .tab-close {
+                                display: block;
+                            }
+                        }
+
+                        .tab-close {
+                            height: 12px;
+                            width: 12px;
+                            vertical-align: unset;
+                            margin-left: 10px;
+                            display: none;
+                        }
                     }
                 }
-                .tab-add {
+                .tabs-icon {
                     width: 13px;
                     height: 13px;
                     padding: 10px;
                     border-radius: 3px;
                     cursor: pointer;
+                    color: $icon-color;
+                    transition: transform 0.15s ease-in-out;
+                    &.pin {
+                        margin-right: 10px;
+                        transform: rotateZ(45deg);
+                        opacity: 0.7;
+                    }
+                    &.pin-active {
+                        transform: rotateZ(0deg);
+                        opacity: 1;
+                    }
                     &:hover {
-                        background: #fafafa;
+                        opacity: 1;
+                        color: $icon-hover-color;
                     }
                 }
             }
@@ -231,6 +275,9 @@ $arrow-size: 6px;
                 height: 220px;
                 background: #f6f6f6;
                 border-radius: 0 0 0 3px;
+                .ps__rail-y {
+                    right: 8px !important;
+                }
             }
             .textarea {
                 padding: 10px 15px;
@@ -245,22 +292,46 @@ $arrow-size: 6px;
                 background: #8255ca;
                 color: white;
                 border-radius: 25px;
-                margin-top: -51px;
-                right: 10px;
+                margin-top: -56px;
+                right: 15px;
                 position: absolute;
                 outline: none;
                 cursor: pointer;
                 width: 40px;
                 height: 40px;
+                transition: all 0.2s ease-in-out;
+
                 &:hover {
-                    background: $arrow-hover-color;
+                    background: $icon-hover-color;
                 }
+
                 &:after {
                     @extend %fa-icon;
                     @extend .fas;
                     content: fa-content($fa-var-play);
                     margin-bottom: 1px;
                 }
+
+                &:disabled {
+                    background: #777;
+                    cursor: unset;
+                    &:after {
+                        @extend %fa-icon;
+                        @extend .fas;
+                        animation: fa-spin 2s infinite linear;
+                        font-size: 16px;
+                        content: fa-content($fa-var-spinner);
+                        margin-bottom: 1px;
+                    }
+                }
+            }
+        }
+
+        .resultbox {
+            opacity: 1;
+            transition: all 0.2s ease-in-out;
+            &.checking {
+                opacity: 0.2;
             }
         }
     }
@@ -277,6 +348,7 @@ $arrow-size: 6px;
     z-index: 4;
     letter-spacing: 0.5px;
     transition: left 0.3s ease-in-out;
+    overflow-y: auto;
 
     h2 {
         padding-left: 25px;

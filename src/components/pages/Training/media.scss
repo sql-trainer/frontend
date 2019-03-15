@@ -1,0 +1,7 @@
+.training-component {
+    @media screen and (max-width: 900px) {
+        .training {
+            height: calc(100vh - 77px);
+        }
+    }
+}

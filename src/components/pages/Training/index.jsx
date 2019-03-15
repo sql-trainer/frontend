@@ -7,6 +7,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import Table from './Table';
 
 import './index.scss';
+import './media.scss';
 
 class Training extends Component {
     state = {
@@ -15,7 +16,7 @@ class Training extends Component {
         tabs: [
             {
                 html: 'select * from table',
-                title: 'Tab #1',
+                title: 'Tab',
                 response: {
                     fields: [
                         { title: 'ID', name: 'id' },
@@ -32,12 +33,37 @@ class Training extends Component {
                         { id: 2, name: 'vasya5', age: 19 },
                         { id: 2, name: 'vasya6', age: 19 },
                         { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
+                        { id: 2, name: 'vasya7', age: 19 },
                     ],
                 },
             },
             {
                 html: 'select * from table1',
-                title: 'Tab #2',
+                title: 'Tab',
             },
         ],
         database: {
@@ -48,6 +74,13 @@ class Training extends Component {
                     props: [
                         { name: 'id', type: 'integer', isKey: true },
                         { name: 'permission', type: 'integer', isKey: false },
+                    ],
+                    active: false,
+                },
+                {
+                    title: 'Groups',
+                    props: [
+                        { name: 'id', type: 'integer', isKey: true },
                         { name: 'title', type: 'string', isKey: false },
                     ],
                     active: false,
@@ -81,10 +114,13 @@ class Training extends Component {
             },
         ],
         isAllQOpen: false,
+        isInputAreaPinned: false,
+        isSQLChecking: false,
     };
 
     componentDidMount() {
         document.title = 'Training';
+        document.querySelector('.app').className = 'app training-component';
     }
 
     handleContentEditable = e => {
@@ -110,7 +146,34 @@ class Training extends Component {
 
     createNewTab = () => {
         const { tabs } = this.state;
-        this.setState({ tabs: tabs.concat([{ html: '', title: `Tab #${tabs.length + 1}` }]), currTab: tabs.length });
+        this.setState({ tabs: tabs.concat([{ html: '', title: `Tab` }]), currTab: tabs.length });
+    };
+
+    deleteTab = e => {
+        e.stopPropagation();
+        const { tabs, currTab } = this.state;
+        let newCurrTab = currTab;
+        let newTabs = tabs.map(tab => tab);
+
+        newTabs.splice(currTab, 1);
+
+        if (currTab > 0) {
+            newCurrTab -= 1;
+        }
+
+        if (newTabs.length === 0) {
+            newTabs = [
+                {
+                    html: '',
+                    title: 'Tab',
+                    response: undefined,
+                },
+            ];
+        }
+
+        console.log(newCurrTab);
+
+        this.setState({ currTab: newCurrTab, tabs: newTabs });
     };
 
     setCurrQuestion(index) {
@@ -119,7 +182,7 @@ class Training extends Component {
             tabs: [
                 {
                     html: '',
-                    title: 'Tab #1',
+                    title: 'Tab',
                 },
             ],
             currTab: 0,
@@ -134,11 +197,33 @@ class Training extends Component {
         this.setState({ database });
     }
 
+    pinInputArea = () => {
+        this.setState({ isInputAreaPinned: !this.state.isInputAreaPinned });
+    };
+
+    checkSQL = () => {
+        this.setState({ isSQLChecking: true });
+
+        setTimeout(() => {
+            this.setState({ isSQLChecking: false });
+        }, 2000);
+    };
+
     render() {
-        const { questions, currQuestion, isAllQOpen, tabs, currTab, database } = this.state;
+        const {
+            questions,
+            currQuestion,
+            isAllQOpen,
+            tabs,
+            currTab,
+            database,
+            isInputAreaPinned,
+            isSQLChecking,
+        } = this.state;
+
         return (
             <>
-                <Header />
+                <Header style={{ minWidth: 900 }} />
                 <section className="training">
                     <PerfectScrollbar className="task-info">
                         <div className="questionbox">
@@ -206,22 +291,35 @@ class Training extends Component {
                         </div>
                     </PerfectScrollbar>
                     <PerfectScrollbar className="task-editor">
-                        <div className="inputbox">
+                        <div className={`inputbox ${isInputAreaPinned ? 'pinned' : ''}`}>
                             <div className="tabs">
-                                {tabs.map((tab, index) => (
-                                    <div
-                                        className={`tab ${currTab === index ? 'active' : ''}`}
-                                        onClick={e => this.setState({ currTab: index })}
-                                        key={index}
-                                    >
-                                        {tab.title}
-                                    </div>
-                                ))}
+                                <div>
+                                    {tabs.map((tab, index) => (
+                                        <div
+                                            className={`tab ${currTab === index ? 'active' : ''}`}
+                                            onClick={e => this.setState({ currTab: index })}
+                                            key={index}
+                                        >
+                                            {tab.title}
+                                            <FontAwesomeIcon
+                                                icon="times"
+                                                className="tab-close"
+                                                onClick={this.deleteTab}
+                                            />
+                                        </div>
+                                    ))}
+                                    <FontAwesomeIcon
+                                        className="tabs-icon"
+                                        icon="plus"
+                                        data-tip="Добавить новую вкладку"
+                                        onClick={this.createNewTab}
+                                    />
+                                </div>
                                 <FontAwesomeIcon
-                                    className="tab-add"
-                                    icon="plus"
-                                    data-tip="Добавить новую вкладку"
-                                    onClick={this.createNewTab}
+                                    className={`tabs-icon pin ${isInputAreaPinned ? 'pin-active' : ''}`}
+                                    icon="thumbtack"
+                                    data-tip={isInputAreaPinned ? 'Открепить' : 'Закрепить'}
+                                    onClick={this.pinInputArea}
                                 />
                             </div>
                             <PerfectScrollbar className="textarea-scrollbar">
@@ -231,12 +329,12 @@ class Training extends Component {
                                     onChange={this.handleContentEditable}
                                 />
                             </PerfectScrollbar>
-                            <button className="check-sql" />
+                            <button className="check-sql" onClick={this.checkSQL} disabled={isSQLChecking} />
                         </div>
                         {tabs[currTab].response ? (
-                            <div className="resultbox">
+                            <div className={`resultbox ${isSQLChecking ? 'checking' : ''}`}>
                                 <Table
-                                    className="response-table"
+                                    className={`response-table  ${isInputAreaPinned ? 'pinned' : ''}`}
                                     fields={tabs[currTab].response.fields}
                                     rows={tabs[currTab].response.rows}
                                 />

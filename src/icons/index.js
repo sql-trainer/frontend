@@ -9,6 +9,8 @@ import {
     faAngleRight,
     faAngleDown,
     faSitemap,
+    faTimes,
+    faThumbtack,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -21,4 +23,6 @@ library.add(
     faAngleRight,
     faAngleDown,
     faSitemap,
+    faTimes,
+    faThumbtack,
 );

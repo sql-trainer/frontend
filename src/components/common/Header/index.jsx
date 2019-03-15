@@ -4,9 +4,10 @@ import { NavLink } from 'react-router-dom';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import './index.scss';
+import './media.scss';
 
 const Header = props => (
-    <header className="header">
+    <header className="header" {...props}>
         <div className="content">
             <div className="header__logo">
                 <NavLink to="/">

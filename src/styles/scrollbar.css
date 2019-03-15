@@ -13,8 +13,8 @@
  * Scrollbar rail styles
  */
 .ps__rail-x {
-    /* display: none; */
-    opacity: 0.2;
+    display: none;
+    opacity: 0;
     height: 6px;
     /* there must be 'bottom' or 'top' for ps__rail-x */
     bottom: 0px;
@@ -24,8 +24,8 @@
 }
 
 .ps__rail-y {
-    /* display: none; */
-    opacity: 0.2;
+    display: none;
+    opacity: 0;
     width: 6px;
     /* there must be 'right' or 'left' for ps__rail-y */
     right: 0;

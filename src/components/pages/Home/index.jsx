@@ -7,10 +7,12 @@ import Steps from './Steps';
 import AboutUs from './AboutUs';
 
 import './index.scss';
+import './media.scss';
 
 class Home extends Component {
     componentDidMount() {
         document.title = 'Knowledge Control System';
+        document.querySelector('.app').className = 'app home-component';
     }
 
     render() {
