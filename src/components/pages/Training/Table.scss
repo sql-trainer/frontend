@@ -1,0 +1,41 @@
+.response-table {
+    .fields,
+    .rows {
+        display: flex;
+        .field,
+        .data {
+            flex: 1 0 50px;
+            width: 100%;
+            padding: 10px;
+            &:not(:first-child) {
+                border-left: 1px solid #efefef;
+            }
+        }
+    }
+
+    .fields {
+        position: sticky;
+        top: 274px;
+        background: #f6f6f6;
+        border-radius: 3px 0 0 3px;
+        .field {
+            font-weight: 600;
+            padding-top: 8px;
+        }
+    }
+
+    .rows {
+        flex-direction: column;
+        .row {
+            display: flex;
+            &:hover {
+                background: #fbfbfb;
+            }
+
+            .data {
+                padding: 6px 10px;
+                word-break: break-all;
+            }
+        }
+    }
+}

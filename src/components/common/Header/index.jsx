@@ -1,26 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
-// import 'react-perfect-scrollbar/dist/css/styles.css';
 import './index.scss';
 
 const Header = props => (
     <header className="header">
         <div className="content">
             <div className="header__logo">
-                <div className="logo">
-                    <div className="logo__quarter" />
-                    <div className="logo__quarter" />
-                    <div className="logo__quarter" />
-                    <div className="logo__quarter" />
-                </div>
+                <NavLink to="/">
+                    <div className="logo">
+                        <div className="logo__quarter" />
+                        <div className="logo__quarter" />
+                        <div className="logo__quarter" />
+                        <div className="logo__quarter" />
+                    </div>
+                </NavLink>
             </div>
             <nav className="header__nav">
                 <PerfectScrollbar className="nav-links" suppressScrollY={true}>
                     <div className="nav-item">
-                        <Link to="/training">Тренажер</Link>
+                        <NavLink to="/training" activeClassName="nav-link-active">
+                            Тренажер
+                        </NavLink>
                     </div>
                     <div className="nav-item">
                         <a href="/#">Учебник</a>

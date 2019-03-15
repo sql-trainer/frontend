@@ -1,11 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 
 import NotFound from '../pages/NotFound';
 import { Home, Training, LogoPresentation } from '../pages/';
 
 import '../../styles/vars.scss';
 import './index.scss';
+import '../../styles/scrollbar.css';
 
 import '../../icons';
 
@@ -18,6 +20,7 @@ const App = () => {
                 <Route path="/logo" component={LogoPresentation} />
                 <Route component={NotFound} />
             </Switch>
+            <ReactTooltip type="info" effect="solid" delayShow={500} />
         </div>
     );
 };

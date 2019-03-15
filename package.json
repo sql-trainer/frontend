@@ -2,6 +2,7 @@
     "name": "sql",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://sql-trainer.github.io/frontend/",
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.14",
         "@fortawesome/free-solid-svg-icons": "^5.7.1",
@@ -9,12 +10,14 @@
         "font-awesome": "^4.7.0",
         "node-sass": "^4.11.0",
         "react": "^16.7.0",
+        "react-contenteditable": "^3.2.6",
         "react-dom": "^16.7.0",
         "react-perfect-scrollbar": "^1.4.4",
         "react-redux": "^6.0.0",
         "react-router-dom": "^4.3.1",
         "react-scripts": "2.1.3",
         "react-slick": "^0.23.2",
+        "react-tooltip": "^3.10.0",
         "redux": "^4.0.1",
         "slick-carousel": "^1.8.1"
     },
@@ -22,7 +25,9 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "predeploy": "yarn build",
+        "deploy": "gh-pages -d build"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -32,5 +37,9 @@
         "not dead",
         "not ie <= 11",
         "not op_mini all"
-    ]
+    ],
+    "devDependencies": {
+        "@fortawesome/fontawesome-free": "^5.7.2",
+        "gh-pages": "^2.0.1"
+    }
 }
