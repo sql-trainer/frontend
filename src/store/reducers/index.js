@@ -1,10 +1,12 @@
-import {
-    combineReducers
-} from 'redux';
-import user from './userReducer';
+import { combineReducers } from 'redux';
+import questions from './questionReducer';
+import database from './databaseReducer';
+import tabs from './tabsReducer';
 
-const compareApp = combineReducers({
-    user
+const reducers = combineReducers({
+    questions,
+    database,
+    tabs,
 });
 
-export default compareApp;
+export default reducers;

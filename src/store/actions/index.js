@@ -1,5 +1,5 @@
-import user from './userAction'
+import questions from './questionActions';
+import database from './databaseActions';
+import tabs from './tabsActions';
 
-export {
-    user
-}
+export { questions, database, tabs };
