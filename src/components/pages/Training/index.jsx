@@ -26,7 +26,6 @@ class Training extends Component {
 
     handleContentEditable = e => {
         const { currTab } = this.props;
-
         this.props.changeTabHtml(currTab, e.target.value);
     };
 
@@ -119,8 +118,11 @@ class Training extends Component {
                             <button
                                 className="check-sql"
                                 onClick={this.checkSQL}
-                                disabled={isCheckButtonDisabled || SQLCheckingFor !== undefined}
-                                data-loading={SQLCheckingFor !== undefined}
+                                disabled={
+                                    isCheckButtonDisabled ||
+                                    (SQLCheckingFor !== undefined && SQLCheckingFor === currTab)
+                                }
+                                data-loading={SQLCheckingFor !== undefined && SQLCheckingFor === currTab}
                             />
                         </div>
                         <div
