@@ -24,8 +24,8 @@ class Questions extends Component {
     setCurrQuestion(index) {
         const { questions, loadDatabaseFromAPI, database, changeCurrQuestion, deleteAllTabs } = this.props;
 
-        if (!database || questions[index].db !== database.id) {
-            loadDatabaseFromAPI(questions[index].db);
+        if (!database || questions[index].database !== database.id) {
+            loadDatabaseFromAPI(questions[index].database);
         }
 
         changeCurrQuestion(index);

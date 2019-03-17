@@ -22,7 +22,8 @@ const loadQuestionsFromAPI = () => {
         dispatch(isDatabaseLoading(true));
 
         // API stub
-        fetch('https://api.myjson.com/bins/7ax0m')
+        // fetch('https://api.myjson.com/bins/7ax0m')
+        fetch('http://localhost:8080/api/v1/tests/open/')
             .then(res => res.json())
             .then(res => {
                 if (res.status === 404) {
@@ -30,8 +31,9 @@ const loadQuestionsFromAPI = () => {
                     dispatch(isDatabaseLoading(false));
                     console.log(res);
                 } else {
-                    dispatch(setQuestions(res));
-                    dispatch(loadDatabaseFromAPI(getState().questions.currQuestion));
+                    const dbId = res.questions[0].database;
+                    dispatch(setQuestions({...res, isQuestionsLoading: false}));
+                    dispatch(loadDatabaseFromAPI(dbId));
                 }
             })
             .catch(err => {
