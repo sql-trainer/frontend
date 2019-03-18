@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { Header } from '../../common';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ContentEditable from 'react-contenteditable';
+import Editor from 'react-simple-code-editor';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-sql';
 
+import { Header } from '../../common';
 import Table from './Table';
 import QuestionsContainer from './containers/Questions';
 import TabsContainer from './containers/Tabs';
 
 import './index.scss';
 import './media.scss';
+import 'prismjs/themes/prism.css';
 
 class Training extends Component {
     state = {
@@ -24,9 +27,20 @@ class Training extends Component {
         this.props.loadQuestionsFromAPI();
     }
 
-    handleContentEditable = e => {
-        const { currTab } = this.props;
-        this.props.changeTabHtml(currTab, e.target.value);
+    handleContentEditable = value => {
+        const { currTab, changeTabHtml } = this.props;
+        // this.props.changeTabHtml(currTab, e.currentTarget.textContent);
+        changeTabHtml(currTab, value);
+    };
+
+    highlightSQL = sql => {
+        console.log(sql);
+        sql = Prism.highlight(sql, Prism.languages.sql);
+        return sql;
+    };
+
+    pinInputArea = () => {
+        this.setState({ isInputAreaPinned: !this.state.isInputAreaPinned });
     };
 
     checkSQL = () => {
@@ -109,10 +123,12 @@ class Training extends Component {
                         <div className={`inputbox ${isInputAreaPinned ? 'pinned' : ''}`}>
                             <TabsContainer isInputAreaPinned={isInputAreaPinned} pinInputArea={this.pinInputArea} />
                             <PerfectScrollbar className="textarea-scrollbar">
-                                <ContentEditable
+                                <Editor
+                                    value={tabs[currTab].html}
+                                    onValueChange={code => this.handleContentEditable(code)}
+                                    highlight={code => this.highlightSQL(code)}
                                     className="textarea"
-                                    html={tabs[currTab].html}
-                                    onChange={this.handleContentEditable}
+                                    tabSize={4}
                                 />
                             </PerfectScrollbar>
                             <button
