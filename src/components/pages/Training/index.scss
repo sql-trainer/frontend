@@ -319,12 +319,18 @@ $min-width: 900px;
                 }
             }
             .textarea {
-                padding: 10px 15px;
-                min-height: 200px;
-                outline: none;
+                padding: 10px 15px !important;
+                min-height: 220px;
                 font-family: 'Fira Mono', monospace;
                 font-size: 15px;
-                word-break: break-word;
+                white-space: pre;
+                textarea {
+                    outline: none !important;
+                    padding: inherit !important;
+                    &::selection {
+                        background: #d6d639 !important;
+                    }
+                }
             }
             .check-sql {
                 border: none;
