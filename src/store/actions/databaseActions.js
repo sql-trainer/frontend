@@ -26,14 +26,15 @@ const loadDatabaseFromAPI = dbID => {
         dispatch(isLoading(true));
 
         // API stub
-        fetch('https://api.myjson.com/bins/f1jvq')
+        // fetch('https://api.myjson.com/bins/f1jvq')
+        fetch(`http://localhost:8080/api/v1/db/open/${dbID}`)
             .then(res => res.json())
             .then(res => {
                 if (res.status === 404) {
                     dispatch(isLoading(false));
                     console.log(res);
                 } else {
-                    dispatch(setDatabase(res));
+                    dispatch(setDatabase({database: {...res}, isDatabaseLoading: false }));
                 }
             })
             .catch(err => {
