@@ -16,6 +16,11 @@ const isLoading = payload => {
     return { type, payload };
 };
 
+const questionsLoadingError = error => {
+    const type = types.QUESTIONS_LOADING_ERROR;
+    return { type, error };
+};
+
 const loadQuestionsFromAPI = () => {
     return function(dispatch, getState) {
         dispatch(isLoading(true));
@@ -26,20 +31,18 @@ const loadQuestionsFromAPI = () => {
         fetch('http://localhost:8080/api/v1/tests/open/')
             .then(res => res.json())
             .then(res => {
-                if (res.status === 404) {
-                    dispatch(isLoading(false));
-                    dispatch(isDatabaseLoading(false));
-                    console.log(res);
-                } else {
-                    const dbId = res.questions[0].database;
-                    dispatch(setQuestions({...res, isQuestionsLoading: false}));
-                    dispatch(loadDatabaseFromAPI(dbId));
-                }
+                const dbId = res.questions[0].database;
+                dispatch(setQuestions({ ...res }));
+                dispatch(questionsLoadingError(false));
+                dispatch(loadDatabaseFromAPI(dbId));
             })
             .catch(err => {
-                dispatch(isLoading(false));
+                dispatch(questionsLoadingError(true));
                 dispatch(isDatabaseLoading(false));
                 console.log(err);
+            })
+            .finally(() => {
+                dispatch(isLoading(false));
             });
         // TODO: Доделать обработку ошибок
     };

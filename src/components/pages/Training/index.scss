@@ -336,8 +336,8 @@ $min-width: 900px;
                 border: none;
                 background: #8255ca;
                 color: white;
-                border-radius: 25px;
-                margin-top: -56px;
+                border-radius: 50%;
+                bottom: 24px;
                 right: 15px;
                 position: absolute;
                 outline: none;
@@ -345,6 +345,8 @@ $min-width: 900px;
                 width: 40px;
                 height: 40px;
                 transition: all 0.2s ease-in-out;
+                display: flex;
+                justify-content: center;
 
                 &:hover {
                     background: $icon-hover-color;
@@ -355,11 +357,7 @@ $min-width: 900px;
                     @extend .fas;
                     content: fa-content($fa-var-play);
                     margin-bottom: 1px;
-                }
-
-                &:disabled {
-                    background: #777;
-                    cursor: unset;
+                    font-size: 14px;
                 }
 
                 &[data-loading='true'] {
@@ -371,6 +369,32 @@ $min-width: 900px;
                         content: fa-content($fa-var-spinner);
                         margin-bottom: 1px;
                     }
+                }
+
+                &:disabled {
+                    background: #777;
+                    cursor: unset;
+                }
+
+                &.success {
+                    &:after {
+                        @extend %fa-icon;
+                        @extend .fas;
+                        content: fa-content($fa-var-check);
+                    }
+                    background: rgb(78, 211, 78);
+                    transform: scale(1.2);
+                }
+
+                &.error {
+                    &:after {
+                        @extend %fa-icon;
+                        @extend .fas;
+                        content: fa-content($fa-var-times);
+                        font-size: 16px;
+                    }
+                    background: rgb(224, 37, 37);
+                    transform: scale(1.2);
                 }
             }
         }

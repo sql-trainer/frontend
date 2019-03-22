@@ -4,7 +4,7 @@ const initialState = {
     currTab: 0,
     tabs: [
         {
-            html: `SELECT * FROM generate_series CROSS JOIN departments`,
+            html: `select name from company`,
             title: 'Tab',
             response: undefined,
         },

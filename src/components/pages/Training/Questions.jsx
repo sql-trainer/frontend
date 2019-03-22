@@ -37,6 +37,8 @@ class Questions extends Component {
         const { questions, currQuestion, isQuestionsLoading } = this.props;
         const { isAllQOpen } = this.state;
 
+        const questionsLength = questions.length;
+
         return (
             <>
                 <div className="questionbox" data-loading={isQuestionsLoading}>
@@ -46,23 +48,27 @@ class Questions extends Component {
                             data-tip="Список всех вопросов"
                             onClick={e => this.setState({ isAllQOpen: !isAllQOpen })}
                         />
-                        Вопрос {!questions.length ? '' : `#${currQuestion + 1} из ${questions.length}`}
-                        <FontAwesomeIcon
-                            className="question__nav"
-                            icon="angle-left"
-                            data-tip="Предыдущий вопрос"
-                            onClick={e => this.handleQuestionSwitcher('prev')}
-                        />
-                        <FontAwesomeIcon
-                            className="question__nav"
-                            icon="angle-left"
-                            rotation={180}
-                            data-tip="Следующий вопрос"
-                            onClick={e => this.handleQuestionSwitcher('next')}
-                        />
+                        Вопрос {!questionsLength ? '' : `#${currQuestion + 1} из ${questionsLength}`}
+                        {questionsLength ? (
+                            <>
+                                <FontAwesomeIcon
+                                    className="question__nav"
+                                    icon="angle-left"
+                                    data-tip="Предыдущий вопрос"
+                                    onClick={e => this.handleQuestionSwitcher('prev')}
+                                />
+                                <FontAwesomeIcon
+                                    className="question__nav"
+                                    icon="angle-left"
+                                    rotation={180}
+                                    data-tip="Следующий вопрос"
+                                    onClick={e => this.handleQuestionSwitcher('next')}
+                                />
+                            </>
+                        ) : null}
                     </div>
-                    {!questions.length ? (
-                        <div className="placeholder">Вопросы не загружены</div>
+                    {!questionsLength ? (
+                        <div className="placeholder">Вопрос не загружен</div>
                     ) : (
                         <div className="content">
                             {questions[currQuestion].question}
@@ -75,7 +81,8 @@ class Questions extends Component {
                     )}
                 </div>
                 <div className={`all-questions ${isAllQOpen ? 'all-questions-active' : ''}`}>
-                    <h2>Все вопросы</h2>
+                    <h2>{questionsLength ? 'Все вопросы' : 'Вопросы отстутствуют'}</h2>
+
                     {questions.map((q, index) => {
                         return (
                             <div

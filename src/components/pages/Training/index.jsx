@@ -19,6 +19,10 @@ class Training extends Component {
         isInputAreaPinned: false,
         SQLCheckingFor: undefined,
         isCheckButtonDisabled: false,
+        responseType: {
+            type: '',
+            error: undefined,
+        },
     };
 
     componentDidMount() {
@@ -27,14 +31,19 @@ class Training extends Component {
         this.props.loadQuestionsFromAPI();
     }
 
+    componentDidUpdate() {
+        const { questionsLoadingError, loadQuestionsFromAPI } = this.props;
+        if (questionsLoadingError) {
+            // setTimeout(loadQuestionsFromAPI, 2000);
+        }
+    }
+
     handleContentEditable = value => {
         const { currTab, changeTabHtml } = this.props;
-        // this.props.changeTabHtml(currTab, e.currentTarget.textContent);
         changeTabHtml(currTab, value);
     };
 
     highlightSQL = sql => {
-        console.log(sql);
         sql = Prism.highlight(sql, Prism.languages.sql);
         return sql;
     };
@@ -43,35 +52,38 @@ class Training extends Component {
         this.setState({ isInputAreaPinned: !this.state.isInputAreaPinned });
     };
 
-    checkSQL = () => {
-        const { tabs, currTab, changeTabResponse } = this.props;
-        let newTabs = tabs.map(tab => tab);
+    checkSQL = e => {
+        const { tabs, currTab, changeTabResponse, questions, currQuestion } = this.props;
         let tab = currTab;
 
-        // API stub
-        this.setState({ SQLCheckingFor: currTab });
-
-        fetch('https://api.myjson.com/bins/vez0m')
-            .then(res => res.json())
-            .then(res => {
-                if (res.status === 404) {
-                    console.log(res);
-                } else {
-                    newTabs[currTab].response = res;
-                    changeTabResponse(res, tab);
-                }
+        this.setState({ SQLCheckingFor: tab });
+        setTimeout(() => {
+            fetch(`http://localhost:8080/api/v1/tests/open/questions/${questions[currQuestion].id}/check`, {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sql: tabs[currTab].html }),
             })
-            .catch(err => {
-                console.log(err);
-            })
-            .finally(() => {
-                this.setState({ SQLCheckingFor: undefined });
-            });
+                .then(res => res.json())
+                .then(res => {
+                    if (res.error) {
+                        this.setState({ responseType: { type: 'error', error: res.error.message } });
+                    } else {
+                        this.setState({ responseType: { type: res.success ? 'success' : 'error', error: undefined } });
+                        changeTabResponse(tab, { fields: res.fields, rows: res.rows });
+                    }
+                })
+                .finally(() => {
+                    this.setState({ SQLCheckingFor: undefined });
+                    setTimeout(() => {
+                        this.setState({ responseType: { type: '', error: undefined } });
+                    }, 2000);
+                });
+        }, 500);
     };
 
     render() {
-        const { isInputAreaPinned, SQLCheckingFor, isCheckButtonDisabled } = this.state;
-        const { database, isDatabaseLoading, changeTableActivity, tabs, currTab } = this.props;
+        const { isInputAreaPinned, SQLCheckingFor, responseType } = this.state;
+        const { database, isDatabaseLoading, changeTableActivity, tabs, currTab, questions } = this.props;
 
         return (
             <>
@@ -132,20 +144,14 @@ class Training extends Component {
                                 />
                             </PerfectScrollbar>
                             <button
-                                className="check-sql"
+                                className={`check-sql ${responseType.type}`}
+                                data-tip={responseType.error}
                                 onClick={this.checkSQL}
-                                disabled={
-                                    isCheckButtonDisabled ||
-                                    (SQLCheckingFor !== undefined && SQLCheckingFor === currTab)
-                                }
-                                data-loading={SQLCheckingFor !== undefined && SQLCheckingFor === currTab}
+                                disabled={!questions.length || SQLCheckingFor === currTab || responseType.type}
+                                data-loading={SQLCheckingFor === currTab}
                             />
                         </div>
-                        <div
-                            className={`resultbox ${
-                                SQLCheckingFor !== undefined && SQLCheckingFor === currTab ? 'checking' : ''
-                            }`}
-                        >
+                        <div className={`resultbox ${SQLCheckingFor === currTab ? 'checking' : ''}`}>
                             {tabs[currTab].response ? (
                                 <Table
                                     className={`response-table  ${isInputAreaPinned ? 'pinned' : ''}`}

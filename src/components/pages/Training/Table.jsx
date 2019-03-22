@@ -10,7 +10,7 @@ class Table extends Component {
             <div className="row" key={index}>
                 {fields.map((field, index) => (
                     <div className="data" key={index}>
-                        {row[field.name]}
+                        {row[field]}
                     </div>
                 ))}
             </div>
@@ -22,7 +22,7 @@ class Table extends Component {
 
         return fields.map((field, index) => (
             <div className="field" key={index}>
-                {field.title}
+                {field}
             </div>
         ));
     }
