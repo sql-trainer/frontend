@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
         isQuestionsLoading: state.questions.isQuestionsLoading,
         currQuestion: state.questions.currQuestion,
         database: state.database.database,
+        addNotification: ownProps.addNotification,
     };
 };
 
@@ -19,8 +20,8 @@ const mapDispatchToProps = dispatch => {
         deleteAllTabs: () => {
             dispatch(deleteAllTabs());
         },
-        loadDatabaseFromAPI: id => {
-            dispatch(loadDatabaseFromAPI(id));
+        loadDatabaseFromAPI: (id, addNotification) => {
+            dispatch(loadDatabaseFromAPI(id, addNotification));
         },
         changeCurrQuestion: id => {
             dispatch(changeCurrQuestion(id));

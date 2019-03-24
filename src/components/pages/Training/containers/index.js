@@ -5,28 +5,29 @@ import { changeTabResponse, deleteAllTabs, changeTabHtml } from '../../../../sto
 
 import Training from '../index';
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
     return {
-        questions: state.questions.questions,
-        isQuestionsLoading: state.questions.isQuestionsLoading,
-        currQuestion: state.questions.currQuestion,
-        database: state.database.database,
-        isDatabaseLoading: state.database.isDatabaseLoading,
-        tabs: state.tabs.tabs,
-        currTab: state.tabs.currTab,
+        questions: questions.questions,
+        isQuestionsLoading: questions.isQuestionsLoading,
+        currQuestion: questions.currQuestion,
+        database: database.database,
+        isDatabaseLoading: database.isDatabaseLoading,
+        tabs: tabs.tabs,
+        currTab: tabs.currTab,
+        tooltip: ownProps.tooltip,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadQuestionsFromAPI: () => {
-            dispatch(loadQuestionsFromAPI());
+        loadQuestionsFromAPI: addNotification => {
+            dispatch(loadQuestionsFromAPI(addNotification));
         },
         changeCurrQuestion: id => {
             dispatch(changeCurrQuestion(id));
         },
-        loadDatabaseFromAPI: id => {
-            dispatch(loadDatabaseFromAPI(id));
+        loadDatabaseFromAPI: (id, addNotification) => {
+            dispatch(loadDatabaseFromAPI(id, addNotification));
         },
         changeTableActivity: id => {
             dispatch(changeTableActivity(id));
