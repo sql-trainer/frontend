@@ -9,7 +9,6 @@ const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
     return {
         questions: questions.questions,
         isQuestionsLoading: questions.isQuestionsLoading,
-        questionsLoadingError: questions.questionsLoadingError,
         currQuestion: questions.currQuestion,
         database: database.database,
         isDatabaseLoading: database.isDatabaseLoading,
@@ -21,14 +20,14 @@ const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadQuestionsFromAPI: errorCb => {
-            dispatch(loadQuestionsFromAPI(errorCb));
+        loadQuestionsFromAPI: addNotification => {
+            dispatch(loadQuestionsFromAPI(addNotification));
         },
         changeCurrQuestion: id => {
             dispatch(changeCurrQuestion(id));
         },
-        loadDatabaseFromAPI: id => {
-            dispatch(loadDatabaseFromAPI(id));
+        loadDatabaseFromAPI: (id, addNotification) => {
+            dispatch(loadDatabaseFromAPI(id, addNotification));
         },
         changeTableActivity: id => {
             dispatch(changeTableActivity(id));

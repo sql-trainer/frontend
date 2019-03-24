@@ -461,3 +461,14 @@ $min-width: 900px;
     opacity: 1;
     pointer-events: unset;
 }
+
+.notification {
+    border-radius: 4px !important;
+    background-color: #f6f6f6 !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.15) !important;
+}
+
+.notification-message {
+    height: max-content;
+    font-size: 16px;
+}

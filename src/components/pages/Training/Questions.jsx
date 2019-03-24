@@ -22,10 +22,17 @@ class Questions extends Component {
     }
 
     setCurrQuestion(index) {
-        const { questions, loadDatabaseFromAPI, database, changeCurrQuestion, deleteAllTabs } = this.props;
+        const {
+            questions,
+            loadDatabaseFromAPI,
+            database,
+            changeCurrQuestion,
+            deleteAllTabs,
+            addNotification,
+        } = this.props;
 
         if (!database || questions[index].database !== database.id) {
-            loadDatabaseFromAPI(questions[index].database);
+            loadDatabaseFromAPI(questions[index].database, addNotification);
         }
 
         changeCurrQuestion(index);

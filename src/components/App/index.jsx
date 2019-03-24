@@ -16,7 +16,7 @@ const App = () => {
         <div className="app">
             <Switch>
                 <Route exact path="/" component={Home} />
-                <Route path="/training" render={() => <TrainingContainer tooltip={ReactTooltip} />} />
+                <Route path="/training" component={TrainingContainer} />
                 <Route path="/logo" component={LogoPresentation} />
                 <Route component={NotFound} />
             </Switch>

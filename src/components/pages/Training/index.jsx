@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Editor from 'react-simple-code-editor';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import NotificationSystem from 'react-notification-system';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
 
@@ -25,17 +27,25 @@ class Training extends Component {
         },
     };
 
+    notificationSystem = React.createRef();
+
+    addNotification = ({ message, level }) => {
+        console.log(this.notificationSystem);
+        const notification = this.notificationSystem.current;
+        if (notification) {
+            notification.addNotification({
+                message,
+                level,
+                autoDismiss: 4,
+                dismissible: 'click',
+            });
+        }
+    };
+
     componentDidMount() {
         document.title = 'Training';
         document.querySelector('.app').className = 'app training-component';
-        this.props.loadQuestionsFromAPI();
-    }
-
-    componentDidUpdate() {
-        const { questionsLoadingError, loadQuestionsFromAPI } = this.props;
-        if (questionsLoadingError) {
-            // setTimeout(loadQuestionsFromAPI, 2000);
-        }
+        this.props.loadQuestionsFromAPI(this.addNotification);
     }
 
     handleContentEditable = value => {
@@ -72,11 +82,12 @@ class Training extends Component {
                         changeTabResponse(tab, { fields: res.fields, rows: res.rows });
                     }
                 })
+                .catch(err => this.addNotification({ message: 'Ошибка сервера', level: 'error' }))
                 .finally(() => {
                     this.setState({ SQLCheckingFor: undefined });
                     setTimeout(() => {
                         this.setState({ responseType: { type: '', error: undefined } });
-                    }, 2000);
+                    }, 1000);
                 });
         }, 500);
     };
@@ -162,6 +173,7 @@ class Training extends Component {
                         </div>
                     </PerfectScrollbar>
                 </section>
+                <NotificationSystem ref={this.notificationSystem} />
             </>
         );
     }

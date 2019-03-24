@@ -4,7 +4,6 @@ const initialState = {
     questions: [],
     isQuestionsLoading: true,
     currQuestion: 0,
-    questionsLoadingError: false,
 };
 
 const questions = (state = initialState, action) => {
@@ -19,12 +18,6 @@ const questions = (state = initialState, action) => {
             return {
                 ...state,
                 isQuestionsLoading: action.payload,
-            };
-
-        case types.QUESTIONS_LOADING_ERROR:
-            return {
-                ...state,
-                questionsLoadingError: action.error,
             };
 
         case types.CHANGE_QUESTION:
