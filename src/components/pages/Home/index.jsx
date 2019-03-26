@@ -23,7 +23,7 @@ class Home extends Component {
                     <div className="first-screen">
                         <div className="content">
                             <div className="title">
-                                Система контроля знаний BLABLABLA
+                                Система контроля знаний SQL
                                 <br />
                                 <Link to="/training">Попробовать</Link>
                             </div>
