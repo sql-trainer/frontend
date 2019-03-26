@@ -6,42 +6,13 @@ class Questions extends Component {
         isAllQOpen: false,
     };
 
-    handleQuestionSwitcher = dir => {
-        const { questions, currQuestion } = this.props;
-        let newQuestion = dir === 'next' ? currQuestion + 1 : currQuestion - 1;
-
-        if (newQuestion > questions.length - 1) newQuestion = 0;
-        else if (newQuestion < 0) newQuestion = questions.length - 1;
-
-        this.setCurrQuestion(newQuestion);
-    };
-
     handleQuestionChange(index) {
-        this.setCurrQuestion(index);
+        this.props.setCurrQuestion(index);
         this.setState({ isAllQOpen: false });
     }
 
-    setCurrQuestion(index) {
-        const {
-            questions,
-            loadDatabaseFromAPI,
-            database,
-            changeCurrQuestion,
-            deleteAllTabs,
-            addNotification,
-        } = this.props;
-
-        if (!database || questions[index].database !== database.id) {
-            loadDatabaseFromAPI(questions[index].database, addNotification);
-        }
-
-        changeCurrQuestion(index);
-
-        deleteAllTabs();
-    }
-
     render() {
-        const { questions, currQuestion, isQuestionsLoading } = this.props;
+        const { questions, currQuestion, isQuestionsLoading, nextQuestion, prevQuestion } = this.props;
         const { isAllQOpen } = this.state;
 
         const questionsLength = questions.length;
@@ -55,21 +26,27 @@ class Questions extends Component {
                             data-tip="Список всех вопросов"
                             onClick={e => this.setState({ isAllQOpen: !isAllQOpen })}
                         />
-                        Вопрос {!questionsLength ? '' : `#${currQuestion + 1} из ${questionsLength}`}
+                        <div
+                            className={`question-counter ${
+                                questions.length && questions[currQuestion].status === 'solved' ? ' solved' : ''
+                            }`}
+                        >
+                            Вопрос {!questionsLength ? '' : `#${currQuestion + 1} из ${questionsLength}`}
+                        </div>
                         {questionsLength ? (
                             <>
                                 <FontAwesomeIcon
                                     className="question__nav"
                                     icon="angle-left"
                                     data-tip="Предыдущий вопрос"
-                                    onClick={e => this.handleQuestionSwitcher('prev')}
+                                    onClick={prevQuestion}
                                 />
                                 <FontAwesomeIcon
                                     className="question__nav"
                                     icon="angle-left"
                                     rotation={180}
                                     data-tip="Следующий вопрос"
-                                    onClick={e => this.handleQuestionSwitcher('next')}
+                                    onClick={nextQuestion}
                                 />
                             </>
                         ) : null}
@@ -89,14 +66,12 @@ class Questions extends Component {
                 </div>
                 <div className={`all-questions ${isAllQOpen ? 'all-questions-active' : ''}`}>
                     <h2>{questionsLength ? 'Все вопросы' : 'Вопросы отстутствуют'}</h2>
-
                     {questions.map((q, index) => {
+                        const className = `question${index === currQuestion ? ' active' : ''}${
+                            questions[index].status === 'solved' ? ' solved' : ''
+                        }`;
                         return (
-                            <div
-                                className={index === currQuestion ? 'question active' : 'question'}
-                                key={q.id}
-                                onClick={e => this.handleQuestionChange(index)}
-                            >
+                            <div className={className} key={q.id} onClick={e => this.handleQuestionChange(index)}>
                                 <b>{index + 1}.</b> {q.question}
                             </div>
                         );

@@ -1,5 +1,9 @@
 import { connect } from 'react-redux';
-import { loadQuestionsFromAPI, changeCurrQuestion } from '../../../../store/actions/questionActions';
+import {
+    loadQuestionsFromAPI,
+    changeCurrQuestion,
+    changeQuestionStatus,
+} from '../../../../store/actions/questionActions';
 import { loadDatabaseFromAPI, changeTableActivity } from '../../../../store/actions/databaseActions';
 import { changeTabResponse, deleteAllTabs, changeTabHtml } from '../../../../store/actions/tabsActions';
 
@@ -22,6 +26,9 @@ const mapDispatchToProps = dispatch => {
     return {
         loadQuestionsFromAPI: addNotification => {
             dispatch(loadQuestionsFromAPI(addNotification));
+        },
+        changeQuestionStatus: status => {
+            dispatch(changeQuestionStatus(status));
         },
         changeCurrQuestion: id => {
             dispatch(changeCurrQuestion(id));

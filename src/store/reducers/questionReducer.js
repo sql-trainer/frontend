@@ -26,6 +26,14 @@ const questions = (state = initialState, action) => {
                 currQuestion: action.id,
             };
 
+        case types.CHANGE_QUESTION_STATUS:
+            const questions = [...state.questions];
+            questions[state.currQuestion].status = action.status;
+            return {
+                ...state,
+                questions,
+            };
+
         default:
             return state;
     }

@@ -12,6 +12,11 @@ const changeCurrQuestion = id => {
     return { type, id };
 };
 
+const changeQuestionStatus = status => {
+    const type = types.CHANGE_QUESTION_STATUS;
+    return { type, status };
+};
+
 const isLoading = payload => {
     const type = types.QUESTIONS_LOADING;
     return { type, payload };
@@ -43,4 +48,4 @@ const loadQuestionsFromAPI = addNotification => {
     };
 };
 
-export { loadQuestionsFromAPI, changeCurrQuestion };
+export { loadQuestionsFromAPI, changeCurrQuestion, changeQuestionStatus };
