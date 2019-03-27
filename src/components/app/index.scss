@@ -2,6 +2,7 @@ $main-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', '
     'Droid Sans', 'Helvetica Neue', sans-serif;
 
 body {
+    box-sizing: border-box;
     margin: 0px;
     font-family: $main-font;
     color: #333;

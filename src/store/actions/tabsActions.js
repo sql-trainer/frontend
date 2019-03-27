@@ -24,9 +24,10 @@ const deleteTab = () => {
     };
 };
 
-const deleteAllTabs = () => {
+const deleteAllTabs = (html = '') => {
     return {
         type: types.DELETE_ALL_TABS,
+        html,
     };
 };
 

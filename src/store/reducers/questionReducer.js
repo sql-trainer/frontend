@@ -35,13 +35,14 @@ const questions = (state = initialState, action) => {
             };
         }
 
-        case types.CHANGE_SOLVED_QUESTION_SQL:
+        case types.CHANGE_SOLVED_QUESTION_SQL: {
             const questions = [...state.questions];
             questions[state.currQuestion].sql = action.sql;
             return {
                 ...state,
                 questions,
             };
+        }
 
         default:
             return state;

@@ -27,7 +27,7 @@ class Questions extends Component {
                             onClick={e => this.setState({ isAllQOpen: !isAllQOpen })}
                         />
                         <div
-                            className={`question-counter ${
+                            className={`question-counter${
                                 questions.length && questions[currQuestion].status === 'solved' ? ' solved' : ''
                             }`}
                         >

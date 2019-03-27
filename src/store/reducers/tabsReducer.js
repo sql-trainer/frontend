@@ -46,7 +46,7 @@ const tabs = (state = initialState, action) => {
                 ...state,
                 tabs: [
                     {
-                        html: '',
+                        html: action.html,
                         title: 'Tab',
                         response: undefined,
                     },
@@ -55,7 +55,7 @@ const tabs = (state = initialState, action) => {
             };
 
         case types.CHANGE_TAB_RESPONSE: {
-            let newTabs = state.tabs.map(tab => tab);
+            let newTabs = [...state.tabs];
             try {
                 newTabs[action.index].response = action.response;
                 return {

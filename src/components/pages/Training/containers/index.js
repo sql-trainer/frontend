@@ -1,12 +1,7 @@
 import { connect } from 'react-redux';
-import {
-    loadQuestionsFromAPI,
-    changeCurrQuestion,
-    changeQuestionStatus,
-    changeSolvedQuestionSQL,
-} from '../../../../store/actions/questionActions';
-import { loadDatabaseFromAPI, changeTableActivity } from '../../../../store/actions/databaseActions';
-import { changeTabResponse, deleteAllTabs, changeTabHtml } from '../../../../store/actions/tabsActions';
+import * as questions from '../../../../store/actions/questionActions';
+import * as database from '../../../../store/actions/databaseActions';
+import * as tabs from '../../../../store/actions/tabsActions';
 
 import Training from '../index';
 
@@ -23,36 +18,10 @@ const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        loadQuestionsFromAPI: addNotification => {
-            dispatch(loadQuestionsFromAPI(addNotification));
-        },
-        changeQuestionStatus: status => {
-            dispatch(changeQuestionStatus(status));
-        },
-        changeSolvedQuestionSQL: sql => {
-            dispatch(changeSolvedQuestionSQL(sql));
-        },
-        changeCurrQuestion: id => {
-            dispatch(changeCurrQuestion(id));
-        },
-        loadDatabaseFromAPI: (id, addNotification) => {
-            dispatch(loadDatabaseFromAPI(id, addNotification));
-        },
-        changeTableActivity: id => {
-            dispatch(changeTableActivity(id));
-        },
-        changeTabResponse: (response, index) => {
-            dispatch(changeTabResponse(response, index));
-        },
-        deleteAllTabs: () => {
-            dispatch(deleteAllTabs());
-        },
-        changeTabHtml: (index, html) => {
-            dispatch(changeTabHtml(index, html));
-        },
-    };
+const mapDispatchToProps = {
+    ...questions,
+    ...database,
+    ...tabs,
 };
 
 const TrainingContainer = connect(

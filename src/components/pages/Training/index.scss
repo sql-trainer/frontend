@@ -8,7 +8,16 @@ $min-width: 900px;
 @import '@fortawesome/fontawesome-free/scss/solid.scss';
 @import '@fortawesome/fontawesome-free/scss/_animated.scss';
 
+$solved-icon: $fa-var-check-circle;
+
 @import url('https://fonts.googleapis.com/css?family=Fira+Mono');
+
+%solved-icon {
+    @extend %fa-icon;
+    @extend .fas;
+    content: fa-content($solved-icon);
+    color: rgb(78, 211, 78);
+}
 
 .training {
     display: grid;
@@ -106,14 +115,17 @@ $min-width: 900px;
                 grid-template-columns: 48px 1fr repeat(2, 25px);
                 align-items: center;
                 .question-counter {
+                    &:after {
+                        content: '';
+                        transition: opacity 0.2s ease-in-out;
+                        opacity: 0;
+                    }
                     &.solved {
                         &:after {
-                            @extend %fa-icon;
-                            @extend .fas;
-                            content: fa-content($fa-var-check);
-                            color: rgb(78, 211, 78);
+                            @extend %solved-icon;
                             margin-left: 8px;
-                            font-size: 14px;
+                            font-size: 15px;
+                            opacity: 1;
                         }
                     }
                 }
@@ -485,12 +497,9 @@ $min-width: 900px;
             padding-right: 40px;
             position: relative;
             &:after {
-                @extend %fa-icon;
-                @extend .fas;
-                content: fa-content($fa-var-check);
-                color: rgb(78, 211, 78);
+                @extend %solved-icon;
                 position: absolute;
-                margin-left: 14px;
+                right: 14px;
                 top: calc(50% - 7px);
             }
         }
@@ -575,22 +584,38 @@ $min-width: 900px;
     opacity: 0;
     pointer-events: none;
     transition: all 0.2s ease-in-out;
+
     &.active {
         opacity: 1;
         pointer-events: unset;
     }
+
     h1,
     h2,
     h3 {
         margin: 0;
         text-align: center;
     }
+
     h1 {
         font-size: 50px;
         margin-bottom: 10px;
     }
+
     h2 {
         font-size: 30px;
         margin-bottom: 20px;
+    }
+
+    h3 {
+        // font-weight: NORMAL;
+    }
+
+    .close-completed-popup {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        font-size: 25px;
+        cursor: pointer;
     }
 }
