@@ -17,6 +17,11 @@ const changeQuestionStatus = status => {
     return { type, status };
 };
 
+const changeSolvedQuestionSQL = sql => {
+    const type = types.CHANGE_SOLVED_QUESTION_SQL;
+    return { type, sql };
+};
+
 const isLoading = payload => {
     const type = types.QUESTIONS_LOADING;
     return { type, payload };
@@ -48,4 +53,4 @@ const loadQuestionsFromAPI = addNotification => {
     };
 };
 
-export { loadQuestionsFromAPI, changeCurrQuestion, changeQuestionStatus };
+export { loadQuestionsFromAPI, changeCurrQuestion, changeQuestionStatus, changeSolvedQuestionSQL };

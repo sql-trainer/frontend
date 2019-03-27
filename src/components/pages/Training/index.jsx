@@ -15,6 +15,7 @@ import TabsContainer from './containers/Tabs';
 import './index.scss';
 import './media.scss';
 import 'prismjs/themes/prism.css';
+import { changeSolvedQuestionSQL } from '../../../store/actions/questionActions';
 
 class Training extends Component {
     state = {
@@ -76,10 +77,11 @@ class Training extends Component {
         this.setState({ SQLCheckingFor: tab });
 
         setTimeout(() => {
+            const sql = tabs[currTab].html;
             fetch(`http://localhost:8080/api/v1/tests/open/questions/${questions[currQuestion].id}/check`, {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sql: tabs[currTab].html }),
+                body: JSON.stringify({ sql }),
             })
                 .then(res => res.json())
                 .then(res => {
@@ -88,7 +90,10 @@ class Training extends Component {
                         this.addNotification({ message: res.error.message, level: 'error' });
                     } else {
                         this.setState({ checkResponseType: res.success ? 'success' : 'error' });
-                        res.success && changeQuestionStatus('solved');
+                        if (res.success) {
+                            changeQuestionStatus('solved');
+                            changeSolvedQuestionSQL(sql);
+                        }
                         changeTabResponse(tab, { fields: res.fields, rows: res.rows });
                         if (!isTestCompleted && this.checkTestResult())
                             this.setState({ isTestCompleted: true, isCompletedPopupVisible: true });

@@ -3,6 +3,7 @@ import {
     loadQuestionsFromAPI,
     changeCurrQuestion,
     changeQuestionStatus,
+    changeSolvedQuestionSQL,
 } from '../../../../store/actions/questionActions';
 import { loadDatabaseFromAPI, changeTableActivity } from '../../../../store/actions/databaseActions';
 import { changeTabResponse, deleteAllTabs, changeTabHtml } from '../../../../store/actions/tabsActions';
@@ -29,6 +30,9 @@ const mapDispatchToProps = dispatch => {
         },
         changeQuestionStatus: status => {
             dispatch(changeQuestionStatus(status));
+        },
+        changeSolvedQuestionSQL: sql => {
+            dispatch(changeSolvedQuestionSQL(sql));
         },
         changeCurrQuestion: id => {
             dispatch(changeCurrQuestion(id));

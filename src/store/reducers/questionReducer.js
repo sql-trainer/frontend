@@ -26,9 +26,18 @@ const questions = (state = initialState, action) => {
                 currQuestion: action.id,
             };
 
-        case types.CHANGE_QUESTION_STATUS:
+        case types.CHANGE_QUESTION_STATUS: {
             const questions = [...state.questions];
             questions[state.currQuestion].status = action.status;
+            return {
+                ...state,
+                questions,
+            };
+        }
+
+        case types.CHANGE_SOLVED_QUESTION_SQL:
+            const questions = [...state.questions];
+            questions[state.currQuestion].sql = action.sql;
             return {
                 ...state,
                 questions,
