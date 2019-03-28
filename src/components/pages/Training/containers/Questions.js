@@ -11,7 +11,7 @@ const mapStateToProps = (state, ownProps) => {
         isQuestionsLoading: state.questions.isQuestionsLoading,
         currQuestion: state.questions.currQuestion,
         database: state.database.database,
-        addNotification: ownProps.addNotification,
+        ...ownProps,
     };
 };
 

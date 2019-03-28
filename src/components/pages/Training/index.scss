@@ -8,7 +8,16 @@ $min-width: 900px;
 @import '@fortawesome/fontawesome-free/scss/solid.scss';
 @import '@fortawesome/fontawesome-free/scss/_animated.scss';
 
+$solved-icon: $fa-var-check-circle;
+
 @import url('https://fonts.googleapis.com/css?family=Fira+Mono');
+
+%solved-icon {
+    @extend %fa-icon;
+    @extend .fas;
+    content: fa-content($solved-icon);
+    color: rgb(78, 211, 78);
+}
 
 .training {
     display: grid;
@@ -105,6 +114,21 @@ $min-width: 900px;
                 display: grid;
                 grid-template-columns: 48px 1fr repeat(2, 25px);
                 align-items: center;
+                .question-counter {
+                    &:after {
+                        content: '';
+                        transition: opacity 0.2s ease-in-out;
+                        opacity: 0;
+                    }
+                    &.solved {
+                        &:after {
+                            @extend %solved-icon;
+                            margin-left: 8px;
+                            font-size: 15px;
+                            opacity: 1;
+                        }
+                    }
+                }
 
                 .menu-icon {
                     cursor: pointer;
@@ -396,6 +420,47 @@ $min-width: 900px;
                     background: rgb(224, 37, 37);
                     transform: scale(1.2);
                 }
+
+                &.solved {
+                    right: 65px;
+                }
+            }
+
+            .next-question {
+                border: none;
+                background: transparent;
+                color: #444;
+                border-radius: 50%;
+                bottom: 24px;
+                right: 15px;
+                position: absolute;
+                outline: none;
+                cursor: pointer;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                justify-content: center;
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.2s ease-in-out;
+
+                &:hover {
+                    color: black;
+                }
+
+                &:after {
+                    @extend %fa-icon;
+                    @extend .fas;
+                    content: fa-content($fa-var-arrow-right);
+                    margin-bottom: 1px;
+                    font-size: 16px;
+                }
+
+                &.active {
+                    opacity: 1;
+                    pointer-events: unset;
+                    transform: scale(1);
+                }
             }
         }
 
@@ -428,6 +493,16 @@ $min-width: 900px;
     }
     .question {
         padding: 15px 25px;
+        &.solved {
+            padding-right: 40px;
+            position: relative;
+            &:after {
+                @extend %solved-icon;
+                position: absolute;
+                right: 14px;
+                top: calc(50% - 7px);
+            }
+        }
         &:hover {
             background: #3f3f5f;
             cursor: pointer;
@@ -466,9 +541,81 @@ $min-width: 900px;
     border-radius: 4px !important;
     background-color: #f6f6f6 !important;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
 }
 
 .notification-message {
     height: max-content;
     font-size: 16px;
+    color: white !important;
+}
+
+.notification-success {
+    background: rgb(94, 164, 0) !important;
+}
+
+.notification-error {
+    background: rgb(236, 61, 61) !important;
+}
+
+.notification-warning {
+    background: rgb(235, 173, 26) !important;
+}
+
+.notification-info {
+    background: rgb(54, 156, 199) !important;
+}
+
+.test-completed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-width: $min-width;
+    padding: 0 40px;
+    background: rgba(255, 255, 255, 0.7);
+    box-sizing: border-box;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s ease-in-out;
+
+    &.active {
+        opacity: 1;
+        pointer-events: unset;
+    }
+
+    h1,
+    h2,
+    h3 {
+        margin: 0;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        // font-weight: NORMAL;
+    }
+
+    .close-completed-popup {
+        position: absolute;
+        top: 40px;
+        right: 40px;
+        font-size: 25px;
+        cursor: pointer;
+    }
 }

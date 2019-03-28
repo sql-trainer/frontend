@@ -21,16 +21,14 @@ class Training extends Component {
         isInputAreaPinned: false,
         SQLCheckingFor: undefined,
         isCheckButtonDisabled: false,
-        responseType: {
-            type: '',
-            error: undefined,
-        },
+        checkResponseType: '',
+        isTestCompleted: false,
+        isCompletedPopupVisible: false,
     };
 
     notificationSystem = React.createRef();
 
     addNotification = ({ message, level }) => {
-        console.log(this.notificationSystem);
         const notification = this.notificationSystem.current;
         if (notification) {
             notification.addNotification({
@@ -43,9 +41,12 @@ class Training extends Component {
     };
 
     componentDidMount() {
+        const { questions } = this.props;
         document.title = 'Training';
         document.querySelector('.app').className = 'app training-component';
-        this.props.loadQuestionsFromAPI(this.addNotification);
+        if (!questions.length) {
+            this.props.loadQuestionsFromAPI(this.addNotification);
+        }
     }
 
     handleContentEditable = value => {
@@ -63,45 +64,115 @@ class Training extends Component {
     };
 
     checkSQL = e => {
-        const { tabs, currTab, changeTabResponse, questions, currQuestion } = this.props;
+        const {
+            tabs,
+            currTab,
+            changeTabResponse,
+            questions,
+            currQuestion,
+            changeQuestionStatus,
+            changeSolvedQuestionSQL,
+        } = this.props;
+        const { isTestCompleted } = this.state;
         let tab = currTab;
 
         this.setState({ SQLCheckingFor: tab });
-        setTimeout(() => {
-            fetch(`http://localhost:8080/api/v1/tests/open/questions/${questions[currQuestion].id}/check`, {
-                method: 'post',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sql: tabs[currTab].html }),
-            })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.error) {
-                        this.setState({ responseType: { type: 'error', error: res.error.message } });
-                    } else {
-                        this.setState({ responseType: { type: res.success ? 'success' : 'error', error: undefined } });
-                        changeTabResponse(tab, { fields: res.fields, rows: res.rows });
+
+        const sql = tabs[currTab].html;
+        fetch(`http://localhost:8080/api/v1/tests/open/questions/${questions[currQuestion].id}/check`, {
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sql }),
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) {
+                    this.setState({ checkResponseType: 'error' });
+                    this.addNotification({ message: res.error.message, level: 'error' });
+                } else {
+                    this.setState({ checkResponseType: res.success ? 'success' : 'error' });
+                    if (res.success) {
+                        if (questions[currQuestion].status !== 'solved') changeQuestionStatus('solved');
+                        changeSolvedQuestionSQL(sql);
                     }
-                })
-                .catch(err => this.addNotification({ message: 'Ошибка сервера', level: 'error' }))
-                .finally(() => {
-                    this.setState({ SQLCheckingFor: undefined });
-                    setTimeout(() => {
-                        this.setState({ responseType: { type: '', error: undefined } });
-                    }, 1000);
-                });
-        }, 500);
+                    changeTabResponse(tab, { fields: res.fields, rows: res.rows });
+                    if (!isTestCompleted && this.checkTestResult())
+                        this.setState({ isTestCompleted: true, isCompletedPopupVisible: true });
+                }
+            })
+            .catch(err => this.addNotification({ message: 'Ошибка сервера', level: 'error' }))
+            .finally(() => {
+                this.setState({ SQLCheckingFor: undefined });
+                setTimeout(() => {
+                    this.setState({ checkResponseType: '' });
+                }, 1000);
+            });
+    };
+
+    nextQuestion = () => {
+        const { questions, currQuestion } = this.props;
+        const newQuestion = currQuestion + 1 > questions.length - 1 ? 0 : currQuestion + 1;
+
+        this.setCurrQuestion(newQuestion);
+    };
+
+    prevQuestion = () => {
+        const { questions, currQuestion } = this.props;
+        const newQuestion = currQuestion - 1 < 0 ? questions.length - 1 : currQuestion - 1;
+
+        this.setCurrQuestion(newQuestion);
+    };
+
+    setCurrQuestion = index => {
+        const {
+            questions,
+            loadDatabaseFromAPI,
+            database,
+            changeCurrQuestion,
+            deleteAllTabs,
+            addNotification,
+        } = this.props;
+
+        if (!database || questions[index].database !== database.id) {
+            loadDatabaseFromAPI(questions[index].database, addNotification);
+        }
+
+        changeCurrQuestion(index);
+
+        deleteAllTabs(questions[index].sql || '');
+    };
+
+    checkTestResult = () => {
+        const { questions } = this.props;
+        return questions.findIndex(q => q.status !== 'solved') === -1;
+    };
+
+    resetTest = e => {
+        e.preventDefault();
+        this.props.loadQuestionsFromAPI();
+        this.props.changeCurrQuestion(0);
+        this.props.deleteAllTabs();
+        this.setState({ isCompletedPopupVisible: false });
+    };
+
+    closeCompletedPopup = () => {
+        this.setState({ isCompletedPopupVisible: false });
     };
 
     render() {
-        const { isInputAreaPinned, SQLCheckingFor, responseType } = this.state;
-        const { database, isDatabaseLoading, changeTableActivity, tabs, currTab, questions } = this.props;
+        const { isInputAreaPinned, SQLCheckingFor, checkResponseType, isCompletedPopupVisible } = this.state;
+        const { database, isDatabaseLoading, changeTableActivity, tabs, currTab, questions, currQuestion } = this.props;
 
         return (
             <>
                 <Header style={{ minWidth: 900 }} />
                 <section className="training">
                     <PerfectScrollbar className="task-info">
-                        <QuestionsContainer />
+                        <QuestionsContainer
+                            setCurrQuestion={this.setCurrQuestion}
+                            nextQuestion={this.nextQuestion}
+                            prevQuestion={this.prevQuestion}
+                        />
                         <div className="tablesbox" data-loading={isDatabaseLoading}>
                             <div className="title">
                                 Схема базы данных
@@ -155,11 +226,24 @@ class Training extends Component {
                                 />
                             </PerfectScrollbar>
                             <button
-                                className={`check-sql ${responseType.type}`}
-                                data-tip={responseType.error}
+                                className={`check-sql ${checkResponseType}${
+                                    questions.length && questions[currQuestion].status === 'solved' ? ' solved' : ''
+                                }`}
                                 onClick={this.checkSQL}
-                                disabled={!questions.length || SQLCheckingFor === currTab || responseType.type}
+                                disabled={
+                                    !questions.length ||
+                                    SQLCheckingFor === currTab ||
+                                    checkResponseType ||
+                                    !tabs[currTab].html
+                                }
                                 data-loading={SQLCheckingFor === currTab}
+                            />
+                            <button
+                                className={`next-question${
+                                    questions.length && questions[currQuestion].status === 'solved' ? ' active' : ''
+                                }`}
+                                onClick={this.nextQuestion}
+                                data-tip="Следующий вопрос"
                             />
                         </div>
                         <div className={`resultbox ${SQLCheckingFor === currTab ? 'checking' : ''}`}>
@@ -173,6 +257,25 @@ class Training extends Component {
                         </div>
                     </PerfectScrollbar>
                 </section>
+
+                <div className={`test-completed${isCompletedPopupVisible ? ' active' : ''}`}>
+                    <FontAwesomeIcon
+                        icon="times"
+                        className="close-completed-popup"
+                        onClick={this.closeCompletedPopup}
+                    />
+                    <h1>Поздравляем!</h1>
+                    <h2>Вы полностью прошли тест!</h2>
+                    <h3>
+                        Теперь вы можете{' '}
+                        <a href="/" onClick={this.resetTest}>
+                            сбросить
+                        </a>{' '}
+                        свой результат и пройти тест заново, либо посмотреть свои текущие ответы на вопросы, просто
+                        перейдя на нужный.
+                    </h3>
+                </div>
+
                 <NotificationSystem ref={this.notificationSystem} />
             </>
         );
