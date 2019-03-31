@@ -1,25 +1,10 @@
 import * as types from '../../constants';
 
-const setDatabase = payload => {
-    return {
-        type: types.DATABASE_LOADED,
-        payload,
-    };
-};
+const setDatabase = payload => ({ type: types.DATABASE_LOADED, payload });
 
-const isLoading = payload => {
-    return {
-        type: types.DATABASE_LOADING,
-        payload,
-    };
-};
+const isLoading = payload => ({ type: types.DATABASE_LOADING, payload });
 
-const changeTableActivity = id => {
-    return {
-        type: types.CHANGE_TABLE_ACTIVITY,
-        id,
-    };
-};
+const changeTableActivity = id => ({ type: types.CHANGE_TABLE_ACTIVITY, id });
 
 const loadDatabaseFromAPI = (dbID, addNotification) => {
     return function(dispatch) {

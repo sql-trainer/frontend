@@ -172,6 +172,19 @@ class Training extends Component {
         this.setState({ isCompletedPopupVisible: false });
     };
 
+    saveOnEdit = () => {
+        if (this.state.saveTimeoutID !== undefined) {
+            clearTimeout(this.state.saveTimeoutID);
+        }
+
+        const timeoutID = setTimeout(() => {
+            this.saveToLocalStorage({ questions: JSON.stringify(this.props.questions) });
+            console.log('saved');
+        }, 1000);
+
+        this.setState({ saveTimeoutID: timeoutID });
+    };
+
     get tabs() {
         const { questions, currQuestion } = this.props;
         return questions.length ? questions[currQuestion].tabs : [{ html: '', title: 'Tab' }];
@@ -265,6 +278,7 @@ class Training extends Component {
                                     highlight={code => this.highlightSQL(code)}
                                     className="textarea"
                                     tabSize={4}
+                                    onKeyUp={this.saveOnEdit}
                                 />
                             </PerfectScrollbar>
                             <button

@@ -2,30 +2,15 @@ import * as types from '../../constants';
 import { loadDatabaseFromAPI, isLoading as isDatabaseLoading } from './databaseActions';
 import retryFetch from '../../modules/retry-fetch';
 
-const setQuestions = payload => {
-    const type = types.QUESTIONS_LOADED;
-    return { type, payload };
-};
+const setQuestions = payload => ({ type: types.QUESTIONS_LOADED, payload });
 
-const changeCurrQuestion = id => {
-    const type = types.CHANGE_QUESTION;
-    return { type, id };
-};
+const changeCurrQuestion = id => ({ type: types.CHANGE_QUESTION, id });
 
-const changeQuestionStatus = status => {
-    const type = types.CHANGE_QUESTION_STATUS;
-    return { type, status };
-};
+const changeQuestionStatus = status => ({ type: types.CHANGE_QUESTION_STATUS, status });
 
-const changeSolvedQuestionSQL = sql => {
-    const type = types.CHANGE_SOLVED_QUESTION_SQL;
-    return { type, sql };
-};
+const changeSolvedQuestionSQL = sql => ({ type: types.CHANGE_SOLVED_QUESTION_SQL, sql });
 
-const isLoading = payload => {
-    const type = types.QUESTIONS_LOADING;
-    return { type, payload };
-};
+const isLoading = payload => ({ type: types.QUESTIONS_LOADING, payload });
 
 const loadQuestionsFromAPI = (addNotification, getFromLocalStorage, saveToLocalStorage) => {
     return async function(dispatch) {
@@ -64,6 +49,7 @@ const loadQuestionsFromAPI = (addNotification, getFromLocalStorage, saveToLocalS
                         saveToLocalStorage({
                             questions: JSON.stringify(res.questions),
                             testTimestamp: testMeta.date_changed,
+                            lastQuestion: 0,
                         });
                     }
                 }
