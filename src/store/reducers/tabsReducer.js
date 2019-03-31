@@ -2,21 +2,11 @@ import * as types from '../../constants';
 
 const initialState = {
     currTab: 0,
-    tabs: [
-        {
-            html: `select name from company`,
-            title: 'Tab',
-            response: undefined,
-        },
-        {
-            html: 'select * from table1',
-            title: 'Tab',
-            response: undefined,
-        },
-    ],
+    tabs: [],
 };
 
 const tabs = (state = initialState, action) => {
+    console.log(state);
     switch (action.type) {
         case types.CREATE_NEW_TAB:
             return {

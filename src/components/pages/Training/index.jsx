@@ -12,6 +12,8 @@ import Table from './Table';
 import QuestionsContainer from './containers/Questions';
 import TabsContainer from './containers/Tabs';
 
+import classNames from 'classnames';
+
 import './index.scss';
 import './media.scss';
 import 'prismjs/themes/prism.css';
@@ -28,6 +30,24 @@ class Training extends Component {
 
     notificationSystem = React.createRef();
 
+    saveToLocalStorage = props => {
+        for (let key in props) {
+            localStorage.setItem(key, props[key]);
+        }
+    };
+
+    getFromLocalStorage = props => {
+        const map = {};
+        props.forEach(prop => {
+            if (typeof prop === 'string') map[prop] = localStorage.getItem(prop);
+            else
+                map[prop.field] = prop.parseJson
+                    ? JSON.parse(localStorage.getItem(prop.field))
+                    : localStorage.getItem(prop.field);
+        });
+        return map;
+    };
+
     addNotification = ({ message, level }) => {
         const notification = this.notificationSystem.current;
         if (notification) {
@@ -41,17 +61,17 @@ class Training extends Component {
     };
 
     componentDidMount() {
-        const { questions } = this.props;
+        const { questions, loadQuestionsFromAPI } = this.props;
         document.title = 'Training';
         document.querySelector('.app').className = 'app training-component';
         if (!questions.length) {
-            this.props.loadQuestionsFromAPI(this.addNotification);
+            loadQuestionsFromAPI(this.addNotification, this.getFromLocalStorage, this.saveToLocalStorage);
         }
     }
 
     handleContentEditable = value => {
-        const { currTab, changeTabHtml } = this.props;
-        changeTabHtml(currTab, value);
+        const { changeTabHtml } = this.props;
+        changeTabHtml(this.currTabIndex, value);
     };
 
     highlightSQL = sql => {
@@ -65,20 +85,20 @@ class Training extends Component {
 
     checkSQL = e => {
         const {
-            tabs,
-            currTab,
             changeTabResponse,
             questions,
             currQuestion,
             changeQuestionStatus,
             changeSolvedQuestionSQL,
         } = this.props;
+
         const { isTestCompleted } = this.state;
-        let tab = currTab;
+        let currTabIndex = this.currTabIndex;
 
-        this.setState({ SQLCheckingFor: tab });
+        this.setState({ SQLCheckingFor: currTabIndex });
 
-        const sql = tabs[currTab].html;
+        const sql = this.tabs[currTabIndex].html;
+
         fetch(`http://localhost:8080/api/v1/tests/open/questions/${questions[currQuestion].id}/check`, {
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
@@ -95,7 +115,7 @@ class Training extends Component {
                         if (questions[currQuestion].status !== 'solved') changeQuestionStatus('solved');
                         changeSolvedQuestionSQL(sql);
                     }
-                    changeTabResponse(tab, { fields: res.fields, rows: res.rows });
+                    changeTabResponse(currTabIndex, { fields: res.fields, rows: res.rows });
                     if (!isTestCompleted && this.checkTestResult())
                         this.setState({ isTestCompleted: true, isCompletedPopupVisible: true });
                 }
@@ -106,6 +126,7 @@ class Training extends Component {
                 setTimeout(() => {
                     this.setState({ checkResponseType: '' });
                 }, 1000);
+                this.saveToLocalStorage({ questions: JSON.stringify(questions) });
             });
     };
 
@@ -124,22 +145,14 @@ class Training extends Component {
     };
 
     setCurrQuestion = index => {
-        const {
-            questions,
-            loadDatabaseFromAPI,
-            database,
-            changeCurrQuestion,
-            deleteAllTabs,
-            addNotification,
-        } = this.props;
+        const { questions, loadDatabaseFromAPI, database, changeCurrQuestion, addNotification } = this.props;
+        this.saveToLocalStorage({ lastQuestion: index });
 
         if (!database || questions[index].database !== database.id) {
             loadDatabaseFromAPI(questions[index].database, addNotification);
         }
 
         changeCurrQuestion(index);
-
-        deleteAllTabs(questions[index].sql || '');
     };
 
     checkTestResult = () => {
@@ -159,9 +172,33 @@ class Training extends Component {
         this.setState({ isCompletedPopupVisible: false });
     };
 
+    get tabs() {
+        const { questions, currQuestion } = this.props;
+        return questions.length ? questions[currQuestion].tabs : [{ html: '', title: 'Tab' }];
+    }
+
+    get currTab() {
+        const { questions, currQuestion } = this.props;
+        return questions.length ? this.tabs[questions[currQuestion].currTab] : this.tabs[0];
+    }
+
+    get currTabIndex() {
+        const { questions, currQuestion } = this.props;
+        return questions.length ? questions[currQuestion].currTab : 0;
+    }
+
+    get currQuestion() {
+        const { questions, currQuestion } = this.props;
+        return questions.length ? questions[currQuestion] : undefined;
+    }
+
     render() {
         const { isInputAreaPinned, SQLCheckingFor, checkResponseType, isCompletedPopupVisible } = this.state;
-        const { database, isDatabaseLoading, changeTableActivity, tabs, currTab, questions, currQuestion } = this.props;
+        const { database, isDatabaseLoading, changeTableActivity, questions, currQuestion } = this.props;
+
+        const tabs = this.tabs;
+        const currTab = this.currTab;
+        const currTabIndex = this.currTabIndex;
 
         return (
             <>
@@ -214,11 +251,16 @@ class Training extends Component {
                         </div>
                     </PerfectScrollbar>
                     <PerfectScrollbar className="task-editor">
-                        <div className={`inputbox ${isInputAreaPinned ? 'pinned' : ''}`}>
-                            <TabsContainer isInputAreaPinned={isInputAreaPinned} pinInputArea={this.pinInputArea} />
+                        <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
+                            <TabsContainer
+                                tabs={tabs}
+                                currTab={currTabIndex}
+                                isInputAreaPinned={isInputAreaPinned}
+                                pinInputArea={this.pinInputArea}
+                            />
                             <PerfectScrollbar className="textarea-scrollbar">
                                 <Editor
-                                    value={tabs[currTab].html}
+                                    value={currTab.html}
                                     onValueChange={code => this.handleContentEditable(code)}
                                     highlight={code => this.highlightSQL(code)}
                                     className="textarea"
@@ -226,17 +268,17 @@ class Training extends Component {
                                 />
                             </PerfectScrollbar>
                             <button
-                                className={`check-sql ${checkResponseType}${
-                                    questions.length && questions[currQuestion].status === 'solved' ? ' solved' : ''
-                                }`}
+                                className={classNames('check-sql', checkResponseType, {
+                                    solved: questions.length && questions[currQuestion].status === 'solved',
+                                })}
                                 onClick={this.checkSQL}
                                 disabled={
                                     !questions.length ||
-                                    SQLCheckingFor === currTab ||
+                                    SQLCheckingFor === currTabIndex ||
                                     checkResponseType ||
-                                    !tabs[currTab].html
+                                    !currTab.html
                                 }
-                                data-loading={SQLCheckingFor === currTab}
+                                data-loading={SQLCheckingFor === currTabIndex}
                             />
                             <button
                                 className={`next-question${
@@ -246,12 +288,12 @@ class Training extends Component {
                                 data-tip="Следующий вопрос"
                             />
                         </div>
-                        <div className={`resultbox ${SQLCheckingFor === currTab ? 'checking' : ''}`}>
-                            {tabs[currTab].response ? (
+                        <div className={`resultbox${SQLCheckingFor === currTabIndex ? ' checking' : ''}`}>
+                            {currTab.response ? (
                                 <Table
-                                    className={`response-table  ${isInputAreaPinned ? 'pinned' : ''}`}
-                                    fields={tabs[currTab].response.fields}
-                                    rows={tabs[currTab].response.rows}
+                                    className={`response-table ${isInputAreaPinned ? ' pinned' : ''}`}
+                                    fields={currTab.response.fields}
+                                    rows={currTab.response.rows}
                                 />
                             ) : null}
                         </div>

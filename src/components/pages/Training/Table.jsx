@@ -29,7 +29,6 @@ class Table extends Component {
 
     render() {
         const { className } = this.props;
-
         return (
             <div className={className || ''}>
                 <div className="fields">{this.getFields()}</div>

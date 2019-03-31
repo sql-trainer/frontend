@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { deleteAllTabs } from '../../../../store/actions/tabsActions';
 import { loadDatabaseFromAPI } from '../../../../store/actions/databaseActions';
 import { changeCurrQuestion } from '../../../../store/actions/questionActions';
 
@@ -17,9 +16,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        deleteAllTabs: () => {
-            dispatch(deleteAllTabs());
-        },
         loadDatabaseFromAPI: (id, addNotification) => {
             dispatch(loadDatabaseFromAPI(id, addNotification));
         },

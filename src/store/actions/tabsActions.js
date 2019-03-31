@@ -24,13 +24,6 @@ const deleteTab = () => {
     };
 };
 
-const deleteAllTabs = (html = '') => {
-    return {
-        type: types.DELETE_ALL_TABS,
-        html,
-    };
-};
-
 const changeTabResponse = (index, response) => {
     return {
         type: types.CHANGE_TAB_RESPONSE,
@@ -47,4 +40,4 @@ const changeTabHtml = (index, html) => {
     };
 };
 
-export { createNewTab, changeTab, deleteTab, changeTabResponse, deleteAllTabs, changeTabHtml };
+export { createNewTab, changeTab, deleteTab, changeTabResponse, changeTabHtml };

@@ -5,10 +5,8 @@ import Tabs from '../Tabs';
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        tabs: state.tabs.tabs,
-        currTab: state.tabs.currTab,
-        isInputAreaPinned: ownProps.isInputAreaPinned,
-        pinInputArea: ownProps.pinInputArea,
+        // currTab: state.tabs.currTab,
+        ...ownProps,
     };
 };
 

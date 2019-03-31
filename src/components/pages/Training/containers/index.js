@@ -12,8 +12,8 @@ const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
         currQuestion: questions.currQuestion,
         database: database.database,
         isDatabaseLoading: database.isDatabaseLoading,
-        tabs: tabs.tabs,
-        currTab: tabs.currTab,
+        // tabs: tabs.tabs,
+        // currTab: tabs.currTab,
         tooltip: ownProps.tooltip,
     };
 };
