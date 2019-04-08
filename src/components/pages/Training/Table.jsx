@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './Table.scss';
+import './styles/Table.scss';
 
 class Table extends Component {
     getData() {

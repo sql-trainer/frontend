@@ -24,10 +24,11 @@ const deleteTab = () => {
     };
 };
 
-const changeTabResponse = (index, response) => {
+const changeTabResponse = ({ question, tab, response }) => {
     return {
         type: types.CHANGE_TAB_RESPONSE,
-        index,
+        question,
+        tab,
         response,
     };
 };
@@ -40,4 +41,6 @@ const changeTabHtml = (index, html) => {
     };
 };
 
-export { createNewTab, changeTab, deleteTab, changeTabResponse, changeTabHtml };
+const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
+
+export { createNewTab, changeTab, deleteTab, changeTabResponse, changeTabHtml, pinInputArea };

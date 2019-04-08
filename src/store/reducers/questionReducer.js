@@ -4,17 +4,34 @@ const initialState = {
     questions: [],
     testMeta: undefined,
     isQuestionsLoading: true,
-    currQuestion: 0,
+    currQuestionIndex: 0,
+    isInputAreaPinned: false,
 };
 
 const questions = (state = initialState, action) => {
     switch (action.type) {
         case types.QUESTIONS_LOADED: {
             const questions = action.payload.map(q => {
-                if (!q.tabs) q.tabs = [{ html: '', title: 'Tab' }];
+                if (!q.tabs) q.tabs = [{ html: '', title: 'Tab', loading: false }];
                 if (!q.currTab) q.currTab = 0;
                 return q;
             });
+            return {
+                ...state,
+                questions,
+            };
+        }
+
+        case types.PIN_INPUT_AREA:
+            return {
+                ...state,
+                isInputAreaPinned: !state.isInputAreaPinned,
+            };
+
+        case types.SQL_CHECKING: {
+            const questions = [...state.questions];
+            questions[action.question].tabs[action.tab].loading = action.checking;
+
             return {
                 ...state,
                 questions,
@@ -36,12 +53,12 @@ const questions = (state = initialState, action) => {
         case types.CHANGE_QUESTION:
             return {
                 ...state,
-                currQuestion: action.id,
+                currQuestionIndex: action.id,
             };
 
         case types.CHANGE_QUESTION_STATUS: {
             const questions = [...state.questions];
-            questions[state.currQuestion].status = action.status;
+            questions[state.currQuestionIndex].status = action.status;
             return {
                 ...state,
                 questions,
@@ -50,7 +67,7 @@ const questions = (state = initialState, action) => {
 
         case types.CHANGE_SOLVED_QUESTION_SQL: {
             const questions = [...state.questions];
-            questions[state.currQuestion].sql = action.sql;
+            questions[state.currQuestionIndex].sql = action.sql;
             return {
                 ...state,
                 questions,
@@ -59,22 +76,22 @@ const questions = (state = initialState, action) => {
 
         case types.CREATE_NEW_TAB: {
             const questions = [...state.questions];
-            questions[state.currQuestion].tabs = questions[state.currQuestion].tabs.concat([action.payload]);
-            questions[state.currQuestion].currTab = questions[state.currQuestion].tabs.length - 1;
+            questions[state.currQuestionIndex].tabs = questions[state.currQuestionIndex].tabs.concat([action.payload]);
+            questions[state.currQuestionIndex].currTab = questions[state.currQuestionIndex].tabs.length - 1;
 
             return { ...state, questions };
         }
 
         case types.CHANGE_TAB: {
             const questions = [...state.questions];
-            questions[state.currQuestion].currTab = action.index;
+            questions[state.currQuestionIndex].currTab = action.index;
 
             return { ...state, questions };
         }
 
         case types.CHANGE_TAB_HTML: {
             const questions = [...state.questions];
-            let newTabs = [...questions[state.currQuestion].tabs];
+            let newTabs = [...questions[state.currQuestionIndex].tabs];
             newTabs[action.index].html = action.html;
 
             return { ...state, questions };
@@ -82,7 +99,7 @@ const questions = (state = initialState, action) => {
 
         case types.CHANGE_TAB_RESPONSE: {
             const questions = [...state.questions];
-            questions[state.currQuestion].tabs[action.index].response = action.response;
+            questions[action.question].tabs[action.tab].response = action.response;
 
             return { ...state, questions };
         }
@@ -90,8 +107,8 @@ const questions = (state = initialState, action) => {
         case types.DELETE_TAB: {
             const questions = [...state.questions];
 
-            let newCurrTab = questions[state.currQuestion].currTab;
-            let newTabs = [...questions[state.currQuestion].tabs];
+            let newCurrTab = questions[state.currQuestionIndex].currTab;
+            let newTabs = [...questions[state.currQuestionIndex].tabs];
 
             newTabs.splice(newCurrTab, 1);
 
@@ -100,8 +117,8 @@ const questions = (state = initialState, action) => {
             if (newTabs.length === 0) {
                 newTabs = [{ html: '', title: 'Tab', response: undefined }];
             }
-            questions[state.currQuestion].tabs = newTabs;
-            questions[state.currQuestion].currTab = newCurrTab;
+            questions[state.currQuestionIndex].tabs = newTabs;
+            questions[state.currQuestionIndex].currTab = newCurrTab;
 
             return { ...state, questions };
         }

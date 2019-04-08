@@ -1,26 +1,18 @@
 import { connect } from 'react-redux';
-import * as questions from '../../../../store/actions/questionActions';
-import * as database from '../../../../store/actions/databaseActions';
-import * as tabs from '../../../../store/actions/tabsActions';
+import { loadQuestionsFromAPI } from '../../../../store/actions/questionActions';
 
 import Training from '../index';
 
 const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
     return {
         questions: questions.questions,
-        isQuestionsLoading: questions.isQuestionsLoading,
-        currQuestion: questions.currQuestion,
-        database: database.database,
-        isDatabaseLoading: database.isDatabaseLoading,
-        tooltip: ownProps.tooltip,
+        currQuestionIndex: questions.currQuestionIndex,
     };
 };
 
-const mapDispatchToProps = {
-    ...questions,
-    ...database,
-    ...tabs,
-};
+const mapDispatchToProps = dispatch => ({
+    loadQuestionsFromAPI: () => dispatch(loadQuestionsFromAPI()),
+});
 
 const TrainingContainer = connect(
     mapStateToProps,

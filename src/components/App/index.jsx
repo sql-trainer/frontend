@@ -4,6 +4,7 @@ import ReactTooltip from 'react-tooltip';
 
 import NotFound from '../pages/NotFound';
 import { Home, LogoPresentation, TrainingContainer } from '../pages/';
+import { NotificationsContainer as Notifications } from '../common/Notifications/containers';
 
 import '../../styles/vars.scss';
 import './index.scss';
@@ -21,6 +22,7 @@ const App = () => {
                 <Route component={NotFound} />
             </Switch>
             <ReactTooltip type="info" effect="solid" delayShow={500} />
+            <Notifications />
         </div>
     );
 };
