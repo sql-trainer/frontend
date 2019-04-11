@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { loadQuestionsFromAPI } from '../../../../store/actions/questionActions';
+import { loadQuestionsFromAPI, nextQuestion } from '../../../../store/actions/questionActions';
 
 import Training from '../index';
 
@@ -12,6 +12,7 @@ const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
 
 const mapDispatchToProps = dispatch => ({
     loadQuestionsFromAPI: () => dispatch(loadQuestionsFromAPI()),
+    nextQuestion: () => dispatch(nextQuestion()),
 });
 
 const TrainingContainer = connect(

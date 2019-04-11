@@ -12,10 +12,13 @@ const questions = (state = initialState, action) => {
     switch (action.type) {
         case types.QUESTIONS_LOADED: {
             const questions = action.payload.map(q => {
-                if (!q.tabs) q.tabs = [{ html: '', title: 'Tab', loading: false }];
-                if (!q.currTab) q.currTab = 0;
+                if (!q.tabs) {
+                    q.tabs = [{ html: '', title: 'Tab', loading: false }];
+                    q.currTabIndex = 0;
+                }
                 return q;
             });
+
             return {
                 ...state,
                 questions,
@@ -68,23 +71,21 @@ const questions = (state = initialState, action) => {
         case types.CHANGE_SOLVED_QUESTION_SQL: {
             const questions = [...state.questions];
             questions[state.currQuestionIndex].sql = action.sql;
-            return {
-                ...state,
-                questions,
-            };
+
+            return { ...state, questions };
         }
 
         case types.CREATE_NEW_TAB: {
             const questions = [...state.questions];
             questions[state.currQuestionIndex].tabs = questions[state.currQuestionIndex].tabs.concat([action.payload]);
-            questions[state.currQuestionIndex].currTab = questions[state.currQuestionIndex].tabs.length - 1;
+            questions[state.currQuestionIndex].currTabIndex = questions[state.currQuestionIndex].tabs.length - 1;
 
             return { ...state, questions };
         }
 
         case types.CHANGE_TAB: {
             const questions = [...state.questions];
-            questions[state.currQuestionIndex].currTab = action.index;
+            questions[state.currQuestionIndex].currTabIndex = action.index;
 
             return { ...state, questions };
         }
@@ -107,7 +108,7 @@ const questions = (state = initialState, action) => {
         case types.DELETE_TAB: {
             const questions = [...state.questions];
 
-            let newCurrTab = questions[state.currQuestionIndex].currTab;
+            let newCurrTab = questions[state.currQuestionIndex].currTabIndex;
             let newTabs = [...questions[state.currQuestionIndex].tabs];
 
             newTabs.splice(newCurrTab, 1);
@@ -117,8 +118,9 @@ const questions = (state = initialState, action) => {
             if (newTabs.length === 0) {
                 newTabs = [{ html: '', title: 'Tab', response: undefined }];
             }
+
             questions[state.currQuestionIndex].tabs = newTabs;
-            questions[state.currQuestionIndex].currTab = newCurrTab;
+            questions[state.currQuestionIndex].currTabIndex = newCurrTab;
 
             return { ...state, questions };
         }

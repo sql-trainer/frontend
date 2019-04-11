@@ -29,11 +29,11 @@ class Training extends Component {
     }
 
     get currTab() {
-        return this.tabs[this.currTabIndex] || this.tabs[0];
+        return this.tabs[this.currTabIndex || 0];
     }
 
     get currTabIndex() {
-        return this.currQuestion.currTab || 0;
+        return this.currQuestion.currTabIndex || 0;
     }
 
     get currQuestion() {

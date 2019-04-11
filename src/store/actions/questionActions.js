@@ -6,7 +6,44 @@ import store from '../../modules/store';
 
 const setQuestions = payload => ({ type: types.QUESTIONS_LOADED, payload });
 
-const changeCurrQuestion = id => ({ type: types.CHANGE_QUESTION, id });
+const loadDatabaseOnChange = index => {
+    return function(dispatch, getState) {
+        const state = getState();
+        if (!state.database.database || state.questions.questions[index].database !== state.database.database.id) {
+            dispatch(loadDatabaseFromAPI(state.questions.questions[index].database));
+        }
+        dispatch(changeCurrQuestion(index));
+    };
+};
+
+const nextQuestion = () => {
+    return function(dispatch, getState) {
+        const state = getState();
+        const newQuestion =
+            state.questions.currQuestionIndex + 1 > state.questions.questions.length - 1
+                ? 0
+                : state.questions.currQuestionIndex + 1;
+
+        dispatch(loadDatabaseOnChange(newQuestion));
+    };
+};
+
+const prevQuestion = () => {
+    return function(dispatch, getState) {
+        const state = getState();
+        const newQuestion =
+            state.questions.currQuestionIndex - 1 < 0
+                ? state.questions.questions.length - 1
+                : state.questions.currQuestionIndex - 1;
+
+        dispatch(loadDatabaseOnChange(newQuestion));
+    };
+};
+
+const changeCurrQuestion = id => {
+    store.set('lastQuestion', id);
+    return { type: types.CHANGE_QUESTION, id };
+};
 
 const changeQuestionStatus = status => ({ type: types.CHANGE_QUESTION_STATUS, status });
 
@@ -67,4 +104,12 @@ const loadQuestionsFromAPI = () => {
     };
 };
 
-export { loadQuestionsFromAPI, changeCurrQuestion, changeQuestionStatus, changeSolvedQuestionSQL, isChecking };
+export {
+    loadQuestionsFromAPI,
+    changeCurrQuestion,
+    changeQuestionStatus,
+    changeSolvedQuestionSQL,
+    isChecking,
+    nextQuestion,
+    prevQuestion,
+};

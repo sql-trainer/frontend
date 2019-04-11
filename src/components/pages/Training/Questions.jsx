@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import store from '../../../modules/store';
 
 class Questions extends Component {
     state = {
@@ -8,40 +7,21 @@ class Questions extends Component {
     };
 
     handleQuestionChange(index) {
-        this.setCurrQuestion(index);
+        this.props.changeCurrQuestion(index);
         this.setState({ isAllQOpen: false });
     }
 
-    nextQuestion = () => {
+    get currQuestion() {
         const { questions, currQuestionIndex } = this.props;
-        const newQuestion = currQuestionIndex + 1 > questions.length - 1 ? 0 : currQuestionIndex + 1;
-
-        this.setCurrQuestion(newQuestion);
-    };
-
-    prevQuestion = () => {
-        const { questions, currQuestionIndex } = this.props;
-        const newQuestion = currQuestionIndex - 1 < 0 ? questions.length - 1 : currQuestionIndex - 1;
-
-        this.setCurrQuestion(newQuestion);
-    };
-
-    setCurrQuestion = index => {
-        const { questions, loadDatabaseFromAPI, database, changeCurrQuestion } = this.props;
-        store.set('lastQuestion', index);
-
-        if (!database || questions[index].database !== database.id) {
-            loadDatabaseFromAPI(questions[index].database);
-        }
-
-        changeCurrQuestion(index);
-    };
+        return questions.length ? questions[currQuestionIndex] : {};
+    }
 
     render() {
-        const { questions, currQuestion, currQuestionIndex, isQuestionsLoading } = this.props;
+        const { questions, currQuestionIndex, isQuestionsLoading, nextQuestion, prevQuestion } = this.props;
         const { isAllQOpen } = this.state;
 
         const questionsLength = questions.length;
+        const currQuestion = this.currQuestion;
 
         return (
             <>
@@ -65,14 +45,14 @@ class Questions extends Component {
                                     className="question__nav"
                                     icon="angle-left"
                                     data-tip="Предыдущий вопрос"
-                                    onClick={this.prevQuestion}
+                                    onClick={prevQuestion}
                                 />
                                 <FontAwesomeIcon
                                     className="question__nav"
                                     icon="angle-left"
                                     rotation={180}
                                     data-tip="Следующий вопрос"
-                                    onClick={this.nextQuestion}
+                                    onClick={nextQuestion}
                                 />
                             </>
                         ) : null}
