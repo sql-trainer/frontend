@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { changeTableActivity } from '../../../../store/actions/databaseActions';
-import { isChecking, changeQuestionStatus, changeSolvedQuestionSQL } from '../../../../store/actions/questionActions';
-import { changeTabResponse } from '../../../../store/actions/tabsActions';
+import { changeQuestionStatus, changeSolvedQuestionSQL } from '../../../../store/actions/questionActions';
+import { changeTabResponse, isChecking } from '../../../../store/actions/tabsActions';
 import { changePopupVisibility, changeTestStatus } from '../../../../store/actions/testActions';
 import { addNotification } from '../../../../store/actions/notificationActions';
 
@@ -21,19 +21,18 @@ class CheckButtonC extends Component {
             changeQuestionStatus,
             changeSolvedQuestionSQL,
             changePopupVisibility,
-            currQuestionIndex,
             currTabIndex,
             questions,
             isChecking,
             addNotification,
             isTestCompleted,
+            currTab,
+            currQuestion,
         } = this.props;
 
-        const currQuestion = questions[currQuestionIndex];
+        const sql = currTab.html;
 
-        const sql = currQuestion.tabs[currTabIndex].html;
-
-        isChecking({ question: currQuestionIndex, tab: currTabIndex, checking: true });
+        isChecking(currQuestion.id, currTabIndex, true);
         setTimeout(() => {
             fetch(`http://localhost:8080/api/v1/tests/open/questions/${currQuestion.id}/check`, {
                 method: 'post',
@@ -53,18 +52,14 @@ class CheckButtonC extends Component {
                             changeSolvedQuestionSQL(sql);
                         }
 
-                        changeTabResponse({
-                            question: currQuestionIndex,
-                            tab: currTabIndex,
-                            response: { fields: res.fields, rows: res.rows },
-                        });
+                        changeTabResponse(currQuestion.id, currTabIndex, { fields: res.fields, rows: res.rows });
 
                         if (!isTestCompleted && this.checkTestResult()) changePopupVisibility();
                     }
                 })
                 .catch(err => addNotification('Ошибка сервера', 'error'))
                 .finally(() => {
-                    isChecking({ question: currQuestionIndex, tab: currTabIndex, checking: false });
+                    isChecking(currQuestion.id, currTabIndex, false);
                     setTimeout(() => this.setState({ checkResponseType: '' }), 2000);
                     store.set('questions', questions);
                 });
@@ -83,21 +78,22 @@ class CheckButtonC extends Component {
     }
 }
 
-const mapStateToProps = ({ questions, test }) => {
+const mapStateToProps = ({ questions, test, tabs }) => {
     return {
         questions: questions.questions,
         currQuestionIndex: questions.currQuestionIndex,
         isCompletedPopupVisible: test.isCompletedPopupVisible,
         isTestCompleted: test.isTestCompleted,
+        tabs: tabs.tabs,
     };
 };
 
 const mapDispatchToProps = dispatch => ({
     changeTableActivity: index => dispatch(changeTableActivity(index)),
-    isChecking: index => dispatch(isChecking(index)),
+    isChecking: (qid, tid, checking) => dispatch(isChecking(qid, tid, checking)),
     changeQuestionStatus: index => dispatch(changeQuestionStatus(index)),
     changeSolvedQuestionSQL: index => dispatch(changeSolvedQuestionSQL(index)),
-    changeTabResponse: index => dispatch(changeTabResponse(index)),
+    changeTabResponse: (qid, tid, response) => dispatch(changeTabResponse(qid, tid, response)),
     changePopupVisibility: index => dispatch(changePopupVisibility(index)),
     changeTestStatus: index => dispatch(changeTestStatus(index)),
     addNotification: (message, level) => dispatch(addNotification(message, level)),

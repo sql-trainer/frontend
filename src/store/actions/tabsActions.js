@@ -1,6 +1,6 @@
 import * as types from '../../constants';
 
-const createNewTab = () => {
+const createNewTab = id => {
     return {
         type: types.CREATE_NEW_TAB,
         payload: {
@@ -8,39 +8,62 @@ const createNewTab = () => {
             title: 'Tab',
             response: undefined,
         },
+        id,
     };
 };
 
-const changeTab = index => {
+const changeTab = (index, id) => {
     return {
         type: types.CHANGE_TAB,
         index,
+        id,
     };
 };
 
-const deleteTab = () => {
+const createInitialTabs = (questions, initialTabs = {}) => {
+    return {
+        type: types.CREATE_INITIAL_TABS,
+        questions,
+        initialTabs,
+    };
+};
+
+const deleteTab = qid => {
     return {
         type: types.DELETE_TAB,
+        qid,
     };
 };
 
-const changeTabResponse = ({ question, tab, response }) => {
+const changeTabResponse = (qid, tid, response) => {
     return {
         type: types.CHANGE_TAB_RESPONSE,
-        question,
-        tab,
+        qid,
+        tid,
         response,
     };
 };
 
-const changeTabHtml = (index, html) => {
+const changeTabHtml = (index, html, id) => {
     return {
         type: types.CHANGE_TAB_HTML,
         html,
         index,
+        id,
     };
 };
 
+const isChecking = (qid, tid, checking) => ({ type: types.SQL_CHECKING, qid, tid, checking });
+
 const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
 
-export { createNewTab, changeTab, deleteTab, changeTabResponse, changeTabHtml, pinInputArea };
+export {
+    createNewTab,
+    changeTab,
+    deleteTab,
+    changeTabResponse,
+    changeTabHtml,
+    pinInputArea,
+    createInitialTabs,
+    isChecking,
+};

@@ -6,16 +6,18 @@ import Tabs from '../Tabs';
 const mapStateToProps = (state, ownProps) => {
     return {
         questions: state.questions.questions,
+        currQuestionIndex: state.questions.currQuestionIndex,
         isInputAreaPinned: state.questions.isInputAreaPinned,
+        allTabs: state.tabs.tabs,
         ...ownProps,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        createNewTab: () => dispatch(createNewTab()),
-        changeTab: index => dispatch(changeTab(index)),
-        deleteTab: () => dispatch(deleteTab()),
+        createNewTab: id => dispatch(createNewTab(id)),
+        changeTab: (index, id) => dispatch(changeTab(index, id)),
+        deleteTab: qid => dispatch(deleteTab(qid)),
         pinInputArea: () => dispatch(pinInputArea()),
     };
 };

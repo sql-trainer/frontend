@@ -10,7 +10,7 @@ class CompletedPopup extends Component {
 
         e.preventDefault();
 
-        store.removeItems(['questions', 'testTimestamp', 'lastQuestion']);
+        store.removeItems(['questions', 'testTimestamp', 'lastQuestion', 'tabs']);
         loadQuestionsFromAPI(addNotification, store);
         this.closeCompletedPopup();
     };

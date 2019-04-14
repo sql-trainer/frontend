@@ -17,7 +17,7 @@ class Questions extends Component {
     }
 
     render() {
-        const { questions, currQuestionIndex, isQuestionsLoading, nextQuestion, prevQuestion } = this.props;
+        const { questions, currQuestionIndex, nextQuestion, prevQuestion } = this.props;
         const { isAllQOpen } = this.state;
 
         const questionsLength = questions.length;
@@ -25,7 +25,7 @@ class Questions extends Component {
 
         return (
             <>
-                <div className="questionbox" data-loading={isQuestionsLoading}>
+                <div className="questionbox">
                     <div className="title">
                         <div
                             className="menu-icon"

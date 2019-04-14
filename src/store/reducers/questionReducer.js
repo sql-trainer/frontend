@@ -8,126 +8,69 @@ const initialState = {
     isInputAreaPinned: false,
 };
 
+const map = (obj, type) => (obj[type] ? obj[type]() : undefined);
+
 const questions = (state = initialState, action) => {
-    switch (action.type) {
-        case types.QUESTIONS_LOADED: {
-            const questions = action.payload.map(q => {
-                if (!q.tabs) {
-                    q.tabs = [{ html: '', title: 'Tab', loading: false }];
-                    q.currTabIndex = 0;
-                }
-                return q;
-            });
-
-            return {
-                ...state,
-                questions,
-            };
-        }
-
-        case types.PIN_INPUT_AREA:
-            return {
-                ...state,
-                isInputAreaPinned: !state.isInputAreaPinned,
-            };
-
-        case types.SQL_CHECKING: {
-            const questions = [...state.questions];
-            questions[action.question].tabs[action.tab].loading = action.checking;
-
-            return {
-                ...state,
-                questions,
-            };
-        }
-
-        case types.QUESTIONS_LOADING:
-            return {
-                ...state,
-                isQuestionsLoading: action.payload,
-            };
-
-        case types.TEST_META_LOADED:
-            return {
-                ...state,
-                testMeta: action.meta,
-            };
-
-        case types.CHANGE_QUESTION:
-            return {
-                ...state,
-                currQuestionIndex: action.id,
-            };
-
-        case types.CHANGE_QUESTION_STATUS: {
-            const questions = [...state.questions];
-            questions[state.currQuestionIndex].status = action.status;
-            return {
-                ...state,
-                questions,
-            };
-        }
-
-        case types.CHANGE_SOLVED_QUESTION_SQL: {
+    const obj = {
+        [types.QUESTIONS_LOADED]: () => ({ ...state, questions: action.payload }),
+        [types.PIN_INPUT_AREA]: () => ({ ...state, isInputAreaPinned: !state.isInputAreaPinned }),
+        [types.QUESTIONS_LOADING]: () => ({ ...state, isQuestionsLoading: action.payload }),
+        [types.TEST_META_LOADED]: () => ({ ...state, testMeta: action.meta }),
+        [types.CHANGE_QUESTION]: () => ({ ...state, currQuestionIndex: action.id }),
+        [types.CHANGE_SOLVED_QUESTION_SQL]: () => {
             const questions = [...state.questions];
             questions[state.currQuestionIndex].sql = action.sql;
-
             return { ...state, questions };
-        }
-
-        case types.CREATE_NEW_TAB: {
+        },
+        [types.CHANGE_QUESTION_STATUS]: () => {
             const questions = [...state.questions];
-            questions[state.currQuestionIndex].tabs = questions[state.currQuestionIndex].tabs.concat([action.payload]);
-            questions[state.currQuestionIndex].currTabIndex = questions[state.currQuestionIndex].tabs.length - 1;
-
+            questions[state.currQuestionIndex].status = action.status;
             return { ...state, questions };
-        }
+        },
+    };
 
-        case types.CHANGE_TAB: {
-            const questions = [...state.questions];
-            questions[state.currQuestionIndex].currTabIndex = action.index;
+    return map(obj, action.type) || { ...state };
 
-            return { ...state, questions };
-        }
+    // switch (action.type) {
+    //     case types.QUESTIONS_LOADED: {
+    //         return { ...state, questions: action.payload };
+    //     }
 
-        case types.CHANGE_TAB_HTML: {
-            const questions = [...state.questions];
-            let newTabs = [...questions[state.currQuestionIndex].tabs];
-            newTabs[action.index].html = action.html;
+    //     case types.PIN_INPUT_AREA:
+    //         return { ...state, isInputAreaPinned: !state.isInputAreaPinned };
 
-            return { ...state, questions };
-        }
+    //     case types.SQL_CHECKING: {
+    //         const questions = [...state.questions];
+    //         questions[action.question].tabs[action.tab].loading = action.checking;
 
-        case types.CHANGE_TAB_RESPONSE: {
-            const questions = [...state.questions];
-            questions[action.question].tabs[action.tab].response = action.response;
+    //         return { ...state, questions };
+    //     }
 
-            return { ...state, questions };
-        }
+    //     case types.QUESTIONS_LOADING:
+    //         return { ...state, isQuestionsLoading: action.payload };
 
-        case types.DELETE_TAB: {
-            const questions = [...state.questions];
+    //     case types.TEST_META_LOADED:
+    //         return { ...state, testMeta: action.meta };
 
-            let newCurrTab = questions[state.currQuestionIndex].currTabIndex;
-            let newTabs = [...questions[state.currQuestionIndex].tabs];
+    //     case types.CHANGE_QUESTION:
+    //         return { ...state, currQuestionIndex: action.id };
 
-            newTabs.splice(newCurrTab, 1);
+    //     case types.CHANGE_QUESTION_STATUS: {
+    //         const questions = [...state.questions];
+    //         questions[state.currQuestionIndex].status = action.status;
+    //         return { ...state, questions };
+    //     }
 
-            if (newCurrTab > 0) newCurrTab -= 1;
+    //     case types.CHANGE_SOLVED_QUESTION_SQL: {
+    //         const questions = [...state.questions];
+    //         questions[state.currQuestionIndex].sql = action.sql;
 
-            if (newTabs.length === 0) {
-                newTabs = [{ html: '', title: 'Tab', response: undefined }];
-            }
+    //         return { ...state, questions };
+    //     }
 
-            questions[state.currQuestionIndex].tabs = newTabs;
-            questions[state.currQuestionIndex].currTabIndex = newCurrTab;
-
-            return { ...state, questions };
-        }
-
-        default:
-            return state;
-    }
+    //     default:
+    //         return state;
+    // }
 };
 
 export default questions;

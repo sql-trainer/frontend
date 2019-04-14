@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classNames from 'classnames';
+import posed, { PoseGroup } from 'react-pose';
 
 import { Header } from '../../common';
 import Table from './Table';
@@ -14,6 +15,11 @@ import { SQLEditorContainer as SQLEditor } from './containers/SQLEditor';
 import './styles/index.scss';
 import './styles/media.scss';
 
+const Loader = posed.div({
+    enter: { opacity: 1 },
+    exit: { opacity: 0 },
+});
+
 class Training extends Component {
     componentDidMount() {
         const { questions, loadQuestionsFromAPI } = this.props;
@@ -25,15 +31,17 @@ class Training extends Component {
     }
 
     get tabs() {
-        return this.currQuestion.tabs || [{ html: '', title: 'Tab' }];
+        return (
+            (this.props.tabs[this.currQuestion.id] || {})['tabs'] || [{ html: '', title: 'Tab', response: undefined }]
+        );
     }
 
     get currTab() {
-        return this.tabs[this.currTabIndex || 0];
+        return this.tabs[this.currTabIndex];
     }
 
     get currTabIndex() {
-        return this.currQuestion.currTabIndex || 0;
+        return (this.props.tabs[this.currQuestion.id] || {}).currTabIndex || 0;
     }
 
     get currQuestion() {
@@ -42,7 +50,7 @@ class Training extends Component {
     }
 
     render() {
-        const { isInputAreaPinned } = this.props;
+        const { isInputAreaPinned, isTestLoaderVisible } = this.props;
 
         const tabs = this.tabs;
         const currTab = this.currTab;
@@ -50,7 +58,7 @@ class Training extends Component {
         const currTabIndex = this.currTabIndex;
 
         return (
-            <>
+            <div>
                 <Header style={{ minWidth: 900 }} />
                 <section className="training">
                     <PerfectScrollbar className="task-info">
@@ -83,7 +91,20 @@ class Training extends Component {
                 </section>
 
                 <CompletedPopup />
-            </>
+
+                <PoseGroup>
+                    {isTestLoaderVisible && (
+                        <Loader className="loader" key="loader">
+                            <div className="logo">
+                                <div className="logo__quarter" />
+                                <div className="logo__quarter" />
+                                <div className="logo__quarter" />
+                                <div className="logo__quarter" />
+                            </div>
+                        </Loader>
+                    )}
+                </PoseGroup>
+            </div>
         );
     }
 }

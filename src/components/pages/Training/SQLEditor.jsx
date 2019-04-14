@@ -13,8 +13,8 @@ class SQLEditor extends Component {
     };
 
     handleContentEditable = value => {
-        const { changeTabHtml, currTabIndex } = this.props;
-        changeTabHtml(currTabIndex, value);
+        const { changeTabHtml, currTabIndex, questions, currQuestionIndex } = this.props;
+        changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
     };
 
     highlightSQL = sql => {
@@ -23,14 +23,14 @@ class SQLEditor extends Component {
     };
 
     saveOnEdit = () => {
-        const { questions } = this.props;
+        const { tabs } = this.props;
         const { saveTimeoutID } = this.state;
 
         if (saveTimeoutID !== undefined) {
             clearTimeout(saveTimeoutID);
         }
 
-        const timeoutID = setTimeout(() => store.set('questions', questions), 1000);
+        const timeoutID = setTimeout(() => store.set('tabs', tabs), 1000);
 
         this.setState({ saveTimeoutID: timeoutID });
     };

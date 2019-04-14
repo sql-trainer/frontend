@@ -3,10 +3,12 @@ import { loadQuestionsFromAPI, nextQuestion } from '../../../../store/actions/qu
 
 import Training from '../index';
 
-const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
+const mapStateToProps = ({ questions, tabs, test }, ownProps) => {
     return {
         questions: questions.questions,
         currQuestionIndex: questions.currQuestionIndex,
+        tabs: tabs.tabs,
+        isTestLoaderVisible: test.isTestLoaderVisible,
     };
 };
 

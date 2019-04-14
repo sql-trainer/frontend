@@ -1,5 +1,6 @@
 import * as types from '../../constants';
 import { addNotification } from './notificationActions';
+import { changeLoaderVisibility } from './testActions';
 
 const setDatabase = payload => ({ type: types.DATABASE_LOADED, payload });
 
@@ -21,7 +22,7 @@ const loadDatabaseFromAPI = dbID => {
                 ),
             )
             .catch(err => dispatch(addNotification({ message: 'Ошибка при загрузке базы данных', level: 'error' })))
-            .finally(() => dispatch(isLoading(false)));
+            .finally(() => dispatch(isLoading(false)), dispatch(changeLoaderVisibility(false)));
     };
 };
 

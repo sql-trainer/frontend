@@ -7,6 +7,13 @@ const changePopupVisibility = visible => {
     };
 };
 
+const changeLoaderVisibility = visible => {
+    return {
+        type: types.CHANGE_LOADER_VISIBILITY,
+        visible,
+    };
+};
+
 const changeTestStatus = status => {
     return {
         type: types.CHANGE_TEST_STATUS,
@@ -14,4 +21,4 @@ const changeTestStatus = status => {
     };
 };
 
-export { changePopupVisibility, changeTestStatus };
+export { changePopupVisibility, changeTestStatus, changeLoaderVisibility };

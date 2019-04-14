@@ -1,6 +1,8 @@
 import * as types from '../../constants';
 import { loadDatabaseFromAPI, isLoading as isDatabaseLoading } from './databaseActions';
 import { addNotification } from './notificationActions';
+import { createInitialTabs } from './tabsActions';
+import { changeLoaderVisibility } from './testActions';
 import retryFetch from '../../modules/retry-fetch';
 import store from '../../modules/store';
 
@@ -51,55 +53,65 @@ const changeSolvedQuestionSQL = sql => ({ type: types.CHANGE_SOLVED_QUESTION_SQL
 
 const isLoading = payload => ({ type: types.QUESTIONS_LOADING, payload });
 
-const isChecking = ({ question, tab, checking }) => ({ type: types.SQL_CHECKING, question, tab, checking });
-
 const loadQuestionsFromAPI = () => {
-    return async function(dispatch) {
+    return async function(dispatch, getState) {
         dispatch(isLoading(true));
         dispatch(isDatabaseLoading(true));
 
-        retryFetch(
-            async () => {
-                const { questions, lastQuestion, testTimestamp } = store.getItems([
-                    'questions',
-                    'lastQuestion',
-                    'testTimestamp',
-                ]);
+        setTimeout(
+            () =>
+                retryFetch(
+                    async () => {
+                        const { questions, lastQuestion, testTimestamp, tabs } = store.getItems([
+                            'questions',
+                            'lastQuestion',
+                            'testTimestamp',
+                            'tabs',
+                        ]);
 
-                const testMeta = await fetch('http://localhost:8080/api/v1/tests/open/meta/').then(res => res.json());
+                        const testMeta = await fetch('http://localhost:8080/api/v1/tests/open/meta/').then(res =>
+                            res.json(),
+                        );
 
-                if (questions && testTimestamp === testMeta.date_changed) {
-                    const dbId = questions[lastQuestion || 0].database;
-                    dispatch(setQuestions(questions));
-                    dispatch(changeCurrQuestion(Number(lastQuestion)));
-                    dispatch(isLoading(false));
-                    dispatch(loadDatabaseFromAPI(dbId));
+                        if (questions && tabs && testTimestamp === testMeta.date_changed) {
+                            const dbId = questions[lastQuestion || 0].database;
+                            dispatch(loadDatabaseFromAPI(dbId));
 
-                    dispatch(addNotification('Последнее состояние восстановлено', 'info'));
-                } else {
-                    const res = await fetch('http://localhost:8080/api/v1/tests/open/').then(res => res.json());
+                            dispatch(setQuestions(questions));
+                            dispatch(createInitialTabs(questions, tabs));
+                            dispatch(changeCurrQuestion(Number(lastQuestion)));
+                            dispatch(isLoading(false));
 
-                    if (res.error) {
-                        dispatch(addNotification(res.error.message, 'error'));
-                    } else {
-                        const dbId = res.questions[0].database;
-                        dispatch(setQuestions(res.questions));
+                            dispatch(addNotification('Последнее состояние восстановлено', 'info'));
+                        } else {
+                            const res = await fetch('http://localhost:8080/api/v1/tests/open/').then(res => res.json());
+
+                            if (res.error) {
+                                dispatch(addNotification(res.error.message, 'error'));
+                            } else {
+                                const dbId = res.questions[0].database;
+                                dispatch(loadDatabaseFromAPI(dbId));
+
+                                dispatch(setQuestions(res.questions));
+                                dispatch(createInitialTabs(res.questions));
+                                dispatch(isLoading(false));
+
+                                store.setItems({
+                                    questions: res.questions,
+                                    testTimestamp: testMeta.date_changed,
+                                    lastQuestion: 0,
+                                    tabs: getState().tabs.tabs,
+                                });
+                            }
+                        }
+                    },
+                    () => {
+                        dispatch(addNotification('Ошибка при загрузке вопросов', 'error'));
                         dispatch(isLoading(false));
-                        dispatch(loadDatabaseFromAPI(dbId));
-
-                        store.setItems({
-                            questions: res.questions,
-                            testTimestamp: testMeta.date_changed,
-                            lastQuestion: 0,
-                        });
-                    }
-                }
-            },
-            () => {
-                dispatch(addNotification('Ошибка при загрузке вопросов', 'error'));
-                dispatch(isLoading(false));
-                dispatch(isDatabaseLoading(false));
-            },
+                        dispatch(isDatabaseLoading(false));
+                    },
+                ),
+            1000,
         );
     };
 };
@@ -109,7 +121,6 @@ export {
     changeCurrQuestion,
     changeQuestionStatus,
     changeSolvedQuestionSQL,
-    isChecking,
     nextQuestion,
     prevQuestion,
 };

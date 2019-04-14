@@ -6,13 +6,15 @@ import SQLEditor from '../SQLEditor';
 const mapStateToProps = (state, ownProps) => {
     return {
         questions: state.questions.questions,
+        tabs: state.tabs.tabs,
+        currQuestionIndex: state.questions.currQuestionIndex,
         ...ownProps,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeTabHtml: (index, html) => dispatch(changeTabHtml(index, html)),
+        changeTabHtml: (index, html, id) => dispatch(changeTabHtml(index, html, id)),
     };
 };
 

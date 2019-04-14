@@ -3,6 +3,7 @@ import * as types from '../../constants';
 const initialState = {
     isCompletedPopupVisible: false,
     isTestCompleted: false,
+    isTestLoaderVisible: true,
 };
 
 const tabs = (state = initialState, action) => {
@@ -11,6 +12,12 @@ const tabs = (state = initialState, action) => {
             return {
                 ...state,
                 isCompletedPopupVisible: action.visible,
+            };
+
+        case types.CHANGE_LOADER_VISIBILITY:
+            return {
+                ...state,
+                isTestLoaderVisible: action.visible,
             };
 
         case types.CHANGE_TEST_STATUS:

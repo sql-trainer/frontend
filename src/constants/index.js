@@ -18,6 +18,7 @@ export const CHANGE_TABLE_ACTIVITY = 'CHANGE_TABLE_ACTIVITY';
 // tabs contants
 export const PIN_INPUT_AREA = 'PIN_INPUT_AREA';
 export const CREATE_NEW_TAB = 'CREATE_NEW_TAB';
+export const CREATE_INITIAL_TABS = 'CREATE_INITIAL_TABS';
 export const CHANGE_TAB = 'CHANGE_TAB';
 export const DELETE_TAB = 'DELETE_TAB';
 export const DELETE_ALL_TABS = 'DELETE_ALL_TABS';
@@ -26,6 +27,7 @@ export const CHANGE_TAB_HTML = 'CHANGE_TAB_HTML';
 
 // test contants
 export const CHANGE_COMPLETED_POPUP_VISIBILITY = 'CHANGE_COMPLETED_POPUP_VISIBILITY';
+export const CHANGE_LOADER_VISIBILITY = 'CHANGE_LOADER_VISIBILITY';
 export const CHANGE_TEST_STATUS = 'CHANGE_TEST_STATUS';
 
 // notification constants

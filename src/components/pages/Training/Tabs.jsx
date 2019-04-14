@@ -3,19 +3,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import store from '../../../modules/store';
 
 class Tabs extends Component {
-    _deleteTab = e => {
+    _deleteTab = (e, qid) => {
         e.stopPropagation();
-        this.props.deleteTab();
-        store.set('questions', this.props.questions);
+        this.props.deleteTab(qid);
+        store.set('tabs', this.props.allTabs);
     };
 
-    _changeTab(index) {
-        this.props.changeTab(index);
-        store.set('questions', this.props.questions);
+    _changeTab(index, id) {
+        this.props.changeTab(index, id);
+        store.set('tabs', this.props.allTabs);
     }
 
     render() {
-        const { tabs, currTabIndex, isInputAreaPinned, pinInputArea, createNewTab } = this.props;
+        const {
+            tabs,
+            currTabIndex,
+            isInputAreaPinned,
+            pinInputArea,
+            createNewTab,
+            questions,
+            currQuestionIndex,
+        } = this.props;
 
         return (
             <div className="tabs">
@@ -23,18 +31,24 @@ class Tabs extends Component {
                     {tabs.map((tab, index) => (
                         <div
                             className={`tab ${currTabIndex === index ? 'active' : ''}`}
-                            onClick={e => this._changeTab(index)}
+                            onClick={e => this._changeTab(index, questions[currQuestionIndex].id)}
                             key={index}
                         >
                             {tab.title}
-                            <FontAwesomeIcon icon="times" className="tab-close" onClick={this._deleteTab} />
+                            <FontAwesomeIcon
+                                icon="times"
+                                className="tab-close"
+                                onClick={e => this._deleteTab(e, questions[currQuestionIndex].id)}
+                            />
                         </div>
                     ))}
                     <FontAwesomeIcon
                         className="tabs-icon"
                         icon="plus"
                         data-tip="Добавить новую вкладку"
-                        onClick={createNewTab}
+                        onClick={e => {
+                            createNewTab(questions[currQuestionIndex].id);
+                        }}
                     />
                 </div>
                 <FontAwesomeIcon
