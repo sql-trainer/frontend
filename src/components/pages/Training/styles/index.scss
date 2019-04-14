@@ -49,6 +49,9 @@ $solved-icon: $fa-var-check-circle;
     height: 100%;
     z-index: 4;
     pointer-events: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .logo {
         height: 40px;
@@ -57,10 +60,8 @@ $solved-icon: $fa-var-check-circle;
         grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
         grid-gap: 4px;
         align-content: center;
-        position: absolute;
+        position: relative;
         z-index: 5;
-        left: calc(50% - 100px);
-        top: calc(50% - 20px);
 
         .logo__quarter {
             height: inherit;
@@ -68,8 +69,6 @@ $solved-icon: $fa-var-check-circle;
             border-radius: 4px;
             background: #369cc7;
             animation: colors infinite alternate 1s ease-in-out;
-            &:nth-child(1) {
-            }
             &:nth-child(2) {
                 animation-delay: 0.5s;
             }
@@ -80,6 +79,13 @@ $solved-icon: $fa-var-check-circle;
                 animation-delay: 0.8s;
             }
         }
+    }
+
+    .loader-error-message {
+        color: #333;
+        font-size: 25px;
+        position: relative;
+        z-index: 5;
     }
 
     &:before {

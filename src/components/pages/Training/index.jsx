@@ -50,7 +50,7 @@ class Training extends Component {
     }
 
     render() {
-        const { isInputAreaPinned, isTestLoaderVisible } = this.props;
+        const { isInputAreaPinned, isTestLoaderVisible, testLoaderErrorMessage } = this.props;
 
         const tabs = this.tabs;
         const currTab = this.currTab;
@@ -95,12 +95,16 @@ class Training extends Component {
                 <PoseGroup>
                     {isTestLoaderVisible && (
                         <Loader className="loader" key="loader">
-                            <div className="logo">
-                                <div className="logo__quarter" />
-                                <div className="logo__quarter" />
-                                <div className="logo__quarter" />
-                                <div className="logo__quarter" />
-                            </div>
+                            {testLoaderErrorMessage !== '' ? (
+                                <div className="loader-error-message">{testLoaderErrorMessage}</div>
+                            ) : (
+                                <div className="logo">
+                                    <div className="logo__quarter" />
+                                    <div className="logo__quarter" />
+                                    <div className="logo__quarter" />
+                                    <div className="logo__quarter" />
+                                </div>
+                            )}
                         </Loader>
                     )}
                 </PoseGroup>

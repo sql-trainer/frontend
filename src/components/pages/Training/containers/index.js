@@ -9,6 +9,7 @@ const mapStateToProps = ({ questions, tabs, test }, ownProps) => {
         currQuestionIndex: questions.currQuestionIndex,
         tabs: tabs.tabs,
         isTestLoaderVisible: test.isTestLoaderVisible,
+        testLoaderErrorMessage: test.testLoaderErrorMessage,
     };
 };
 

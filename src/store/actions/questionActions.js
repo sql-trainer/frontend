@@ -2,7 +2,7 @@ import * as types from '../../constants';
 import { loadDatabaseFromAPI, isLoading as isDatabaseLoading } from './databaseActions';
 import { addNotification } from './notificationActions';
 import { createInitialTabs } from './tabsActions';
-import { changeLoaderVisibility } from './testActions';
+import { changeLoaderVisibility, changeTestLoaderErrorMessage } from './testActions';
 import retryFetch from '../../modules/retry-fetch';
 import store from '../../modules/store';
 
@@ -57,6 +57,8 @@ const loadQuestionsFromAPI = () => {
     return async function(dispatch, getState) {
         dispatch(isLoading(true));
         dispatch(isDatabaseLoading(true));
+        dispatch(changeLoaderVisibility(true));
+        dispatch(changeTestLoaderErrorMessage(''));
 
         setTimeout(
             () =>
@@ -106,12 +108,15 @@ const loadQuestionsFromAPI = () => {
                         }
                     },
                     () => {
-                        dispatch(addNotification('Ошибка при загрузке вопросов', 'error'));
+                        // dispatch(addNotification('Ошибка при загрузке вопросов', 'error'));
+                        dispatch(
+                            changeTestLoaderErrorMessage('Произошла ошибка при загрузке вопросов, попробуйте позже'),
+                        );
                         dispatch(isLoading(false));
                         dispatch(isDatabaseLoading(false));
                     },
                 ),
-            1000,
+            1500,
         );
     };
 };

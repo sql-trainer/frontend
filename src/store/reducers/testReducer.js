@@ -4,6 +4,7 @@ const initialState = {
     isCompletedPopupVisible: false,
     isTestCompleted: false,
     isTestLoaderVisible: true,
+    testLoaderErrorMessage: '',
 };
 
 const tabs = (state = initialState, action) => {
@@ -24,6 +25,12 @@ const tabs = (state = initialState, action) => {
             return {
                 ...state,
                 isTestCompleted: action.status,
+            };
+
+        case types.LOADER_ERROR:
+            return {
+                ...state,
+                testLoaderErrorMessage: action.message,
             };
 
         default:
