@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import ReactTooltip from 'react-tooltip';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classNames from 'classnames';
 import posed, { PoseGroup } from 'react-pose';
 
-import { Header } from '../../common';
+import { Header } from '../../common/';
+import Logo from '../../common/Logo';
 import Table from './Table';
 import { QuestionsContainer as Questions } from './containers/Questions';
 import { DatabaseContainer as Database } from './containers/Database';
@@ -28,6 +30,7 @@ class Training extends Component {
         if (!questions.length) {
             loadQuestionsFromAPI();
         }
+        ReactTooltip.rebuild();
     }
 
     get tabs() {
@@ -98,12 +101,7 @@ class Training extends Component {
                             {testLoaderErrorMessage !== '' ? (
                                 <div className="loader-error-message">{testLoaderErrorMessage}</div>
                             ) : (
-                                <div className="logo">
-                                    <div className="logo__quarter" />
-                                    <div className="logo__quarter" />
-                                    <div className="logo__quarter" />
-                                    <div className="logo__quarter" />
-                                </div>
+                                <Logo animated />
                             )}
                         </Loader>
                     )}

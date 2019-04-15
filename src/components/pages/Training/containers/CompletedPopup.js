@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
-import { changePopupVisibility } from '../../../../store/actions/testActions';
-import { loadQuestionsFromAPI } from '../../../../store/actions/questionActions';
-import { addNotification } from '../../../../store/actions/notificationActions';
+import { resetTest, changePopupVisibility } from '../../../../store/actions/testActions';
 
 import CompletedPopup from '../CompletedPopup';
 
@@ -13,9 +11,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    changePopupVisibility: () => dispatch(changePopupVisibility()),
-    loadQuestionsFromAPI: () => dispatch(loadQuestionsFromAPI()),
-    addNotification: (message, level) => dispatch(addNotification(message, level)),
+    resetTest: () => dispatch(resetTest()),
+    changePopupVisibility: visible => dispatch(changePopupVisibility(visible)),
 });
 
 export const CompletedPopupContainer = connect(

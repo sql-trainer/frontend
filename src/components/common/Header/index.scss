@@ -1,9 +1,14 @@
+@import '../../../styles/vars.scss';
+@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '@fortawesome/fontawesome-free/scss/regular.scss';
+@import '@fortawesome/fontawesome-free/scss/solid.scss';
+
 .header {
     .content {
         display: flex;
         min-height: 60px;
         margin: 0 auto;
-        padding: 0 30px;
+        padding: 0 20px;
         justify-content: space-between;
         overflow-x: hidden;
         .header__logo {
@@ -14,12 +19,10 @@
             .logo {
                 height: 40px;
                 width: 180px;
-                // background: #8190a5;
                 display: grid;
                 grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
                 grid-gap: 4px;
                 align-content: center;
-                // animation: logoWidthChange 0.1s ease-in-out both;
                 .logo__quarter {
                     height: inherit;
                     height: 20px;
@@ -68,9 +71,16 @@
             .nav-item {
                 white-space: nowrap;
                 &.login-button {
-                    border-left: 1px solid;
-                    padding-left: 20px;
+                    // border-left: 1px solid;
+                    // padding-left: 20px;
                     position: relative;
+                    &:after {
+                        @extend %fa-icon;
+                        @extend .far;
+                        content: fa-content($fa-var-user-circle);
+                        color: #3d3d3d;
+                        font-size: 30px;
+                    }
                 }
 
                 .nav-link-active {
@@ -89,5 +99,75 @@
                 }
             }
         }
+
+        .tools {
+            display: none;
+            // padding: 10px 15px;
+            margin-right: 5px;
+
+            .tool-icon {
+                font-size: 20px;
+                // &:not(:last-child) {
+                margin-right: 10px;
+                // }
+
+                &:after {
+                    @extend %fa-icon;
+                    @extend %icon;
+                    color: #3d3d3d;
+                }
+
+                &.theme-icon {
+                    &:after {
+                        @extend .far;
+                        content: fa-content($fa-var-sun);
+                    }
+
+                    &.night {
+                        &:after {
+                            content: fa-content($fa-var-moon);
+                            font-size: 18px;
+                        }
+                    }
+                }
+
+                &.reset-icon {
+                    &:after {
+                        @extend .fas;
+                        content: fa-content($fa-var-eraser);
+                    }
+                }
+
+                &.questionmark-icon {
+                    &:after {
+                        @extend .far;
+                        content: fa-content($fa-var-question-circle);
+                    }
+                }
+            }
+        }
+    }
+}
+
+%icon {
+    @extend %fa-icon;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.2s ease-in-out;
+    padding: 5px;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+    }
+}
+
+.training-component {
+    .tools {
+        display: flex !important;
+    }
+
+    .header__nav {
+        grid-template-columns: 1fr max-content max-content !important;
     }
 }

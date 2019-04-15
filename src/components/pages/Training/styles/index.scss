@@ -1,11 +1,7 @@
-$icon-color: #8255ca;
-$icon-hover-color: #723dc7;
-$arrow-size: 6px;
-$min-width: 900px;
-
 @import '../../../../styles/vars.scss';
 @import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import '@fortawesome/fontawesome-free/scss/solid.scss';
+@import '@fortawesome/fontawesome-free/scss/regular.scss';
 @import '@fortawesome/fontawesome-free/scss/_animated.scss';
 
 $solved-icon: $fa-var-check-circle;
@@ -53,33 +49,33 @@ $solved-icon: $fa-var-check-circle;
     align-items: center;
     justify-content: center;
 
-    .logo {
-        height: 40px;
-        width: 180px;
-        display: grid;
-        grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
-        grid-gap: 4px;
-        align-content: center;
-        position: relative;
-        z-index: 5;
+    // .logo {
+    //     height: 40px;
+    //     width: 180px;
+    //     display: grid;
+    //     grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
+    //     grid-gap: 4px;
+    //     align-content: center;
+    //     position: relative;
+    //     z-index: 5;
 
-        .logo__quarter {
-            height: inherit;
-            height: 20px;
-            border-radius: 4px;
-            background: #369cc7;
-            animation: colors infinite alternate 1s ease-in-out;
-            &:nth-child(2) {
-                animation-delay: 0.5s;
-            }
-            &:nth-child(3) {
-                animation-delay: 0.3s;
-            }
-            &:nth-child(4) {
-                animation-delay: 0.8s;
-            }
-        }
-    }
+    //     .logo__quarter {
+    //         height: inherit;
+    //         height: 20px;
+    //         border-radius: 4px;
+    //         background: #369cc7;
+    //         animation: colors infinite alternate 1s ease-in-out;
+    //         &:nth-child(2) {
+    //             animation-delay: 0.5s;
+    //         }
+    //         &:nth-child(3) {
+    //             animation-delay: 0.3s;
+    //         }
+    //         &:nth-child(4) {
+    //             animation-delay: 0.8s;
+    //         }
+    //     }
+    // }
 
     .loader-error-message {
         color: #333;
@@ -124,6 +120,43 @@ $solved-icon: $fa-var-check-circle;
                 top: 0;
                 background: white;
             }
+
+            // .tools {
+            //     display: flex;
+            //     padding: 10px 15px;
+
+            //     .tool-icon {
+            //         font-size: 20px;
+            //         margin-right: 15px;
+
+            //         &:after {
+            //             @extend %fa-icon;
+            //             @extend %icon;
+            //             color: $icon-color;
+            //         }
+
+            //         &.theme-icon {
+            //             &:after {
+            //                 @extend .far;
+            //                 content: fa-content($fa-var-sun);
+            //             }
+            //         }
+
+            //         &.reset-icon {
+            //             &:after {
+            //                 @extend .fas;
+            //                 content: fa-content($fa-var-eraser);
+            //             }
+            //         }
+
+            //         &.questionmark-icon {
+            //             &:after {
+            //                 @extend .far;
+            //                 content: fa-content($fa-var-question-circle);
+            //             }
+            //         }
+            //     }
+            // }
         }
 
         &.task-editor {
@@ -267,8 +300,10 @@ $solved-icon: $fa-var-check-circle;
                 align-items: center;
 
                 .db-diagram-icon {
+                    // @extend %icon;
                     width: 15px;
                     color: $icon-color;
+
                     &:hover {
                         color: $icon-hover-color;
                     }
@@ -400,7 +435,7 @@ $solved-icon: $fa-var-check-circle;
                     border-radius: 3px;
                     cursor: pointer;
                     color: $icon-color;
-                    transition: transform 0.15s ease-in-out;
+                    transition: all 0.15s ease-in-out;
                     &.pin {
                         margin-right: 10px;
                         transform: rotateZ(45deg);
@@ -662,7 +697,7 @@ $solved-icon: $fa-var-check-circle;
     flex-direction: column;
     min-width: $min-width;
     padding: 0 40px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 1);
     box-sizing: border-box;
     opacity: 0;
     pointer-events: none;

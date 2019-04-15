@@ -6,7 +6,6 @@ import NotFound from '../pages/NotFound';
 import { Home, TrainingContainer } from '../pages/';
 import { NotificationsContainer as Notifications } from '../common/Notifications/containers';
 
-import '../../styles/vars.scss';
 import './index.scss';
 import '../../styles/scrollbar.css';
 

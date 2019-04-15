@@ -1,4 +1,6 @@
 import * as types from '../../constants';
+import store from '../../modules/store';
+import { loadQuestionsFromAPI } from './questionActions';
 
 const changePopupVisibility = visible => {
     return { type: types.CHANGE_COMPLETED_POPUP_VISIBILITY, visible };
@@ -16,4 +18,12 @@ const changeTestLoaderErrorMessage = message => {
     return { type: types.LOADER_ERROR, message };
 };
 
-export { changePopupVisibility, changeTestStatus, changeLoaderVisibility, changeTestLoaderErrorMessage };
+const resetTest = () => {
+    return async function(dispatch) {
+        store.removeItems(['questions', 'testTimestamp', 'lastQuestion', 'tabs']);
+        dispatch(loadQuestionsFromAPI());
+        dispatch(changePopupVisibility(false));
+    };
+};
+
+export { changePopupVisibility, changeTestStatus, changeLoaderVisibility, changeTestLoaderErrorMessage, resetTest };
