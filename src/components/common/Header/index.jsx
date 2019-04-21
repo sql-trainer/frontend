@@ -22,7 +22,9 @@ const Header = props => (
                         </NavLink>
                     </div>
                     <div className="nav-item">
-                        <a href="/#">Учебник</a>
+                        <NavLink to="/handbook" activeClassName="nav-link-active">
+                            Учебник
+                        </NavLink>
                     </div>
                     <div className="nav-item">
                         <a href="/#">О проекте</a>

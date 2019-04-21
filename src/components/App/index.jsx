@@ -3,7 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import NotFound from '../pages/NotFound';
-import { Home, TrainingContainer } from '../pages/';
+import { Home, TrainingContainer, Handbook } from '../pages/';
 import { NotificationsContainer as Notifications } from '../common/Notifications/containers';
 
 import './index.scss';
@@ -17,6 +17,7 @@ const App = props => {
             <Switch>
                 <Route exact path="/" component={Home} key="home" />
                 <Route path="/training" component={TrainingContainer} key="training" />
+                <Route exact path="/handbook" component={Handbook} key="handbook" />
                 <Route component={NotFound} />
             </Switch>
 
