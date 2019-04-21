@@ -1,11 +1,16 @@
 import Home from './Home';
-import Handbook from './Handbook';
 import Training from './Training';
 import TrainingContainer from './Training/containers/index';
 
+import Handbook from './Handbook';
+import HandbookPage from './HandbookPage';
+import IntroInSQLHandbookPage from './HandbookPage/pages/IntroInSql';
+
 export { 
     Home, 
-    Handbook,
     Training,
-    TrainingContainer 
+    TrainingContainer,
+    Handbook,
+    HandbookPage,
+    IntroInSQLHandbookPage 
 };
