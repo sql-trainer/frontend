@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Header, Footer } from "../../common";
 import HanbookContent from "./Content";
+import HandbookBanner from "./Banner";
 
 import "./index.scss";
-
+import "./media.scss";
 class Handbook extends Component {
   componentDidMount() {
     document.title = "Handbook";
@@ -14,6 +15,7 @@ class Handbook extends Component {
         <div className="handbook">
             <div className="banner">
                 <Header />
+                <HandbookBanner />
             </div>
 
             <div className="page__inner">

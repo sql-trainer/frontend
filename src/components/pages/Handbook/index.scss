@@ -1,0 +1,113 @@
+.handbook {
+
+    .banner {
+        position: relative;
+        height: 580px;
+        padding: 0px 30px;
+        background: #323252;
+    
+        &__inner {
+    
+            .banner__text {
+    
+                .title {
+                    text-align: center;
+                    margin: 120px 0px 25px;
+                    color: #fff;
+    
+                    h1 {
+                        font-size: 2.5em;
+                    }
+                }
+    
+                .subtitle {
+                    text-align: center;
+                    color: #eee;
+                }
+    
+                .content {
+    
+                    .title {
+                        text-align: center;
+                        margin: 140px 0px 25px;
+                        font-size: 1.5em;
+                        color: #eee;
+                        font-weight: 600;
+                    }
+    
+                    .description {
+                        text-align: center;
+                        color: #eee;
+                        line-height: 1.5em;
+                    }
+                }
+            }
+        }
+    
+        &:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            margin-left: -16px;
+            border-bottom: 19px solid #fff;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+        }
+    }
+    
+    .page__inner {
+        width: 920px;
+        padding: 0 20px;
+        margin: 50px auto 100px;
+    
+        .section {
+    
+            .description {
+    
+                p {
+                    max-width: 600px;
+                    font-size: 1.05em;
+                    line-height: 1.4em;
+                }
+            }
+    
+            .list {
+    
+                .list__item {
+    
+                    .title {
+                        position: relative;
+                        font-size: 1.2em;
+                        font-weight: 500;
+                        margin: 35px 5px;
+    
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            left: 0px;
+                            right: 0px;
+                            height: 1px;
+                            background: #eee;
+                            bottom: -15px;
+                        }
+                    }
+    
+                    .list__sub {
+                        column-count: 3;
+    
+                        li {
+                            list-style: none;
+                            padding: 5px 0;
+                            font-size: 1.05em;
+    
+                            a {
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

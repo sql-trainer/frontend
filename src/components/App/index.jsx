@@ -3,7 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import NotFound from '../pages/NotFound';
-import { Home, TrainingContainer, Handbook, HandbookPage, IntroInSQLHandbookPage } from '../pages/';
+import { Home, TrainingContainer, Handbook, HandbookPage } from '../pages/';
 import { NotificationsContainer as Notifications } from '../common/Notifications/containers';
 
 import './index.scss';

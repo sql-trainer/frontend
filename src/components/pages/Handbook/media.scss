@@ -1,0 +1,73 @@
+@media (max-width: 960px) {
+    .handbook {
+
+        .page__inner {
+            width: 680px;
+        }
+    }
+}
+
+@media (max-width: 760px) {
+    .handbook {
+
+        .banner {
+            height: 400px;
+    
+            .banner__inner {
+    
+                .title {
+                    margin: 65px 0px 25px;
+    
+                    h1 {
+                        font-size: 2em;
+                    }
+                }
+    
+                .content {
+                    display: none;
+                }
+            }
+        }
+
+        .page__inner {
+            width: calc(100% - 40px);
+
+            .section {
+
+                .list {
+
+                    .list__item {
+
+                        .list__sub {
+                            column-count: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 420px) {
+    .handbook {
+
+        .banner {
+            height: 270px;
+    
+            .banner__inner {
+    
+                .title {
+                    margin: 35px 0px 20px;
+    
+                    h1 {
+                        font-size: 1.6em;
+                    }
+                }
+    
+                .subtitle {
+                    display: none;
+                }
+            }
+        }
+    }
+}

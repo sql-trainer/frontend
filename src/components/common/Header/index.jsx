@@ -35,7 +35,7 @@ const Header = props => (
                     <div className="tool-icon theme-icon" data-tip="Сменить тему" />
                     <div className="tool-icon questionmark-icon" data-tip="Справка" />
                 </div>
-                <div className="nav-item login-button" />
+                {/* <div className="nav-item login-button" /> */}
             </nav>
         </div>
     </header>
