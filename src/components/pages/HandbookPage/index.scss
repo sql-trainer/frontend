@@ -1,0 +1,24 @@
+.handbook-page {
+
+    .wrapper {
+        display: flex;
+
+        .aside {
+            width: 300px;
+            background: #f2f2f2;
+        }
+
+        .main {
+            margin: 60px auto;
+            padding: 0 40px;
+            max-width: 700px;;
+    
+            .content {
+    
+                p {
+                    line-height: 1.45em;
+                }
+            }
+        }
+    }
+}

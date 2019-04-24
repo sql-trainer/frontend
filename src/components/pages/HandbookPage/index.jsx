@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import { Header, Footer } from "../../common";
 
 import { Route } from 'react-router-dom';
+
+import Menu from './Menu';
+
 import IntroInSQL from './pages/IntroInSql'
+
 import "./index.scss";
 
 class HandbookPage extends Component {
@@ -13,10 +17,15 @@ class HandbookPage extends Component {
   render() {
     return (
         <div className="handbook-page">
-            <Header />
-            <div className="main">
-              <Route path="/handbook/intro-in-sql" component={IntroInSQL} />
-            </div>
+            <Header style={{ borderBottom: "2px solid #47515e" }}/>
+                <div className="wrapper">
+					<aside className="aside">
+              			<Menu />
+					</aside>
+					<main className="main">
+						<Route path="/handbook/intro-in-sql" component={IntroInSQL} />
+					</main>
+				</div>
             <Footer />
       </div>
     );

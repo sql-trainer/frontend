@@ -13,8 +13,8 @@ class Handbook extends Component {
   render() {
     return (
         <div className="handbook">
+		    <Header  style={{ background: "#f2f2f2" }}/>
             <div className="banner">
-                <Header />
                 <HandbookBanner />
             </div>
 

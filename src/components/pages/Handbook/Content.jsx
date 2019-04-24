@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 const HandbookContent = props => (
   	<div className="content">
@@ -20,19 +21,29 @@ const HandbookContent = props => (
 					<div className="title">Введение</div>
 					<ul className="list__sub">
 						<li>
-							<a href="/">1.1 Введение в SQL </a>
+							<Link to="handbook/intro-in-sql">
+								1.1 Введение в SQL 
+							</Link>
 						</li>
 						<li>
-							<a href="/">1.2 Основные понятия </a>
+							<Link to="handbook/intro-in-sql">
+								1.2 Основные понятия 
+							</Link>
 						</li>
 						<li>
-							<a href="/">1.3 SQL Базы данных </a>
+							<Link to="handbook/intro-in-sql">
+								1.3 SQL Базы данных 
+							</Link>
 						</li>
 						<li>
-							<a href="/">1.4 Основные понятия </a>
+							<Link to="handbook/intro-in-sql">
+								1.4 Основные понятия 
+							</Link>
 						</li>
 						<li>
-							<a href="/">1.5 SQL Базы данных </a>
+							<Link to="handbook/intro-in-sql">
+								1.5 SQL Базы данных 
+							</Link>
 						</li>
 					</ul>
 				</div>
@@ -40,28 +51,44 @@ const HandbookContent = props => (
 					<div className="title">Основные типы данных</div>
 					<ul className="list__sub">
 						<li>
-							<a href="/">2.1 Строки и символы </a>
+							<Link to="handbook/intro-in-sql">
+								2.1 Строки и символы 
+							</Link>
 						</li>
 						<li>
-							<a href="/">2.2 Числовые типы</a>
+							<Link to="handbook/intro-in-sql">
+								2.2 Числовые типы
+							</Link>
 						</li>
 						<li>
-							<a href="/">2.3 Дата и время</a>
+							<Link to="handbook/intro-in-sql">
+								2.3 Дата и время
+							</Link>
 						</li>
 						<li>
-							<a href="/">2.4 Неопределенные или пропущенные значения</a>
+							<Link to="handbook/intro-in-sql">
+								2.4 Неопределенные или пропущенные значения
+							</Link>
 						</li>
 						<li>
-							<a href="/">2.5 Строки и символы </a>
+							<Link to="handbook/intro-in-sql">
+								2.5 Строки и символы 
+							</Link>
 						</li>
 						<li>
-							<a href="/">2.6 Числовые типы</a>
+							<Link to="handbook/intro-in-sql">
+								2.6 Числовые типы
+							</Link>
 						</li>
 						<li>
-							<a href="/">2.7 Дата и время</a>
+							<Link to="handbook/intro-in-sql">
+								2.7 Дата и время
+							</Link>
 						</li>
 						<li>
-							<a href="/">2.8 Неопределенные или пропущенные значения</a>
+							<Link to="handbook/intro-in-sql">
+								2.8 Неопределенные или пропущенные значения
+							</Link>
 						</li>
 					</ul>
 				</div>
