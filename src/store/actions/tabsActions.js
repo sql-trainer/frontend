@@ -1,4 +1,5 @@
 import * as types from '../../constants';
+import store from '../../modules/store';
 
 const createNewTab = id => {
     return {
@@ -57,6 +58,20 @@ const isChecking = (qid, tid, checking) => ({ type: types.SQL_CHECKING, qid, tid
 
 const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
 
+const changeSQLResponseType = (SQLResponseType, tid, qid) => ({
+    type: types.CHANGE_SQL_RESPONSE_TYPE,
+    SQLResponseType,
+    tid,
+    qid,
+});
+
+const saveTabsToLocalStorage = () => {
+    return async function(dispatch, getState) {
+        console.log(getState().tabs.tabs);
+        store.setItems({ tabs: getState().tabs.tabs });
+    };
+};
+
 export {
     createNewTab,
     changeTab,
@@ -66,4 +81,6 @@ export {
     pinInputArea,
     createInitialTabs,
     isChecking,
+    changeSQLResponseType,
+    saveTabsToLocalStorage,
 };

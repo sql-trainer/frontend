@@ -71,9 +71,12 @@ class Training extends Component {
                     <PerfectScrollbar className="task-editor">
                         <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
                             <Tabs tabs={tabs} currTabIndex={currTabIndex} />
-                            <PerfectScrollbar className="textarea-scrollbar">
+                            <PerfectScrollbar
+                                className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
+                            >
                                 <SQLEditor currTab={currTab} currTabIndex={currTabIndex} />
                             </PerfectScrollbar>
+                            {/* <div className={classNames('indicator', 'error')} /> */}
                             <CheckButton currTabIndex={currTabIndex} currQuestion={currQuestion} currTab={currTab} />
                             <button
                                 className={classNames('next-question', { active: currQuestion.status === 'solved' })}

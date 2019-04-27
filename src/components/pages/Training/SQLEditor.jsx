@@ -39,15 +39,17 @@ class SQLEditor extends Component {
         const { currTab } = this.props;
 
         return (
-            <Editor
-                value={currTab.html}
-                onValueChange={code => this.handleContentEditable(code)}
-                highlight={code => this.highlightSQL(code)}
-                className="textarea"
-                tabSize={4}
-                onKeyUp={this.saveOnEdit}
-                placeholder="Введите свой запрос..."
-            />
+            <>
+                <Editor
+                    value={currTab.html}
+                    onValueChange={code => this.handleContentEditable(code)}
+                    highlight={code => this.highlightSQL(code)}
+                    className="textarea"
+                    tabSize={4}
+                    onKeyUp={this.saveOnEdit}
+                    placeholder="Введите свой запрос..."
+                />
+            </>
         );
     }
 }

@@ -478,7 +478,7 @@ $solved-icon: $fa-var-check-circle;
                 background: #8255ca;
                 color: white;
                 border-radius: 50%;
-                bottom: 24px;
+                bottom: 27px;
                 right: 15px;
                 position: absolute;
                 outline: none;
@@ -488,6 +488,7 @@ $solved-icon: $fa-var-check-circle;
                 transition: all 0.2s ease-in-out;
                 display: flex;
                 justify-content: center;
+                box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2);
 
                 &:hover {
                     background: $icon-hover-color;
@@ -515,6 +516,7 @@ $solved-icon: $fa-var-check-circle;
                 &:disabled {
                     background: #777;
                     cursor: unset;
+                    box-shadow: none;
                 }
 
                 &.success {
@@ -549,7 +551,7 @@ $solved-icon: $fa-var-check-circle;
                 background: transparent;
                 color: #444;
                 border-radius: 50%;
-                bottom: 24px;
+                bottom: 27px;
                 right: 15px;
                 position: absolute;
                 outline: none;
@@ -735,5 +737,17 @@ $solved-icon: $fa-var-check-circle;
         right: 40px;
         font-size: 25px;
         cursor: pointer;
+    }
+}
+
+.indicator {
+    border-bottom: 5px solid transparent;
+
+    &.success {
+        border-color: rgb(78, 211, 78);
+    }
+
+    &.error {
+        border-color: rgb(224, 37, 37);
     }
 }

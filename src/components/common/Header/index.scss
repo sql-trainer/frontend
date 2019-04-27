@@ -133,8 +133,8 @@
 
                 &.reset-icon {
                     &:after {
-                        @extend .fas;
-                        content: fa-content($fa-var-eraser);
+                        @extend .far;
+                        content: fa-content($fa-var-list-alt);
                     }
                 }
 
