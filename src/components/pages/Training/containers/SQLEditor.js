@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { changeTabHtml } from '../../../../store/actions/tabsActions';
+import { changeTabHtml, changeSQLResponseType } from '../../../../store/actions/tabsActions';
 
 import SQLEditor from '../SQLEditor';
 
@@ -15,6 +15,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
     return {
         changeTabHtml: (index, html, id) => dispatch(changeTabHtml(index, html, id)),
+        changeSQLResponseType: (SQLResponseType, tid, qid) =>
+            dispatch(changeSQLResponseType(SQLResponseType, tid, qid)),
     };
 };
 

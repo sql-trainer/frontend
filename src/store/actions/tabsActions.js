@@ -67,7 +67,6 @@ const changeSQLResponseType = (SQLResponseType, tid, qid) => ({
 
 const saveTabsToLocalStorage = () => {
     return async function(dispatch, getState) {
-        console.log(getState().tabs.tabs);
         store.setItems({ tabs: getState().tabs.tabs });
     };
 };

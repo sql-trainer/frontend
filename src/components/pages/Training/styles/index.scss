@@ -742,6 +742,7 @@ $solved-icon: $fa-var-check-circle;
 
 .indicator {
     border-bottom: 5px solid transparent;
+    transition: border-bottom 0.1s ease-in-out;
 
     &.success {
         border-color: rgb(78, 211, 78);

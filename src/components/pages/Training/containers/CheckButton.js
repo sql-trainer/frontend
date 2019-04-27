@@ -65,7 +65,6 @@ class CheckButtonC extends Component {
                 .catch(err => addNotification('Ошибка сервера', 'error'))
                 .finally(() => {
                     isChecking(currQuestion.id, currTabIndex, false);
-                    // changeSQLResponseType(responseType, currTabIndex, currQuestion.id);
                     saveTabsToLocalStorage();
                     store.setItems({ questions: questions });
                 });

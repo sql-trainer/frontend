@@ -13,8 +13,9 @@ class SQLEditor extends Component {
     };
 
     handleContentEditable = value => {
-        const { changeTabHtml, currTabIndex, questions, currQuestionIndex } = this.props;
+        const { changeTabHtml, currTabIndex, questions, currQuestionIndex, changeSQLResponseType } = this.props;
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
+        changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };
 
     highlightSQL = sql => {
