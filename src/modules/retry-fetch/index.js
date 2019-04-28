@@ -1,4 +1,4 @@
-const retryFetch = (fn, lastAttemptCb, { maxAttempts, timeout } = {}) => {
+const retryFetch = (fn, lastAttemptCb, onException = () => {}, { maxAttempts, timeout } = {}) => {
     const MAX_ATTEMPTS = maxAttempts || 5;
     const TIMEOUT = timeout || 3000;
 
@@ -9,7 +9,10 @@ const retryFetch = (fn, lastAttemptCb, { maxAttempts, timeout } = {}) => {
             await fn();
         } catch (e) {
             attempts++;
-            attempts < MAX_ATTEMPTS ? setTimeout(tryFetch, TIMEOUT) : lastAttemptCb();
+            if (attempts < MAX_ATTEMPTS) {
+                setTimeout(tryFetch, TIMEOUT);
+                onException(attempts);
+            } else lastAttemptCb();
         }
     };
 

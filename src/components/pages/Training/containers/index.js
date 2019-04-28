@@ -11,6 +11,7 @@ const mapStateToProps = ({ questions, tabs, test }, ownProps) => {
         isTestLoaderVisible: test.isTestLoaderVisible,
         testLoaderErrorMessage: test.testLoaderErrorMessage,
         isInputAreaPinned: questions.isInputAreaPinned,
+        isLogoVisible: test.isLogoVisible,
     };
 };
 

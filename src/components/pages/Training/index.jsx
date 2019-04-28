@@ -69,7 +69,7 @@ class Training extends Component {
     }
 
     render() {
-        const { isInputAreaPinned, isTestLoaderVisible, testLoaderErrorMessage } = this.props;
+        const { isInputAreaPinned, isTestLoaderVisible, testLoaderErrorMessage, isLogoVisible } = this.props;
         const { isModalHelpOpened, isModalSettingsOpened } = this.state;
 
         const tabs = this.tabs;
@@ -136,7 +136,7 @@ class Training extends Component {
                 <PoseGroup>
                     {isTestLoaderVisible && (
                         <Loader className="loader" key="loader">
-                            <Logo animated={testLoaderErrorMessage !== ''} />
+                            <Logo animated style={{ zIndex: 5, display: isLogoVisible ? 'auto' : 'none' }} />
                             <div className="loader-error-message">{testLoaderErrorMessage}</div>
                         </Loader>
                     )}

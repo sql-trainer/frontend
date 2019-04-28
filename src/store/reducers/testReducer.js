@@ -5,6 +5,7 @@ const initialState = {
     isTestCompleted: false,
     isTestLoaderVisible: true,
     testLoaderErrorMessage: '',
+    isLogoVisible: true,
 };
 
 const tabs = (state = initialState, action) => {
@@ -31,6 +32,7 @@ const tabs = (state = initialState, action) => {
             return {
                 ...state,
                 testLoaderErrorMessage: action.message,
+                isLogoVisible: action.isLogoVisible,
             };
 
         default:

@@ -5,7 +5,6 @@ import { createInitialTabs } from './tabsActions';
 import { changeLoaderVisibility, changeTestLoaderErrorMessage } from './testActions';
 import retryFetch from '../../modules/retry-fetch';
 import store from '../../modules/store';
-import { cloneDeep } from 'lodash';
 
 const setQuestions = payload => ({ type: types.QUESTIONS_LOADED, payload });
 
@@ -95,6 +94,7 @@ const loadQuestionsFromAPI = () => {
 
                         dispatch(setQuestions(res.questions));
                         dispatch(createInitialTabs(res.questions));
+                        dispatch(changeCurrQuestion(0));
                         dispatch(isLoading(false));
 
                         store.setItems({
@@ -107,9 +107,14 @@ const loadQuestionsFromAPI = () => {
                 }
             },
             () => {
-                dispatch(changeTestLoaderErrorMessage('Произошла ошибка при загрузке вопросов, попробуйте позже'));
+                dispatch(
+                    changeTestLoaderErrorMessage('Произошла ошибка при загрузке вопросов, попробуйте позже', false),
+                );
                 dispatch(isLoading(false));
                 dispatch(isDatabaseLoading(false));
+            },
+            attempt => {
+                dispatch(changeTestLoaderErrorMessage(`Не удалось загрузить вопросы, пробуем ещё раз...`));
             },
         );
         //     1500,

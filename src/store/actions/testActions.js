@@ -14,8 +14,8 @@ const changeTestStatus = status => {
     return { type: types.CHANGE_TEST_STATUS, status };
 };
 
-const changeTestLoaderErrorMessage = message => {
-    return { type: types.LOADER_ERROR, message };
+const changeTestLoaderErrorMessage = (message, isLogoVisible = true) => {
+    return { type: types.LOADER_ERROR, message, isLogoVisible };
 };
 
 const resetTest = () => {

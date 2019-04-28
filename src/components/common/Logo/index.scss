@@ -5,6 +5,7 @@
     grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
     grid-gap: 4px;
     align-content: center;
+
     .logo__quarter {
         height: inherit;
         height: 20px;
@@ -13,9 +14,6 @@
     }
 
     &.animated {
-        position: relative;
-        z-index: 5;
-
         .logo__quarter {
             background: #369cc7;
             animation: colors infinite alternate 1s ease-in-out;
