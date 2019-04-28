@@ -553,7 +553,8 @@ $solved-icon: $fa-var-check-circle;
                 height: 40px;
                 transition: all 0.2s ease-in-out;
                 display: flex;
-                justify-content: center;
+                // justify-content: center;
+                // align-items: center;
                 box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2);
 
                 &:hover {
@@ -566,6 +567,7 @@ $solved-icon: $fa-var-check-circle;
                     content: fa-content($fa-var-play);
                     margin-bottom: 1px;
                     font-size: 14px;
+                    margin: auto;
                 }
 
                 &[data-loading='true'] {
@@ -839,11 +841,6 @@ $solved-icon: $fa-var-check-circle;
     }
 }
 
-/**
-* ----------------------------------------------
-* Demo styles
-* ----------------------------------------------
-**/
 .accordion {
     // border: 1px solid rgba(0, 0, 0, 0.1);
     // border-radius: 2px;
@@ -859,7 +856,7 @@ $solved-icon: $fa-var-check-circle;
     padding: 10px 20px;
     text-align: left;
     border: none;
-    font-weight: 500;
+    font-weight: 600;
     outline: none;
     display: flex;
     align-items: center;
@@ -898,6 +895,14 @@ $solved-icon: $fa-var-check-circle;
     ul {
         margin: 0;
     }
+
+    ul {
+        padding-left: 30px;
+    }
+
+    p {
+        padding-left: 0px;
+    }
 }
 
 @keyframes fadein {
@@ -920,7 +925,7 @@ $solved-icon: $fa-var-check-circle;
     padding: 20px;
     padding-top: 0;
     .settings-group-title {
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 10px;
     }
 }
