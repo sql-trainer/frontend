@@ -36,6 +36,8 @@ class CheckButtonC extends Component {
 
         const sql = currTab.html;
 
+        let responseType = 'error';
+
         isChecking(currQuestion.id, currTabIndex, true);
 
         setTimeout(() => {
@@ -48,25 +50,21 @@ class CheckButtonC extends Component {
                 .then(res => {
                     if (res.error) {
                         addNotification(res.error.message, 'error');
-                        changeSQLResponseType('error', currTabIndex, currQuestion.id);
                     } else {
                         if (res.success) {
                             if (currQuestion.status !== 'solved') changeQuestionStatus('solved');
                             changeSolvedQuestionSQL(sql);
-                            // responseType = 'success';
-                            changeSQLResponseType('success', currTabIndex, currQuestion.id);
+                            responseType = 'success';
                         }
 
-                        changeSQLResponseType('error', currTabIndex, currQuestion.id);
-
                         changeTabResponse(currQuestion.id, currTabIndex, { fields: res.fields, rows: res.rows });
-
                         if (!isTestCompleted && this.checkTestResult()) changePopupVisibility();
                     }
                 })
                 .catch(err => addNotification('Ошибка сервера', 'error'))
                 .finally(() => {
                     isChecking(currQuestion.id, currTabIndex, false);
+                    changeSQLResponseType(responseType, currTabIndex, currQuestion.id);
                     saveTabsToLocalStorage();
                     store.setItems({ questions: questions });
                 });

@@ -29,7 +29,7 @@ const Header = props => (
                     </div>
                 </PerfectScrollbar>
                 <div className="tools">
-                    <div className="tool-icon settings-icon" data-tip="Настройки" />
+                    <div className="tool-icon settings-icon" data-tip="Настройки" onClick={props.openSettingsModal} />
                 </div>
                 <div className="nav-item login-button" />
             </nav>

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import store from '../../../modules/store';
 import classNames from 'classnames';
-
-import Modal from '../../common/Modal';
 
 class Tabs extends Component {
     _deleteTab = (e, qid) => {

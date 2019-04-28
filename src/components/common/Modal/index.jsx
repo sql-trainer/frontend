@@ -6,9 +6,14 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import './index.scss';
 
-const ModalAnimBlock = posed.div({
+const ModalArea = posed.div({
     enter: { opacity: 1, transition: { duration: 200 } },
     exit: { opacity: 0, transition: { duration: 200 } },
+});
+
+const ModalAnimBlock = posed.div({
+    enter: { opacity: 1, scale: 1, x: '-50%', y: '-50%', transition: { duration: 200 } },
+    exit: { opacity: 0, scale: 1.1, x: '-50%', y: '-50%', transition: { duration: 200 } },
 });
 
 class Modal extends Component {
@@ -32,13 +37,18 @@ class Modal extends Component {
         return (
             <PoseGroup>
                 {opened && (
-                    <ModalAnimBlock className="modal" key={poseKey} style={{ ...style, maxHeight, maxWidth }}>
-                        <h1 className="modal-title">
-                            {title}
-                            <FontAwesomeIcon icon="times" className="modal-close" onClick={onClose} />
-                        </h1>
-                        <PerfectScrollbar className="modal-content">{children}</PerfectScrollbar>
-                    </ModalAnimBlock>
+                    <ModalArea className="modal-area" key={poseKey}>
+                        <div className="modal-background" onClick={onClose} />
+                        <PoseGroup>
+                            <ModalAnimBlock className="modal" style={{ ...style, maxHeight, maxWidth }} key="modal">
+                                <h1 className="modal-title">
+                                    {title}
+                                    <FontAwesomeIcon icon="times" className="modal-close" onClick={onClose} />
+                                </h1>
+                                <PerfectScrollbar className="modal-content">{children}</PerfectScrollbar>
+                            </ModalAnimBlock>
+                        </PoseGroup>
+                    </ModalArea>
                 )}
             </PoseGroup>
         );

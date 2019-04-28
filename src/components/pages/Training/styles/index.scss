@@ -423,11 +423,14 @@ $solved-icon: $fa-var-check-circle;
                         cursor: pointer;
                         display: flex;
                         align-items: center;
+
                         &:hover {
                             background: #fafafa;
                         }
+
                         &.active {
                             background: #f6f6f6;
+
                             .tab-close {
                                 display: block;
                             }
@@ -910,5 +913,14 @@ $solved-icon: $fa-var-check-circle;
     100% {
         // opacity: 1;
         max-height: 1000px;
+    }
+}
+
+.settings-group {
+    padding: 20px;
+    padding-top: 0;
+    .settings-group-title {
+        font-weight: 500;
+        margin-bottom: 10px;
     }
 }

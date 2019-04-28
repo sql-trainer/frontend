@@ -71,8 +71,11 @@ const tabs = (state = initialState, action) => {
         case types.DELETE_TAB: {
             const tabs = cloneDeep(state.tabs);
             tabs[action.qid].tabs.splice(tabs[action.qid].currTabIndex, 1);
-            if (tabs[action.qid].currTabIndex > 0) tabs[action.qid].currTabIndex -= 1;
-            if (tabs[action.qid].tabs.length === 0) tabs[action.qid].tabs = [{ html: '', title: 'Tab' }];
+
+            if (tabs[action.qid].currTabIndex > 0)
+                tabs[action.qid].currTabIndex +=
+                    tabs[action.qid].currTabIndex === tabs[action.qid].tabs.length ? -1 : 0;
+            else if (tabs[action.qid].tabs.length === 0) tabs[action.qid].tabs = [{ html: '', title: 'Tab' }];
 
             return { ...state, tabs };
         }

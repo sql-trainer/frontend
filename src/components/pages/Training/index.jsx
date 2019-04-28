@@ -10,6 +10,7 @@ import {
     AccordionItemButton,
     AccordionItemPanel,
 } from 'react-accessible-accordion';
+import Select from 'react-select';
 
 // imported own comopnents block
 import { Header } from '../../common/';
@@ -26,7 +27,6 @@ import Modal from '../../common/Modal';
 // imported styles block
 import './styles/index.scss';
 import './styles/media.scss';
-// import 'react-accessible-accordion/dist/fancy-example.css';
 
 const Loader = posed.div({
     enter: { opacity: 1 },
@@ -36,6 +36,7 @@ const Loader = posed.div({
 class Training extends Component {
     state = {
         isModalHelpOpened: false,
+        isModalSettingsOpened: false,
     };
 
     componentDidMount() {
@@ -69,16 +70,31 @@ class Training extends Component {
 
     render() {
         const { isInputAreaPinned, isTestLoaderVisible, testLoaderErrorMessage } = this.props;
-        const { isModalHelpOpened } = this.state;
+        const { isModalHelpOpened, isModalSettingsOpened } = this.state;
 
         const tabs = this.tabs;
         const currTab = this.currTab;
         const currQuestion = this.currQuestion;
         const currTabIndex = this.currTabIndex;
 
+        const appThemes = [{ value: 'light', label: 'Светлая' }, { value: 'dark', label: 'Тёмная' }];
+        const editorThemes = [
+            { value: 'prism', label: 'Prism' },
+            { value: 'dark', label: 'Dark' },
+            { value: 'funky', label: 'Funky' },
+            { value: 'okaida', label: 'Okaida' },
+            { value: 'twilight', label: 'Twilight' },
+            { value: 'coy', label: 'Coy' },
+            { value: 'slight', label: 'Solarized light' },
+            { value: 'tnight', label: 'Tomorrow night' },
+        ];
+
         return (
             <div>
-                <Header style={{ minWidth: 900 }} />
+                <Header
+                    style={{ minWidth: 900 }}
+                    openSettingsModal={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
+                />
                 <section className="training">
                     <PerfectScrollbar className="task-info">
                         <Questions currQuestion={currQuestion} />
@@ -127,10 +143,29 @@ class Training extends Component {
                 </PoseGroup>
 
                 <Modal
+                    title="Настройки"
+                    opened={isModalSettingsOpened}
+                    poseKey="settings"
+                    onClose={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
+                    maxHeight={500}
+                    maxWidth={600}
+                >
+                    <div className="settings-group">
+                        <div className="settings-group-title">Цветовая схема редактора</div>
+                        <Select options={editorThemes} defaultValue={editorThemes[0]} placeholder="Выберите тему" />
+                    </div>
+
+                    <div className="settings-group">
+                        <div className="settings-group-title">Основная тема приложения</div>
+                        <Select options={appThemes} defaultValue={appThemes[0]} placeholder="Выберите тему" />
+                    </div>
+                </Modal>
+
+                <Modal
                     title="Справка"
-                    opened={this.state.isModalHelpOpened}
+                    opened={isModalHelpOpened}
                     poseKey="help"
-                    onClose={() => this.setState({ isModalHelpOpened: !this.state.isModalHelpOpened })}
+                    onClose={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })}
                     maxHeight={500}
                     maxWidth={600}
                 >
