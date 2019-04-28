@@ -3,7 +3,15 @@ import ReactTooltip from 'react-tooltip';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classNames from 'classnames';
 import posed, { PoseGroup } from 'react-pose';
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemHeading,
+    AccordionItemButton,
+    AccordionItemPanel,
+} from 'react-accessible-accordion';
 
+// imported own comopnents block
 import { Header } from '../../common/';
 import Logo from '../../common/Logo';
 import Table from './Table';
@@ -13,9 +21,12 @@ import { TabsContainer as Tabs } from './containers/Tabs';
 import { CheckButtonContainer as CheckButton } from './containers/CheckButton';
 import { CompletedPopupContainer as CompletedPopup } from './containers/CompletedPopup';
 import { SQLEditorContainer as SQLEditor } from './containers/SQLEditor';
+import Modal from '../../common/Modal';
 
+// imported styles block
 import './styles/index.scss';
 import './styles/media.scss';
+// import 'react-accessible-accordion/dist/fancy-example.css';
 
 const Loader = posed.div({
     enter: { opacity: 1 },
@@ -23,6 +34,10 @@ const Loader = posed.div({
 });
 
 class Training extends Component {
+    state = {
+        isModalHelpOpened: false,
+    };
+
     componentDidMount() {
         const { questions, loadQuestionsFromAPI } = this.props;
         document.title = 'Training';
@@ -54,6 +69,7 @@ class Training extends Component {
 
     render() {
         const { isInputAreaPinned, isTestLoaderVisible, testLoaderErrorMessage } = this.props;
+        const { isModalHelpOpened } = this.state;
 
         const tabs = this.tabs;
         const currTab = this.currTab;
@@ -70,13 +86,16 @@ class Training extends Component {
                     </PerfectScrollbar>
                     <PerfectScrollbar className="task-editor">
                         <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
-                            <Tabs tabs={tabs} currTabIndex={currTabIndex} />
+                            <Tabs
+                                tabs={tabs}
+                                currTabIndex={currTabIndex}
+                                openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })}
+                            />
                             <PerfectScrollbar
                                 className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
                             >
                                 <SQLEditor currTab={currTab} currTabIndex={currTabIndex} />
                             </PerfectScrollbar>
-                            {/* <div className={classNames('indicator', 'error')} /> */}
                             <CheckButton currTabIndex={currTabIndex} currQuestion={currQuestion} currTab={currTab} />
                             <button
                                 className={classNames('next-question', { active: currQuestion.status === 'solved' })}
@@ -101,14 +120,57 @@ class Training extends Component {
                 <PoseGroup>
                     {isTestLoaderVisible && (
                         <Loader className="loader" key="loader">
-                            {testLoaderErrorMessage !== '' ? (
-                                <div className="loader-error-message">{testLoaderErrorMessage}</div>
-                            ) : (
-                                <Logo animated />
-                            )}
+                            <Logo animated={testLoaderErrorMessage !== ''} />
+                            <div className="loader-error-message">{testLoaderErrorMessage}</div>
                         </Loader>
                     )}
                 </PoseGroup>
+
+                <Modal
+                    title="Справка"
+                    opened={this.state.isModalHelpOpened}
+                    poseKey="help"
+                    onClose={() => this.setState({ isModalHelpOpened: !this.state.isModalHelpOpened })}
+                    maxHeight={500}
+                    maxWidth={600}
+                >
+                    <Accordion allowZeroExpanded>
+                        <AccordionItem>
+                            <AccordionItemHeading>
+                                <AccordionItemButton>Какие сочетания клавиш есть у редактора?</AccordionItemButton>
+                            </AccordionItemHeading>
+                            <AccordionItemPanel>
+                                <ul>
+                                    <li>
+                                        <b>F9</b> - запустить проверку запроса
+                                    </li>
+                                    <li>
+                                        <b>F9</b> - запустить проверку запроса
+                                    </li>
+                                    <li>
+                                        <b>F9</b> - запустить проверку запроса
+                                    </li>
+                                    <li>
+                                        <b>F9</b> - запустить проверку запроса
+                                    </li>
+                                    <li>
+                                        <b>F9</b> - запустить проверку запроса
+                                    </li>
+                                </ul>
+                            </AccordionItemPanel>
+                        </AccordionItem>
+                        <AccordionItem>
+                            <AccordionItemHeading>
+                                <AccordionItemButton>
+                                    Какая СУБД используется для проверки запросов?
+                                </AccordionItemButton>
+                            </AccordionItemHeading>
+                            <AccordionItemPanel>
+                                <p>Для проверки ваших запросов используется СУБД MySQL 8.0.</p>
+                            </AccordionItemPanel>
+                        </AccordionItem>
+                    </Accordion>
+                </Modal>
             </div>
         );
     }

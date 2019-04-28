@@ -57,6 +57,8 @@ class CheckButtonC extends Component {
                             changeSQLResponseType('success', currTabIndex, currQuestion.id);
                         }
 
+                        changeSQLResponseType('error', currTabIndex, currQuestion.id);
+
                         changeTabResponse(currQuestion.id, currTabIndex, { fields: res.fields, rows: res.rows });
 
                         if (!isTestCompleted && this.checkTestResult()) changePopupVisibility();

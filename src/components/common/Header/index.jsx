@@ -29,9 +29,7 @@ const Header = props => (
                     </div>
                 </PerfectScrollbar>
                 <div className="tools">
-                    <div className="tool-icon reset-icon" onClick={props.resetTest} data-tip="Сбросить тест" />
-                    <div className="tool-icon theme-icon" data-tip="Сменить тему" />
-                    <div className="tool-icon questionmark-icon" data-tip="Справка" />
+                    <div className="tool-icon settings-icon" data-tip="Настройки" />
                 </div>
                 <div className="nav-item login-button" />
             </nav>

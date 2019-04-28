@@ -1,5 +1,11 @@
 import { connect } from 'react-redux';
-import { createNewTab, changeTab, deleteTab, pinInputArea } from '../../../../store/actions/tabsActions';
+import {
+    createNewTab,
+    changeTab,
+    deleteTab,
+    pinInputArea,
+    saveTabsToLocalStorage,
+} from '../../../../store/actions/tabsActions';
 
 import Tabs from '../Tabs';
 
@@ -19,6 +25,7 @@ const mapDispatchToProps = dispatch => {
         changeTab: (index, id) => dispatch(changeTab(index, id)),
         deleteTab: qid => dispatch(deleteTab(qid)),
         pinInputArea: () => dispatch(pinInputArea()),
+        saveTabsToLocalStorage: () => dispatch(saveTabsToLocalStorage()),
     };
 };
 

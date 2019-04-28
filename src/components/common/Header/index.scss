@@ -102,14 +102,11 @@
 
         .tools {
             display: none;
-            // padding: 10px 15px;
             margin-right: 5px;
 
             .tool-icon {
                 font-size: 20px;
-                // &:not(:last-child) {
                 margin-right: 10px;
-                // }
 
                 &:after {
                     @extend %fa-icon;
@@ -117,31 +114,10 @@
                     color: #3d3d3d;
                 }
 
-                &.theme-icon {
+                &.settings-icon {
                     &:after {
-                        @extend .far;
-                        content: fa-content($fa-var-sun);
-                    }
-
-                    &.night {
-                        &:after {
-                            content: fa-content($fa-var-moon);
-                            font-size: 18px;
-                        }
-                    }
-                }
-
-                &.reset-icon {
-                    &:after {
-                        @extend .far;
-                        content: fa-content($fa-var-list-alt);
-                    }
-                }
-
-                &.questionmark-icon {
-                    &:after {
-                        @extend .far;
-                        content: fa-content($fa-var-question-circle);
+                        @extend .fas;
+                        content: fa-content($fa-var-cog);
                     }
                 }
             }
