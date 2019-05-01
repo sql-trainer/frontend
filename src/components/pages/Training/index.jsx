@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import classNames from 'classnames';
-import posed, { PoseGroup } from 'react-pose';
 import {
     Accordion,
     AccordionItem,
@@ -17,7 +16,6 @@ import 'prismjs/components/prism-sql';
 
 // imported own comopnents block
 import { Header } from '../../common/';
-import Logo from '../../common/Logo';
 import Table from './Table';
 import { QuestionsContainer as Questions } from './containers/Questions';
 import { DatabaseContainer as Database } from './containers/Database';
@@ -31,10 +29,36 @@ import Modal from '../../common/Modal';
 import './styles/index.scss';
 import './styles/media.scss';
 
-const Loader = posed.div({
-    enter: { opacity: 1 },
-    exit: { opacity: 0 },
-});
+const Placeholder = () => (
+    <div className="placeholder">
+        <div className="ph-left">
+            <div className="ph-block">
+                <div className="ph ph-title" />
+                <div className="ph ph-75" />
+                <div className="ph ph-50" />
+                <div className="ph-inline">
+                    <div className="ph ph-25" />
+                    <div className="ph ph-10" />
+                </div>
+            </div>
+            <div className="ph-block">
+                <div className="ph ph-title" />
+                <div className="ph ph-25" />
+                <div className="ph ph-50" />
+                <div className="ph ph-25" />
+            </div>
+        </div>
+        <div className="ph-right">
+            <div className="ph-block">
+                <div className="ph-inline">
+                    <div className="ph ph-title" style={{ width: '80px' }} />
+                    <div className="ph ph-title" style={{ width: '50px' }} />
+                </div>
+                <div className="ph" style={{ height: '200px' }} />
+            </div>
+        </div>
+    </div>
+);
 
 class Training extends Component {
     state = {
@@ -46,10 +70,13 @@ class Training extends Component {
         const { questions, loadTest, changeEditorTheme } = this.props;
         document.title = 'Training';
         document.querySelector('.app').className = 'app training-component';
+
         changeEditorTheme(store.get('editorTheme'));
+
         if (!questions.length) {
             loadTest('open');
         }
+
         ReactTooltip.rebuild();
     }
 
@@ -81,15 +108,33 @@ class Training extends Component {
         };
     }
 
+    selectTheme = theme => {
+        return {
+            ...theme,
+            borderRadius: 4,
+            colors: {
+                ...theme.colors,
+                primary25: '#f4f1fa',
+                primary: '#8255ca',
+            },
+        };
+    };
+
+    appThemes = [{ value: 'light', label: 'Светлая' }, { value: 'dark', label: 'Тёмная' }];
+
+    editorThemes = [
+        { value: 'prism', label: 'Prism' },
+        { value: 'prism-dark', label: 'Dark' },
+        { value: 'prism-funky', label: 'Funky' },
+        { value: 'prism-okaidia', label: 'Okaidia' },
+        { value: 'prism-twilight', label: 'Twilight' },
+        { value: 'prism-coy', label: 'Coy' },
+        { value: 'prism-solarizedlight', label: 'Solarized light' },
+        { value: 'prism-tomorrow', label: 'Tomorrow night' },
+    ];
+
     render() {
-        const {
-            isInputAreaPinned,
-            isTestLoaderVisible,
-            testLoaderErrorMessage,
-            isLogoVisible,
-            changeEditorTheme,
-            editorTheme,
-        } = this.props;
+        const { isInputAreaPinned, changeEditorTheme, editorTheme, isTestLoaderVisible } = this.props;
         const { isModalHelpOpened, isModalSettingsOpened } = this.state;
 
         const tabs = this.tabs;
@@ -97,83 +142,59 @@ class Training extends Component {
         const currQuestion = this.currQuestion;
         const currTabIndex = this.currTabIndex;
 
-        const appThemes = [{ value: 'light', label: 'Светлая' }, { value: 'dark', label: 'Тёмная' }];
-        const editorThemes = [
-            { value: 'prism', label: 'Prism' },
-            { value: 'prism-dark', label: 'Dark' },
-            { value: 'prism-funky', label: 'Funky' },
-            { value: 'prism-okaidia', label: 'Okaidia' },
-            { value: 'prism-twilight', label: 'Twilight' },
-            { value: 'prism-coy', label: 'Coy' },
-            { value: 'prism-solarizedlight', label: 'Solarized light' },
-            { value: 'prism-tomorrow', label: 'Tomorrow night' },
-        ];
-
-        const selectTheme = theme => {
-            console.log(theme);
-            return {
-                ...theme,
-                borderRadius: 4,
-                colors: {
-                    ...theme.colors,
-                    primary25: '#f4f1fa',
-                    primary: '#8255ca',
-                },
-            };
-        };
-
         return (
             <div>
                 <Header
                     style={{ minWidth: 900 }}
                     openSettingsModal={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
                 />
-                <section className="training">
-                    <PerfectScrollbar className="task-info">
-                        <Questions currQuestion={currQuestion} />
-                        <Database />
-                    </PerfectScrollbar>
-                    <PerfectScrollbar className="task-editor">
-                        <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
-                            <Tabs
-                                tabs={tabs}
-                                currTabIndex={currTabIndex}
-                                openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })}
-                            />
-                            <PerfectScrollbar
-                                className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
-                            >
-                                <SQLEditor currTab={currTab} currTabIndex={currTabIndex} />
-                            </PerfectScrollbar>
-                            <CheckButton currTabIndex={currTabIndex} currQuestion={currQuestion} currTab={currTab} />
-                            <button
-                                className={classNames('next-question', { active: currQuestion.status === 'solved' })}
-                                onClick={this.props.nextQuestion}
-                                data-tip="Следующий вопрос"
-                            />
-                        </div>
-                        <div className={classNames('resultbox', { checking: currTab.loading })}>
-                            {currTab.response ? (
-                                <Table
-                                    className={classNames('response-table', { pinned: isInputAreaPinned })}
-                                    fields={currTab.response.fields}
-                                    rows={currTab.response.rows}
+                {isTestLoaderVisible ? (
+                    <Placeholder />
+                ) : (
+                    <section className="training">
+                        <PerfectScrollbar className="task-info">
+                            <Questions currQuestion={currQuestion} />
+                            <Database />
+                        </PerfectScrollbar>
+                        <PerfectScrollbar className="task-editor">
+                            <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
+                                <Tabs
+                                    tabs={tabs}
+                                    currTabIndex={currTabIndex}
+                                    openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })}
                                 />
-                            ) : null}
-                        </div>
-                    </PerfectScrollbar>
-                </section>
+                                <PerfectScrollbar
+                                    className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
+                                >
+                                    <SQLEditor currTab={currTab} currTabIndex={currTabIndex} />
+                                </PerfectScrollbar>
+                                <CheckButton
+                                    currTabIndex={currTabIndex}
+                                    currQuestion={currQuestion}
+                                    currTab={currTab}
+                                />
+                                <button
+                                    className={classNames('next-question', {
+                                        active: currQuestion.status === 'solved',
+                                    })}
+                                    onClick={this.props.nextQuestion}
+                                    data-tip="Следующий вопрос"
+                                />
+                            </div>
+                            <div className={classNames('resultbox', { checking: currTab.loading })}>
+                                {currTab.response ? (
+                                    <Table
+                                        className={classNames('response-table', { pinned: isInputAreaPinned })}
+                                        fields={currTab.response.fields}
+                                        rows={currTab.response.rows}
+                                    />
+                                ) : null}
+                            </div>
+                        </PerfectScrollbar>
+                    </section>
+                )}
 
                 <CompletedPopup />
-
-                <PoseGroup>
-                    {isTestLoaderVisible && (
-                        <Loader className="loader" key="loader">
-                            <Logo animated style={{ zIndex: 5, display: isLogoVisible ? 'auto' : 'none' }} />
-                            <div className="loader-error-message">{testLoaderErrorMessage}</div>
-                        </Loader>
-                    )}
-                </PoseGroup>
 
                 <Modal
                     title="Настройки"
@@ -186,12 +207,14 @@ class Training extends Component {
                     <div className="settings-group">
                         <div className="settings-group-title">Цветовая схема редактора</div>
                         <Select
-                            options={editorThemes}
+                            options={this.editorThemes}
                             defaultValue={
-                                editorThemes[editorThemes.findIndex(theme => theme.value === store.get('editorTheme'))]
+                                this.editorThemes[
+                                    this.editorThemes.findIndex(theme => theme.value === store.get('editorTheme'))
+                                ]
                             }
                             placeholder="Выберите цветовую схему"
-                            theme={selectTheme}
+                            theme={this.selectTheme}
                             onChange={theme => {
                                 changeEditorTheme(theme.value);
                             }}
@@ -205,10 +228,10 @@ class Training extends Component {
                     <div className="settings-group">
                         <div className="settings-group-title">Основная тема приложения</div>
                         <Select
-                            options={appThemes}
-                            defaultValue={appThemes[0]}
+                            options={this.appThemes}
+                            defaultValue={this.appThemes[0]}
                             placeholder="Выберите тему"
-                            theme={selectTheme}
+                            theme={this.selectTheme}
                         />
                     </div>
                 </Modal>

@@ -7494,6 +7494,11 @@ pkg-up@2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+placeholder-loading@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/placeholder-loading/-/placeholder-loading-0.2.1.tgz#a704baebcceda6a1a20363cc85929fe5af25ee14"
+  integrity sha512-dDOmZEBsMyvtLtnL6zghbgEzA3tHBQCQQQYNPIWOgyWbK4OO7fCpHqGyNroPVcZGEqS7X77M+itdsd+JcrJe5w==
+
 pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"

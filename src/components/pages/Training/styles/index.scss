@@ -51,41 +51,6 @@ $solved-icon: $fa-var-check-circle;
     }
 }
 
-.loader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 4;
-    pointer-events: unset;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-
-    .loader-error-message {
-        color: #333;
-        font-size: 22px;
-        position: relative;
-        z-index: 5;
-        margin-top: 10px;
-        font-weight: 600;
-    }
-
-    &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        opacity: 1;
-        z-index: 3;
-    }
-}
-
 .training {
     display: grid;
     grid-template-columns: 400px 1fr;
@@ -109,43 +74,6 @@ $solved-icon: $fa-var-check-circle;
                 top: 0;
                 background: white;
             }
-
-            // .tools {
-            //     display: flex;
-            //     padding: 10px 15px;
-
-            //     .tool-icon {
-            //         font-size: 20px;
-            //         margin-right: 15px;
-
-            //         &:after {
-            //             @extend %fa-icon;
-            //             @extend %icon;
-            //             color: $icon-color;
-            //         }
-
-            //         &.theme-icon {
-            //             &:after {
-            //                 @extend .far;
-            //                 content: fa-content($fa-var-sun);
-            //             }
-            //         }
-
-            //         &.reset-icon {
-            //             &:after {
-            //                 @extend .fas;
-            //                 content: fa-content($fa-var-eraser);
-            //             }
-            //         }
-
-            //         &.questionmark-icon {
-            //             &:after {
-            //                 @extend .far;
-            //                 content: fa-content($fa-var-question-circle);
-            //             }
-            //         }
-            //     }
-            // }
         }
 
         &.task-editor {
@@ -159,8 +87,9 @@ $solved-icon: $fa-var-check-circle;
             position: relative;
 
             &:nth-last-child(n + 4) {
-                padding-bottom: 10px;
+                margin-bottom: 10px;
             }
+
             .title,
             .content {
                 padding: 10px 15px;
@@ -183,12 +112,13 @@ $solved-icon: $fa-var-check-circle;
 
             &[data-loading='true'] {
                 min-height: 120px;
+
                 &:after {
                     @extend %fa-icon;
                     @extend .fas;
                     animation: fa-spin 2s infinite linear;
                     font-size: 16px;
-                    content: fa-content($fa-var-spinner);
+                    content: fa-content($fa-var-circle-notch);
                     margin-bottom: 1px;
                     position: absolute;
                     top: calc(50%);
@@ -521,7 +451,7 @@ $solved-icon: $fa-var-check-circle;
                 background: #8255ca;
                 color: white;
                 border-radius: 50%;
-                bottom: 27px;
+                bottom: 18px;
                 right: 15px;
                 position: absolute;
                 outline: none;
@@ -530,8 +460,6 @@ $solved-icon: $fa-var-check-circle;
                 height: 40px;
                 transition: all 0.2s ease-in-out;
                 display: flex;
-                // justify-content: center;
-                // align-items: center;
                 box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.2);
 
                 &:hover {
@@ -831,7 +759,11 @@ $solved-icon: $fa-var-check-circle;
 
 .accordion__panel {
     padding: 10px 20px;
-    animation: fadein 0.5s ease-in-out;
+    animation: fadein 0.3s ease-in-out forwards;
+    max-height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+
     p,
     ul {
         margin: 0;
@@ -850,15 +782,17 @@ $solved-icon: $fa-var-check-circle;
     0% {
         opacity: 0;
         max-height: 0;
+        padding: 0 20px;
     }
 
-    35% {
+    55% {
         opacity: 1;
+        padding: 10px 20px;
     }
 
     100% {
         // opacity: 1;
-        max-height: 1000px;
+        max-height: 300px;
     }
 }
 
@@ -878,4 +812,78 @@ $solved-icon: $fa-var-check-circle;
     margin-top: 10px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;
+}
+
+@keyframes blinking {
+    0% {
+        background: #efefef;
+    }
+
+    50% {
+        background: #ddd;
+    }
+
+    1000% {
+        background: #efefef;
+    }
+}
+
+.placeholder {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    height: calc(100vh - 60px);
+    overflow-y: hidden;
+    min-width: $min-width;
+}
+
+.ph-left {
+    padding: 10px 0 10px 20px;
+}
+
+.ph-right {
+    padding: 10px 20px;
+}
+
+.ph-block {
+    margin-bottom: 20px;
+}
+
+.ph-inline {
+    display: flex;
+
+    .ph {
+        margin-right: 10px;
+    }
+}
+
+.ph {
+    background: #efefef;
+    border-radius: 4px;
+    height: 20px;
+    animation: blinking 1.5s linear infinite;
+    margin-bottom: 10px;
+
+    &.ph-75 {
+        width: 75%;
+    }
+
+    &.ph-50 {
+        width: 50%;
+    }
+
+    &.ph-25 {
+        width: 25%;
+    }
+
+    &.ph-10 {
+        width: 10%;
+    }
+
+    &.ph-title {
+        height: 25px;
+    }
+
+    &.ph-circle {
+        border-radius: 50%;
+    }
 }

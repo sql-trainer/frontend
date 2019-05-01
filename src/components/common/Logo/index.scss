@@ -19,12 +19,15 @@
             animation: colors infinite alternate 1s ease-in-out;
             &:nth-child(2) {
                 animation-delay: 0.5s;
+                background: #6cac17;
             }
             &:nth-child(3) {
                 animation-delay: 0.3s;
+                background: #ebad1a;
             }
             &:nth-child(4) {
                 animation-delay: 0.8s;
+                background: #ec3d3d;
             }
         }
     }

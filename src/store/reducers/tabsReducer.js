@@ -6,7 +6,6 @@ const initialState = {
 };
 
 const tabs = (state = initialState, action) => {
-    console.log(action);
     switch (action.type) {
         case types.CREATE_NEW_TAB: {
             const tabs = cloneDeep(state.tabs);
