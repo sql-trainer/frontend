@@ -1,6 +1,11 @@
 import * as types from '../../constants';
 import store from '../../modules/store';
-import { loadQuestionsFromAPI } from './questionActions';
+import retryFetch from '../../modules/retry-fetch';
+
+import { loadQuestions, isLoading as isQuestionsLoading, setQuestions, changeCurrQuestion } from './questionActions';
+import { loadDatabaseFromAPI, isLoading as isDatabaseLoading } from './databaseActions';
+import { addNotification } from './notificationActions';
+import { createInitialTabs } from './tabsActions';
 
 const changePopupVisibility = visible => {
     return { type: types.CHANGE_COMPLETED_POPUP_VISIBILITY, visible };
@@ -21,9 +26,72 @@ const changeTestLoaderErrorMessage = (message, isLogoVisible = true) => {
 const resetTest = () => {
     return async function(dispatch) {
         store.removeItems(['questions', 'testTimestamp', 'lastQuestion', 'tabs']);
-        dispatch(loadQuestionsFromAPI());
-        dispatch(changePopupVisibility(false));
+        dispatch(loadTest());
+        // dispatch(changePopupVisibility(false));
     };
 };
 
-export { changePopupVisibility, changeTestStatus, changeLoaderVisibility, changeTestLoaderErrorMessage, resetTest };
+const loadTest = (testID = 'open') => {
+    return async function(dispatch, getState) {
+        dispatch(isQuestionsLoading(true));
+        dispatch(isDatabaseLoading(true));
+        dispatch(changeLoaderVisibility(true));
+        dispatch(changeTestLoaderErrorMessage(''));
+
+        retryFetch(
+            async () => {
+                const { questions, lastQuestion, testTimestamp, tabs } = store.getItems([
+                    'questions',
+                    'lastQuestion',
+                    'testTimestamp',
+                    'tabs',
+                ]);
+
+                const testMeta = await fetch(`http://localhost:8080/api/v1/tests/${testID}/meta/`).then(res =>
+                    res.json(),
+                );
+
+                if (questions && tabs && testTimestamp === testMeta.date_changed) {
+                    const dbId = questions[lastQuestion || 0].database;
+
+                    dispatch(loadDatabaseFromAPI(dbId));
+
+                    dispatch(setQuestions(questions));
+                    dispatch(createInitialTabs(questions, tabs));
+                    dispatch(changeCurrQuestion(Number(lastQuestion) || 0));
+                    dispatch(isQuestionsLoading(false));
+
+                    // dispatch(addNotification('Последнее состояние восстановлено', 'info'));
+                } else {
+                    dispatch(loadQuestions(testID));
+
+                    store.setItems({
+                        testTimestamp: testMeta.date_changed,
+                        lastQuestion: 0,
+                    });
+                }
+            },
+            {
+                onLastAttempt: () => {
+                    dispatch(
+                        changeTestLoaderErrorMessage('Произошла ошибка при загрузке вопросов, попробуйте позже', false),
+                    );
+                    dispatch(isQuestionsLoading(false));
+                    dispatch(isDatabaseLoading(false));
+                },
+                onAttempt: attempt => {
+                    dispatch(changeTestLoaderErrorMessage(`Не удалось загрузить вопросы, пробуем ещё раз...`));
+                },
+            },
+        );
+    };
+};
+
+export {
+    changePopupVisibility,
+    changeTestStatus,
+    changeLoaderVisibility,
+    changeTestLoaderErrorMessage,
+    resetTest,
+    loadTest,
+};

@@ -11,16 +11,25 @@ const ModalArea = posed.div({
     exit: { opacity: 0, transition: { duration: 200 } },
 });
 
-const ModalAnimBlock = posed.div({
-    enter: { opacity: 1, scale: 1, x: '-50%', y: '-50%', transition: { duration: 200 } },
-    exit: { opacity: 0, scale: 1.1, x: '-50%', y: '-50%', transition: { duration: 200 } },
-});
-
 class Modal extends Component {
+    static fadeScale = {
+        enter: { scale: 1, transition: { duration: 200 } },
+        exit: { scale: 0.9, transition: { duration: 200 } },
+    };
+
+    static fade = {
+        enter: { opacity: 1, transition: { duration: 200 } },
+        exit: { opacity: 0, transition: { duration: 200 } },
+    };
+
     static defaultProps = {
         title: 'Модальное окно',
         content: 'Содержимое окна',
         style: {},
+        showCloseButton: true,
+        exitStyle: Modal.fadeScaleAnimation,
+        enterStyle: Modal.fadeScaleAnimation,
+        animation: 'fadeScale',
     };
 
     static propTypes = {
@@ -29,25 +38,50 @@ class Modal extends Component {
         onClose: propTypes.func,
         opened: propTypes.bool,
         poseKey: propTypes.oneOfType([propTypes.number, propTypes.string]),
+        maxHeight: propTypes.number,
+        minHeight: propTypes.number,
+        fullscreen: propTypes.bool,
+        showCloseButton: propTypes.bool,
     };
 
     render() {
-        const { title, onClose, style, children, opened, poseKey, maxHeight, maxWidth } = this.props;
+        const {
+            title,
+            onClose,
+            style,
+            children,
+            opened,
+            poseKey,
+            maxHeight,
+            maxWidth,
+            fullscreen,
+            showCloseButton,
+            animation,
+        } = this.props;
+
+        const modalStyle = {
+            ...style,
+            maxHeight: !fullscreen ? maxHeight : '100vh',
+            maxWidth: !fullscreen ? maxWidth : '100vw',
+            borderRadius: fullscreen ? 0 : 'auto',
+        };
+
+        const ModalAnimBlock = posed.div(Modal[animation]);
 
         return (
             <PoseGroup>
                 {opened && (
                     <ModalArea className="modal-area" key={poseKey}>
                         <div className="modal-background" onClick={onClose} />
-                        <PoseGroup>
-                            <ModalAnimBlock className="modal" style={{ ...style, maxHeight, maxWidth }} key="modal">
-                                <h1 className="modal-title">
-                                    {title}
+                        <ModalAnimBlock className="modal" style={modalStyle} key="modal">
+                            <h1 className="modal-title">
+                                <span>{title}</span>
+                                {showCloseButton && (
                                     <FontAwesomeIcon icon="times" className="modal-close" onClick={onClose} />
-                                </h1>
-                                <PerfectScrollbar className="modal-content">{children}</PerfectScrollbar>
-                            </ModalAnimBlock>
-                        </PoseGroup>
+                                )}
+                            </h1>
+                            <PerfectScrollbar className="modal-content">{children}</PerfectScrollbar>
+                        </ModalAnimBlock>
                     </ModalArea>
                 )}
             </PoseGroup>

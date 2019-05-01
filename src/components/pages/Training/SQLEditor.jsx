@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
+import classNames from 'classnames';
 
 import store from '../../../modules/store';
-
-import 'prismjs/themes/prism.css';
 
 class SQLEditor extends Component {
     state = {
@@ -37,7 +36,7 @@ class SQLEditor extends Component {
     };
 
     render() {
-        const { currTab } = this.props;
+        const { currTab, editorTheme } = this.props;
 
         return (
             <>
@@ -45,7 +44,7 @@ class SQLEditor extends Component {
                     value={currTab.html}
                     onValueChange={code => this.handleContentEditable(code)}
                     highlight={code => this.highlightSQL(code)}
-                    className="textarea"
+                    className={classNames('textarea', editorTheme)}
                     tabSize={4}
                     onKeyUp={this.saveOnEdit}
                     placeholder="Введите свой запрос..."

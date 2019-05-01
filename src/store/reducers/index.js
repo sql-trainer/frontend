@@ -4,6 +4,7 @@ import database from './databaseReducer';
 import test from './testReducer';
 import tabs from './tabsReducer';
 import notification from './notificationReducer';
+import settings from './settingsReducer';
 
 const reducers = combineReducers({
     questions,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
     test,
     tabs,
     notification,
+    settings,
 });
 
 export default reducers;

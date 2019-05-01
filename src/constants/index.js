@@ -34,3 +34,6 @@ export const LOADER_ERROR = 'LOADER_ERROR';
 
 // notification constants
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION';
+
+// settings constants
+export const CHANGE_EDITOR_THEME = 'CHANGE_EDITOR_THEME';

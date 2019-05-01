@@ -1,9 +1,7 @@
 import * as types from '../../constants';
-import { loadDatabaseFromAPI, isLoading as isDatabaseLoading } from './databaseActions';
+import { loadDatabaseFromAPI } from './databaseActions';
 import { addNotification } from './notificationActions';
 import { createInitialTabs } from './tabsActions';
-import { changeLoaderVisibility, changeTestLoaderErrorMessage } from './testActions';
-import retryFetch from '../../modules/retry-fetch';
 import store from '../../modules/store';
 
 const setQuestions = payload => ({ type: types.QUESTIONS_LOADED, payload });
@@ -53,80 +51,36 @@ const changeSolvedQuestionSQL = sql => ({ type: types.CHANGE_SOLVED_QUESTION_SQL
 
 const isLoading = payload => ({ type: types.QUESTIONS_LOADING, payload });
 
-const loadQuestionsFromAPI = () => {
+const loadQuestions = testID => {
     return async function(dispatch, getState) {
-        dispatch(isLoading(true));
-        dispatch(isDatabaseLoading(true));
-        dispatch(changeLoaderVisibility(true));
-        dispatch(changeTestLoaderErrorMessage(''));
+        const res = await fetch(`http://localhost:8080/api/v1/tests/${testID}/`).then(res => res.json());
 
-        // setTimeout(
-        //     () =>
-        retryFetch(
-            async () => {
-                const { questions, lastQuestion, testTimestamp, tabs } = store.getItems([
-                    'questions',
-                    'lastQuestion',
-                    'testTimestamp',
-                    'tabs',
-                ]);
+        if (res.error) {
+            dispatch(addNotification(res.error.message, 'error'));
+        } else {
+            const dbId = res.questions[0].database;
+            dispatch(loadDatabaseFromAPI(dbId));
 
-                const testMeta = await fetch('http://localhost:8080/api/v1/tests/open/meta/').then(res => res.json());
+            dispatch(setQuestions(res.questions));
+            dispatch(createInitialTabs(res.questions));
+            dispatch(changeCurrQuestion(0));
+            dispatch(isLoading(false));
 
-                if (questions && tabs && testTimestamp === testMeta.date_changed) {
-                    const dbId = questions[lastQuestion || 0].database;
-                    dispatch(loadDatabaseFromAPI(dbId));
-
-                    dispatch(setQuestions(questions));
-                    dispatch(createInitialTabs(questions, tabs));
-                    dispatch(changeCurrQuestion(Number(lastQuestion)));
-                    dispatch(isLoading(false));
-
-                    dispatch(addNotification('Последнее состояние восстановлено', 'info'));
-                } else {
-                    const res = await fetch('http://localhost:8080/api/v1/tests/open/').then(res => res.json());
-
-                    if (res.error) {
-                        dispatch(addNotification(res.error.message, 'error'));
-                    } else {
-                        const dbId = res.questions[0].database;
-                        dispatch(loadDatabaseFromAPI(dbId));
-
-                        dispatch(setQuestions(res.questions));
-                        dispatch(createInitialTabs(res.questions));
-                        dispatch(changeCurrQuestion(0));
-                        dispatch(isLoading(false));
-
-                        store.setItems({
-                            questions: res.questions,
-                            testTimestamp: testMeta.date_changed,
-                            lastQuestion: 0,
-                            tabs: getState().tabs.tabs,
-                        });
-                    }
-                }
-            },
-            () => {
-                dispatch(
-                    changeTestLoaderErrorMessage('Произошла ошибка при загрузке вопросов, попробуйте позже', false),
-                );
-                dispatch(isLoading(false));
-                dispatch(isDatabaseLoading(false));
-            },
-            attempt => {
-                dispatch(changeTestLoaderErrorMessage(`Не удалось загрузить вопросы, пробуем ещё раз...`));
-            },
-        );
-        //     1500,
-        // );
+            store.setItems({
+                questions: getState().questions.questions,
+                tabs: getState().tabs.tabs,
+            });
+        }
     };
 };
 
 export {
-    loadQuestionsFromAPI,
+    isLoading,
+    setQuestions,
     changeCurrQuestion,
     changeQuestionStatus,
     changeSolvedQuestionSQL,
     nextQuestion,
     prevQuestion,
+    loadQuestions,
 };

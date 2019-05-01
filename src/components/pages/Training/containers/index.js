@@ -1,9 +1,11 @@
 import { connect } from 'react-redux';
-import { loadQuestionsFromAPI, nextQuestion } from '../../../../store/actions/questionActions';
+import { nextQuestion } from '../../../../store/actions/questionActions';
+import { changeEditorTheme } from '../../../../store/actions/settingsActions';
+import { loadTest } from '../../../../store/actions/testActions';
 
 import Training from '../index';
 
-const mapStateToProps = ({ questions, tabs, test }, ownProps) => {
+const mapStateToProps = ({ questions, tabs, test, settings }, ownProps) => {
     return {
         questions: questions.questions,
         currQuestionIndex: questions.currQuestionIndex,
@@ -12,12 +14,14 @@ const mapStateToProps = ({ questions, tabs, test }, ownProps) => {
         testLoaderErrorMessage: test.testLoaderErrorMessage,
         isInputAreaPinned: questions.isInputAreaPinned,
         isLogoVisible: test.isLogoVisible,
+        editorTheme: settings.editorTheme,
     };
 };
 
 const mapDispatchToProps = dispatch => ({
-    loadQuestionsFromAPI: () => dispatch(loadQuestionsFromAPI()),
+    loadTest: () => dispatch(loadTest()),
     nextQuestion: () => dispatch(nextQuestion()),
+    changeEditorTheme: theme => dispatch(changeEditorTheme(theme)),
 });
 
 const TrainingContainer = connect(

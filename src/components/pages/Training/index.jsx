@@ -11,6 +11,9 @@ import {
     AccordionItemPanel,
 } from 'react-accessible-accordion';
 import Select from 'react-select';
+import store from '../../../modules/store';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-sql';
 
 // imported own comopnents block
 import { Header } from '../../common/';
@@ -40,11 +43,12 @@ class Training extends Component {
     };
 
     componentDidMount() {
-        const { questions, loadQuestionsFromAPI } = this.props;
+        const { questions, loadTest, changeEditorTheme } = this.props;
         document.title = 'Training';
         document.querySelector('.app').className = 'app training-component';
+        changeEditorTheme(store.get('editorTheme'));
         if (!questions.length) {
-            loadQuestionsFromAPI();
+            loadTest('open');
         }
         ReactTooltip.rebuild();
     }
@@ -68,8 +72,24 @@ class Training extends Component {
         return questions.length ? questions[currQuestionIndex] : {};
     }
 
+    highlightPreviewSQL() {
+        return {
+            __html: Prism.highlight(
+                `SELECT * FROM permissions AS prm WHERE id=(SELECT id FROM users WHERE name='Vasya')`,
+                Prism.languages.sql,
+            ),
+        };
+    }
+
     render() {
-        const { isInputAreaPinned, isTestLoaderVisible, testLoaderErrorMessage, isLogoVisible } = this.props;
+        const {
+            isInputAreaPinned,
+            isTestLoaderVisible,
+            testLoaderErrorMessage,
+            isLogoVisible,
+            changeEditorTheme,
+            editorTheme,
+        } = this.props;
         const { isModalHelpOpened, isModalSettingsOpened } = this.state;
 
         const tabs = this.tabs;
@@ -80,14 +100,27 @@ class Training extends Component {
         const appThemes = [{ value: 'light', label: 'Светлая' }, { value: 'dark', label: 'Тёмная' }];
         const editorThemes = [
             { value: 'prism', label: 'Prism' },
-            { value: 'dark', label: 'Dark' },
-            { value: 'funky', label: 'Funky' },
-            { value: 'okaida', label: 'Okaida' },
-            { value: 'twilight', label: 'Twilight' },
-            { value: 'coy', label: 'Coy' },
-            { value: 'slight', label: 'Solarized light' },
-            { value: 'tnight', label: 'Tomorrow night' },
+            { value: 'prism-dark', label: 'Dark' },
+            { value: 'prism-funky', label: 'Funky' },
+            { value: 'prism-okaidia', label: 'Okaidia' },
+            { value: 'prism-twilight', label: 'Twilight' },
+            { value: 'prism-coy', label: 'Coy' },
+            { value: 'prism-solarizedlight', label: 'Solarized light' },
+            { value: 'prism-tomorrow', label: 'Tomorrow night' },
         ];
+
+        const selectTheme = theme => {
+            console.log(theme);
+            return {
+                ...theme,
+                borderRadius: 4,
+                colors: {
+                    ...theme.colors,
+                    primary25: '#f4f1fa',
+                    primary: '#8255ca',
+                },
+            };
+        };
 
         return (
             <div>
@@ -152,12 +185,31 @@ class Training extends Component {
                 >
                     <div className="settings-group">
                         <div className="settings-group-title">Цветовая схема редактора</div>
-                        <Select options={editorThemes} defaultValue={editorThemes[0]} placeholder="Выберите тему" />
+                        <Select
+                            options={editorThemes}
+                            defaultValue={
+                                editorThemes[editorThemes.findIndex(theme => theme.value === store.get('editorTheme'))]
+                            }
+                            placeholder="Выберите цветовую схему"
+                            theme={selectTheme}
+                            onChange={theme => {
+                                changeEditorTheme(theme.value);
+                            }}
+                        />
+                        <div
+                            className={`editor-theme-preview  ${editorTheme}`}
+                            dangerouslySetInnerHTML={this.highlightPreviewSQL()}
+                        />
                     </div>
 
                     <div className="settings-group">
                         <div className="settings-group-title">Основная тема приложения</div>
-                        <Select options={appThemes} defaultValue={appThemes[0]} placeholder="Выберите тему" />
+                        <Select
+                            options={appThemes}
+                            defaultValue={appThemes[0]}
+                            placeholder="Выберите тему"
+                            theme={selectTheme}
+                        />
                     </div>
                 </Modal>
 
