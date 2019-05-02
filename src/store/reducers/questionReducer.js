@@ -43,12 +43,13 @@ const questions = (state = initialState, action) => {
 
     switch (action.type) {
         case REHYDRATE: {
-            if (action.payload)
+            if (action.payload) {
                 return {
                     ...state,
                     questions: action.payload.questions.questions,
                     currQuestionIndex: action.payload.questions.currQuestionIndex,
                 };
+            }
             else return { ...state };
         }
 
@@ -58,13 +59,6 @@ const questions = (state = initialState, action) => {
 
         case types.PIN_INPUT_AREA:
             return { ...state, isInputAreaPinned: !state.isInputAreaPinned };
-
-        // case types.SQL_CHECKING: {
-        //     const questions = [...state.questions];
-        //     questions[action.question].tabs[action.tab].loading = action.checking;
-
-        //     return { ...state, questions };
-        // }
 
         case types.QUESTIONS_LOADING:
             return { ...state, isQuestionsLoading: action.payload };

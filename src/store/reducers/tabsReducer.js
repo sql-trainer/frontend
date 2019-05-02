@@ -1,5 +1,6 @@
 import * as types from '../../constants';
 import { cloneDeep } from 'lodash';
+import { REHYDRATE } from 'redux-persist';
 
 const initialState = {
     tabs: {},
@@ -7,6 +8,19 @@ const initialState = {
 
 const tabs = (state = initialState, action) => {
     switch (action.type) {
+        case REHYDRATE: {
+            if (action.payload) {
+                const tabs = action.payload.tabs.tabs;
+                Object.keys(tabs).forEach((key) => tabs[key].tabs.map(t => delete t.loading));
+
+                return {
+                    ...state,
+                    tabs,
+                };
+            }
+            else return { ...state };
+        }
+
         case types.CREATE_NEW_TAB: {
             const tabs = cloneDeep(state.tabs);
             tabs[action.id].tabs = tabs[action.id].tabs.concat(action.payload);

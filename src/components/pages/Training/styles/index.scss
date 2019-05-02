@@ -240,8 +240,8 @@ $solved-icon: $fa-var-check-circle;
                     justify-content: space-between;
                     align-items: center;
                     position: relative;
-                    font-weight: 600;
-                    color: #555;
+                    font-weight: 501;
+                    // color: #555;
 
                     &:after {
                         @extend %fa-icon;
@@ -730,7 +730,7 @@ $solved-icon: $fa-var-check-circle;
     padding: 10px 20px;
     text-align: left;
     border: none;
-    font-weight: 600;
+    font-weight: 501;
     outline: none;
     display: flex;
     align-items: center;
@@ -803,7 +803,7 @@ $solved-icon: $fa-var-check-circle;
     padding: 20px;
     padding-top: 0;
     .settings-group-title {
-        font-weight: 600;
+        font-weight: 501;
         margin-bottom: 10px;
     }
 }

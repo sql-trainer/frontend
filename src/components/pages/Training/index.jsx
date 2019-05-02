@@ -10,7 +10,6 @@ import {
     AccordionItemPanel,
 } from 'react-accessible-accordion';
 import Select from 'react-select';
-import store from '../../../modules/store';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
 
@@ -69,7 +68,7 @@ class Training extends Component {
     };
 
     componentDidMount() {
-        const { questions, loadTest, changeEditorTheme, editorTheme } = this.props;
+        const { loadTest, changeEditorTheme, editorTheme } = this.props;
         document.title = 'Training';
         document.querySelector('.app').className = 'app training-component';
 

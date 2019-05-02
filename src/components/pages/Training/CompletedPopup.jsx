@@ -22,8 +22,8 @@ class CompletedPopup extends Component {
                             href="/"
                             onClick={e => {
                                 e.preventDefault();
-                                changePopupVisibility(false);
                                 this.props.resetTest();
+                                changePopupVisibility(false);
                             }}
                         >
                             сбросить

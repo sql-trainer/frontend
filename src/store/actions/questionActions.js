@@ -2,7 +2,6 @@ import * as types from '../../constants';
 import { loadDatabaseFromAPI } from './databaseActions';
 import { addNotification } from './notificationActions';
 import { createInitialTabs } from './tabsActions';
-import store from '../../modules/store';
 
 const setQuestions = payload => ({ type: types.QUESTIONS_LOADED, payload });
 
@@ -41,7 +40,6 @@ const prevQuestion = () => {
 };
 
 const changeCurrQuestion = id => {
-    // store.set('lastQuestion', id);
     return { type: types.CHANGE_QUESTION, id };
 };
 
@@ -65,11 +63,6 @@ const loadQuestions = testID => {
             dispatch(createInitialTabs(res.questions));
             dispatch(changeCurrQuestion(0));
             dispatch(isLoading(false));
-
-            // store.setItems({
-            //     questions: getState().questions.questions,
-            //     tabs: getState().tabs.tabs,
-            // });
         }
     };
 };

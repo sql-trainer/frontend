@@ -30,7 +30,6 @@ class CheckButtonC extends Component {
             isTestCompleted,
             currTab,
             currQuestion,
-            tabs,
             saveTabsToLocalStorage,
         } = this.props;
 

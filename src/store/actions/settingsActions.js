@@ -1,5 +1,4 @@
 import * as types from '../../constants';
-import store from '../../modules/store';
 
 const setEditorTheme = theme => {
     return { type: types.CHANGE_EDITOR_THEME, theme };

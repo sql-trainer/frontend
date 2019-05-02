@@ -17,9 +17,7 @@ class Database extends Component {
                         />
                     </a>
                 </div>
-                {database === undefined ? (
-                    <div className="placeholder">База данных не загружена</div>
-                ) : (
+                {database !== undefined &&
                     database.tables.map((table, index) => {
                         return (
                             <div className="table" key={index}>
@@ -40,7 +38,7 @@ class Database extends Component {
                             </div>
                         );
                     })
-                )}
+                }
             </div>
         );
     }
