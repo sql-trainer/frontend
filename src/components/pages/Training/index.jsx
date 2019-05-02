@@ -54,7 +54,9 @@ const Placeholder = () => (
                     <div className="ph ph-title" style={{ width: '80px' }} />
                     <div className="ph ph-title" style={{ width: '50px' }} />
                 </div>
-                <div className="ph" style={{ height: '200px' }} />
+                <div className="ph" style={{ height: '200px' }}>
+                    <div className="ph ph-circle" />
+                </div>
             </div>
         </div>
     </div>
@@ -67,15 +69,14 @@ class Training extends Component {
     };
 
     componentDidMount() {
-        const { questions, loadTest, changeEditorTheme } = this.props;
+        const { questions, loadTest, changeEditorTheme, editorTheme } = this.props;
         document.title = 'Training';
         document.querySelector('.app').className = 'app training-component';
 
-        changeEditorTheme(store.get('editorTheme'));
+        changeEditorTheme(editorTheme);
 
-        if (!questions.length) {
-            loadTest('open');
-        }
+        // if (!questions.length)
+        loadTest('open');
 
         ReactTooltip.rebuild();
     }
@@ -209,9 +210,7 @@ class Training extends Component {
                         <Select
                             options={this.editorThemes}
                             defaultValue={
-                                this.editorThemes[
-                                    this.editorThemes.findIndex(theme => theme.value === store.get('editorTheme'))
-                                ]
+                                this.editorThemes[this.editorThemes.findIndex(theme => theme.value === editorTheme)]
                             }
                             placeholder="Выберите цветовую схему"
                             theme={this.selectTheme}

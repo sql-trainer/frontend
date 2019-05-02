@@ -106,9 +106,9 @@ $solved-icon: $fa-var-check-circle;
                 line-height: 1.4;
             }
 
-            .placeholder {
-                padding: 7px 15px;
-            }
+            // .placeholder {
+            //     padding: 7px 15px;
+            // }
 
             &[data-loading='true'] {
                 min-height: 120px;
@@ -127,13 +127,16 @@ $solved-icon: $fa-var-check-circle;
                     color: #888;
                     z-index: 2;
                 }
+
                 &:before {
                     content: '';
                     position: absolute;
                     top: 0;
                     left: 0;
-                    width: 100%;
-                    height: 100%;
+                    bottom: 0;
+                    right: 0;
+                    // width: 100%;
+                    // height: 100%;
                     background: #fff;
                     opacity: 0.7;
                     z-index: 2;
@@ -524,7 +527,7 @@ $solved-icon: $fa-var-check-circle;
                 background: transparent;
                 color: #444;
                 border-radius: 50%;
-                bottom: 27px;
+                bottom: 18px;
                 right: 15px;
                 position: absolute;
                 outline: none;
@@ -823,7 +826,7 @@ $solved-icon: $fa-var-check-circle;
         background: #ddd;
     }
 
-    1000% {
+    100% {
         background: #efefef;
     }
 }
@@ -837,15 +840,15 @@ $solved-icon: $fa-var-check-circle;
 }
 
 .ph-left {
-    padding: 10px 0 10px 20px;
+    padding: 10px 0 0px 20px;
 }
 
 .ph-right {
-    padding: 10px 20px;
+    padding: 10px 20px 0 15px;
 }
 
 .ph-block {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .ph-inline {
@@ -862,6 +865,7 @@ $solved-icon: $fa-var-check-circle;
     height: 20px;
     animation: blinking 1.5s linear infinite;
     margin-bottom: 10px;
+    position: relative;
 
     &.ph-75 {
         width: 75%;
@@ -881,9 +885,17 @@ $solved-icon: $fa-var-check-circle;
 
     &.ph-title {
         height: 25px;
+        margin-bottom: 21px;
     }
 
     &.ph-circle {
         border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        animation-delay: 0.75s;
+        margin-bottom: 0;
     }
 }

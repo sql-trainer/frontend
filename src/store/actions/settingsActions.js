@@ -20,7 +20,7 @@ const changeEditorTheme = theme => {
 
         theme = editorThemes.includes(theme) ? theme : 'prism';
 
-        store.set('editorTheme', theme);
+        // store.set('editorTheme', theme);
 
         import(`../../styles/themes/${theme}.scss`).then(() => {
             dispatch(setEditorTheme(theme));

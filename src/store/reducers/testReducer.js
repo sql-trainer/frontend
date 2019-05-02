@@ -1,4 +1,5 @@
 import * as types from '../../constants';
+import { REHYDRATE } from 'redux-persist';
 
 const initialState = {
     isCompletedPopupVisible: false,
@@ -6,14 +7,31 @@ const initialState = {
     isTestLoaderVisible: true,
     testLoaderErrorMessage: '',
     isLogoVisible: true,
+    testTimestamp: null,
 };
 
-const tabs = (state = initialState, action) => {
+const test = (state = initialState, action) => {
     switch (action.type) {
+        case REHYDRATE: {
+            if (action.payload)
+                return {
+                    ...state,
+                    isTestLoaderVisible: false,
+                    testTimestamp: action.payload.test.testTimestamp,
+                };
+            else return { ...state };
+        }
+
         case types.CHANGE_COMPLETED_POPUP_VISIBILITY:
             return {
                 ...state,
                 isCompletedPopupVisible: action.visible,
+            };
+
+        case types.CHANGE_TEST_TIMESTAMP:
+            return {
+                ...state,
+                testTimestamp: action.testTimestamp,
             };
 
         case types.CHANGE_LOADER_VISIBILITY:
@@ -40,4 +58,4 @@ const tabs = (state = initialState, action) => {
     }
 };
 
-export default tabs;
+export default test;

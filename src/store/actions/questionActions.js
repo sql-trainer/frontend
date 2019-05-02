@@ -41,7 +41,7 @@ const prevQuestion = () => {
 };
 
 const changeCurrQuestion = id => {
-    store.set('lastQuestion', id);
+    // store.set('lastQuestion', id);
     return { type: types.CHANGE_QUESTION, id };
 };
 
@@ -66,10 +66,10 @@ const loadQuestions = testID => {
             dispatch(changeCurrQuestion(0));
             dispatch(isLoading(false));
 
-            store.setItems({
-                questions: getState().questions.questions,
-                tabs: getState().tabs.tabs,
-            });
+            // store.setItems({
+            //     questions: getState().questions.questions,
+            //     tabs: getState().tabs.tabs,
+            // });
         }
     };
 };

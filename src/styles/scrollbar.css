@@ -21,6 +21,7 @@
     /* please don't change 'position' */
     position: absolute;
     z-index: 3;
+    transition: opacity 0.1s ease-in-out;
 }
 
 .ps__rail-y {
@@ -32,6 +33,7 @@
     /* please don't change 'position' */
     position: absolute;
     z-index: 3;
+    transition: opacity 0.1s ease-in-out;
 }
 
 .ps--active-x > .ps__rail-x,

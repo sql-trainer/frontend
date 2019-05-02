@@ -4,7 +4,6 @@ import retryFetch from '../../modules/retry-fetch';
 
 import { loadQuestions, isLoading as isQuestionsLoading, setQuestions, changeCurrQuestion } from './questionActions';
 import { loadDatabaseFromAPI, isLoading as isDatabaseLoading } from './databaseActions';
-import { addNotification } from './notificationActions';
 import { createInitialTabs } from './tabsActions';
 
 const changePopupVisibility = visible => {
@@ -19,57 +18,63 @@ const changeTestStatus = status => {
     return { type: types.CHANGE_TEST_STATUS, status };
 };
 
+const changeTestTimestamp = testTimestamp => {
+    return { type: types.CHANGE_TEST_TIMESTAMP, testTimestamp };
+};
+
 const changeTestLoaderErrorMessage = (message, isLogoVisible = true) => {
     return { type: types.LOADER_ERROR, message, isLogoVisible };
 };
 
 const resetTest = () => {
     return async function(dispatch) {
-        store.removeItems(['questions', 'testTimestamp', 'lastQuestion', 'tabs']);
+        localStorage.removeItem('persist:training');
         dispatch(loadTest());
-        // dispatch(changePopupVisibility(false));
     };
 };
 
 const loadTest = (testID = 'open') => {
     return async function(dispatch, getState) {
-        dispatch(isQuestionsLoading(true));
-        dispatch(isDatabaseLoading(true));
-        dispatch(changeLoaderVisibility(true));
-        dispatch(changeTestLoaderErrorMessage(''));
+        // dispatch(isQuestionsLoading(true));
+        // dispatch(isDatabaseLoading(true));
+        // dispatch(changeLoaderVisibility(true));
+        // dispatch(changeTestLoaderErrorMessage(''));
 
         retryFetch(
             async () => {
-                const { questions, lastQuestion, testTimestamp, tabs } = store.getItems([
-                    'questions',
-                    'lastQuestion',
-                    'testTimestamp',
-                    'tabs',
-                ]);
+                // const { questions, lastQuestion, testTimestamp, tabs } = store.getItems([
+                //     'questions',
+                //     'lastQuestion',
+                //     'testTimestamp',
+                //     'tabs',
+                // ]);
 
                 const testMeta = await fetch(`http://localhost:8080/api/v1/tests/${testID}/meta/`).then(res =>
                     res.json(),
                 );
 
-                if (questions && tabs && testTimestamp === testMeta.date_changed) {
-                    const dbId = questions[lastQuestion || 0].database;
+                // if (questions && tabs && testTimestamp === testMeta.date_changed) {
+                //     const dbId = questions[lastQuestion || 0].database;
 
-                    dispatch(loadDatabaseFromAPI(dbId));
+                //     dispatch(loadDatabaseFromAPI(dbId));
 
-                    dispatch(setQuestions(questions));
-                    dispatch(createInitialTabs(questions, tabs));
-                    dispatch(changeCurrQuestion(Number(lastQuestion) || 0));
-                    dispatch(isQuestionsLoading(false));
+                //     dispatch(setQuestions(questions));
+                //     dispatch(createInitialTabs(questions, tabs));
+                //     dispatch(changeCurrQuestion(Number(lastQuestion) || 0));
+                //     dispatch(isQuestionsLoading(false));
 
-                    // dispatch(addNotification('Последнее состояние восстановлено', 'info'));
-                } else {
+                //     // dispatch(addNotification('Последнее состояние восстановлено', 'info'));
+                // } else {
+                if (getState().test.testTimestamp !== testMeta.date_changed) {
                     dispatch(loadQuestions(testID));
-
-                    store.setItems({
-                        testTimestamp: testMeta.date_changed,
-                        lastQuestion: 0,
-                    });
+                    dispatch(changeTestTimestamp(testMeta.date_changed));
                 }
+                // else
+                // store.setItems({
+                //     testTimestamp: testMeta.date_changed,
+                //     lastQuestion: 0,
+                // });
+                // }
             },
             {
                 onLastAttempt: () => {

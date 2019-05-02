@@ -6,12 +6,12 @@ class Tabs extends Component {
     _deleteTab = (e, qid) => {
         e.stopPropagation();
         this.props.deleteTab(qid);
-        this.props.saveTabsToLocalStorage();
+        // this.props.saveTabsToLocalStorage();
     };
 
     _changeTab(index, id) {
         this.props.changeTab(index, id);
-        this.props.saveTabsToLocalStorage();
+        // this.props.saveTabsToLocalStorage();
     }
 
     render() {

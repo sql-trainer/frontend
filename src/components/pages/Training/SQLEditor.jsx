@@ -46,7 +46,7 @@ class SQLEditor extends Component {
                     highlight={code => this.highlightSQL(code)}
                     className={classNames('textarea', editorTheme)}
                     tabSize={4}
-                    onKeyUp={this.saveOnEdit}
+                    // onKeyUp={this.saveOnEdit}
                     placeholder="Введите свой запрос..."
                 />
             </>

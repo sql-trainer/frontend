@@ -19,8 +19,6 @@ class Questions extends Component {
     render() {
         const { questions, currQuestionIndex, nextQuestion, prevQuestion } = this.props;
         const { isAllQOpen } = this.state;
-        console.log('q', 'rerender');
-
         const questionsLength = questions.length;
         const currQuestion = this.currQuestion;
 
