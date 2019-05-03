@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { loadDatabaseFromAPI } from '../../../../store/actions/databaseActions';
 import { changeCurrQuestion, nextQuestion, prevQuestion } from '../../../../store/actions/questionActions';
 import { addNotification } from '../../../../store/actions/notificationActions';
+import * as selectors from '../../../../store/selectors';
 
 import Questions from '../Questions';
 
@@ -12,6 +13,7 @@ const mapStateToProps = ({ questions, database }, ownProps) => {
         isQuestionsLoading: questions.isQuestionsLoading,
         currQuestionIndex: questions.currQuestionIndex,
         database: database.database,
+        currQuestion: selectors.getCurrentQuestion({ questions }),
         ...ownProps,
     };
 };

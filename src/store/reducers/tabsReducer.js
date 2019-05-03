@@ -9,16 +9,15 @@ const initialState = {
 const tabs = (state = initialState, action) => {
     switch (action.type) {
         case REHYDRATE: {
-            if (action.payload) {
+            if (action.key === 'test-data' && action.payload) {
                 const tabs = action.payload.tabs.tabs;
-                Object.keys(tabs).forEach((key) => tabs[key].tabs.map(t => delete t.loading));
+                Object.keys(tabs).forEach(key => tabs[key].tabs.map(t => delete t.loading));
 
                 return {
                     ...state,
                     tabs,
                 };
-            }
-            else return { ...state };
+            } else return { ...state };
         }
 
         case types.CREATE_NEW_TAB: {

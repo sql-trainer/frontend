@@ -74,29 +74,9 @@ class Training extends Component {
 
         changeEditorTheme(editorTheme);
 
-        // if (!questions.length)
         loadTest('open');
 
         ReactTooltip.rebuild();
-    }
-
-    get tabs() {
-        return (
-            (this.props.tabs[this.currQuestion.id] || {})['tabs'] || [{ html: '', title: 'Tab', response: undefined }]
-        );
-    }
-
-    get currTab() {
-        return this.tabs[this.currTabIndex];
-    }
-
-    get currTabIndex() {
-        return (this.props.tabs[this.currQuestion.id] || {}).currTabIndex || 0;
-    }
-
-    get currQuestion() {
-        const { questions, currQuestionIndex } = this.props;
-        return questions.length ? questions[currQuestionIndex] : {};
     }
 
     highlightPreviewSQL() {
@@ -134,13 +114,17 @@ class Training extends Component {
     ];
 
     render() {
-        const { isInputAreaPinned, changeEditorTheme, editorTheme, isTestLoaderVisible } = this.props;
-        const { isModalHelpOpened, isModalSettingsOpened } = this.state;
+        const {
+            isInputAreaPinned,
+            changeEditorTheme,
+            editorTheme,
+            isTestLoaderVisible,
+            testLoaderErrorMessage,
+            currTab,
+            currQuestion,
+        } = this.props;
 
-        const tabs = this.tabs;
-        const currTab = this.currTab;
-        const currQuestion = this.currQuestion;
-        const currTabIndex = this.currTabIndex;
+        const { isModalHelpOpened, isModalSettingsOpened } = this.state;
 
         return (
             <div>
@@ -149,30 +133,25 @@ class Training extends Component {
                     openSettingsModal={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
                 />
                 {isTestLoaderVisible ? (
-                    <Placeholder />
+                    <>
+                        <div className="test-loader-error">{testLoaderErrorMessage}</div>
+                        <Placeholder />
+                    </>
                 ) : (
                     <section className="training">
                         <PerfectScrollbar className="task-info">
-                            <Questions currQuestion={currQuestion} />
+                            <Questions />
                             <Database />
                         </PerfectScrollbar>
                         <PerfectScrollbar className="task-editor">
                             <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
-                                <Tabs
-                                    tabs={tabs}
-                                    currTabIndex={currTabIndex}
-                                    openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })}
-                                />
+                                <Tabs openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })} />
                                 <PerfectScrollbar
                                     className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
                                 >
-                                    <SQLEditor currTab={currTab} currTabIndex={currTabIndex} />
+                                    <SQLEditor />
                                 </PerfectScrollbar>
-                                <CheckButton
-                                    currTabIndex={currTabIndex}
-                                    currQuestion={currQuestion}
-                                    currTab={currTab}
-                                />
+                                <CheckButton />
                                 <button
                                     className={classNames('next-question', {
                                         active: currQuestion.status === 'solved',

@@ -10,6 +10,7 @@ import {
 } from '../../../../store/actions/tabsActions';
 import { changePopupVisibility, changeTestStatus } from '../../../../store/actions/testActions';
 import { addNotification } from '../../../../store/actions/notificationActions';
+import * as selectors from '../../../../store/selectors';
 
 import store from '../../../../modules/store';
 
@@ -87,6 +88,9 @@ const mapStateToProps = ({ questions, test, tabs }) => {
         isCompletedPopupVisible: test.isCompletedPopupVisible,
         isTestCompleted: test.isTestCompleted,
         tabs: tabs.tabs,
+        currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
+        currQuestion: selectors.getCurrentQuestion({ questions }),
+        currTab: selectors.getCurrentTab({ questions, tabs }),
     };
 };
 

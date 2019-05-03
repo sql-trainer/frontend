@@ -15,4 +15,5 @@ const appReducer = combineReducers({
     settings,
 });
 
+export { questions, database, test, tabs, notification, settings };
 export default appReducer;

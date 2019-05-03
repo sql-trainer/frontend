@@ -703,9 +703,7 @@ $solved-icon: $fa-var-check-circle;
 
 .tool-icon {
     font-size: 20px;
-    // &:not(:last-child) {
     margin-right: 10px;
-    // }
 
     &:after {
         @extend %fa-icon;
@@ -755,9 +753,7 @@ $solved-icon: $fa-var-check-circle;
 
 .accordion__button[aria-expanded='true']::after,
 .accordion__button[aria-selected='true']::after {
-    // transform: rotate(-135deg);
     transform: scaleY(-1) rotate(0deg);
-    // margin-top: 4px;
 }
 
 .accordion__panel {
@@ -794,7 +790,6 @@ $solved-icon: $fa-var-check-circle;
     }
 
     100% {
-        // opacity: 1;
         max-height: 300px;
     }
 }
@@ -898,4 +893,11 @@ $solved-icon: $fa-var-check-circle;
         animation-delay: 0.75s;
         margin-bottom: 0;
     }
+}
+
+.test-loader-error {
+    text-align: center;
+    font-size: 20px;
+    // padding: 10px 0;
+    line-height: 40px;
 }

@@ -1,15 +1,17 @@
 import { connect } from 'react-redux';
 import { changeTabHtml, changeSQLResponseType } from '../../../../store/actions/tabsActions';
-// import { changeEditorTheme } from '../../../../store/actions/settingsActions';
+import * as selectors from '../../../../store/selectors';
 
 import SQLEditor from '../SQLEditor';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = ({ questions, tabs, settings }, ownProps) => {
     return {
-        questions: state.questions.questions,
-        tabs: state.tabs.tabs,
-        currQuestionIndex: state.questions.currQuestionIndex,
-        editorTheme: state.settings.editorTheme,
+        questions: questions.questions,
+        tabs: tabs.tabs,
+        currQuestionIndex: questions.currQuestionIndex,
+        editorTheme: settings.editorTheme,
+        currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
+        currTab: selectors.getCurrentTab({ questions, tabs }),
         ...ownProps,
     };
 };
@@ -17,7 +19,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
     return {
         changeTabHtml: (index, html, id) => dispatch(changeTabHtml(index, html, id)),
-        // changeEditorTheme: theme => dispatch(changeEditorTheme(theme)),
         changeSQLResponseType: (SQLResponseType, tid, qid) =>
             dispatch(changeSQLResponseType(SQLResponseType, tid, qid)),
     };

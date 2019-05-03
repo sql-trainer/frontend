@@ -6,15 +6,18 @@ import {
     pinInputArea,
     saveTabsToLocalStorage,
 } from '../../../../store/actions/tabsActions';
+import * as selectors from '../../../../store/selectors';
 
 import Tabs from '../Tabs';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = ({ questions, tabs }, ownProps) => {
     return {
-        questions: state.questions.questions,
-        currQuestionIndex: state.questions.currQuestionIndex,
-        isInputAreaPinned: state.questions.isInputAreaPinned,
-        allTabs: state.tabs.tabs,
+        questions: questions.questions,
+        currQuestionIndex: questions.currQuestionIndex,
+        isInputAreaPinned: questions.isInputAreaPinned,
+        // allTabs: tabs.tabs,
+        tabs: selectors.getCurrentTabs({ questions, tabs }),
+        currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
         ...ownProps,
     };
 };

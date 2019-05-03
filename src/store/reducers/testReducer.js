@@ -11,14 +11,13 @@ const initialState = {
 };
 
 const test = (state = initialState, action) => {
-    console.log(action);
     switch (action.type) {
         case REHYDRATE: {
-            if (action.payload)
+            if (action.key === 'test-metadata' && action.payload)
                 return {
                     ...state,
                     isTestLoaderVisible: false,
-                    testTimestamp: action.payload.test.testTimestamp,
+                    testTimestamp: action.payload.testTimestamp,
                 };
             else return { ...state };
         }
