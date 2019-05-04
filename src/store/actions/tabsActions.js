@@ -56,7 +56,7 @@ const changeTabHtml = (index, html, id) => {
 
 const isChecking = (qid, tid, checking) => ({ type: types.SQL_CHECKING, qid, tid, checking });
 
-const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
+// const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
 
 const changeSQLResponseType = (SQLResponseType, tid, qid) => ({
     type: types.CHANGE_SQL_RESPONSE_TYPE,
@@ -77,7 +77,7 @@ export {
     deleteTab,
     changeTabResponse,
     changeTabHtml,
-    pinInputArea,
+    // pinInputArea,
     createInitialTabs,
     isChecking,
     changeSQLResponseType,

@@ -1,6 +1,11 @@
 import { connect } from 'react-redux';
 import { loadDatabaseFromAPI } from '../../../../store/actions/databaseActions';
-import { changeCurrQuestion, nextQuestion, prevQuestion } from '../../../../store/actions/questionActions';
+import {
+    changeCurrQuestion,
+    nextQuestion,
+    prevQuestion,
+    changeAllQuestionsVisibility,
+} from '../../../../store/actions/questionActions';
 import { addNotification } from '../../../../store/actions/notificationActions';
 import * as selectors from '../../../../store/selectors';
 
@@ -25,6 +30,7 @@ const mapDispatchToProps = dispatch => {
         addNotification: (message, level) => dispatch(addNotification(message, level)),
         nextQuestion: () => dispatch(nextQuestion()),
         prevQuestion: () => dispatch(prevQuestion()),
+        changeAllQuestionsVisibility: () => dispatch(changeAllQuestionsVisibility()),
     };
 };
 

@@ -2,25 +2,16 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Questions extends Component {
-    state = {
-        isAllQOpen: false,
-    };
-
-    handleQuestionChange(index) {
-        this.props.changeCurrQuestion(index);
-        this.setState({ isAllQOpen: false });
-    }
-
-    get currQuestion() {
-        const { questions, currQuestionIndex } = this.props;
-        return questions.length ? questions[currQuestionIndex] : {};
-    }
-
     render() {
-        const { questions, currQuestionIndex, nextQuestion, prevQuestion } = this.props;
-        const { isAllQOpen } = this.state;
+        const {
+            questions,
+            currQuestionIndex,
+            nextQuestion,
+            prevQuestion,
+            currQuestion,
+            changeAllQuestionsVisibility,
+        } = this.props;
         const questionsLength = questions.length;
-        const currQuestion = this.currQuestion;
 
         return (
             <>
@@ -29,7 +20,7 @@ class Questions extends Component {
                         <div
                             className="menu-icon"
                             data-tip="Список всех вопросов"
-                            onClick={e => this.setState({ isAllQOpen: !isAllQOpen })}
+                            onClick={changeAllQuestionsVisibility}
                         />
                         <div
                             className={`question-counter${
@@ -69,25 +60,6 @@ class Questions extends Component {
                         </div>
                     )}
                 </div>
-
-                <div className={`all-questions ${isAllQOpen ? 'all-questions-active' : ''}`}>
-                    <h2>{questionsLength ? 'Все вопросы' : 'Вопросы отстутствуют'}</h2>
-                    {questions.map((q, index) => {
-                        const className = `question${index === currQuestionIndex ? ' active' : ''}${
-                            questions[index].status === 'solved' ? ' solved' : ''
-                        }`;
-                        return (
-                            <div className={className} key={q.id} onClick={e => this.handleQuestionChange(index)}>
-                                <b>{index + 1}.</b> {q.question}
-                            </div>
-                        );
-                    })}
-                </div>
-
-                <div
-                    className={`all-questions-bg ${isAllQOpen ? 'all-questions-bg-active' : ''}`}
-                    onClick={e => this.setState({ isAllQOpen: !isAllQOpen })}
-                />
             </>
         );
     }

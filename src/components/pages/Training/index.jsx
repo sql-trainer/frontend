@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+// import PerfectScrollbar from 'react-perfect-scrollbar';
+// import { Scrollbars } from 'react-custom-scrollbars';
 import classNames from 'classnames';
 import {
     Accordion,
@@ -14,9 +15,11 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
 
 // imported own comopnents block
+import CustomScrollbars from './CustomScrollbars';
 import { Header } from '../../common/';
 import Table from './Table';
 import { QuestionsContainer as Questions } from './containers/Questions';
+import { AllQuestionsContainer as AllQuestions } from './containers/AllQuestions';
 import { DatabaseContainer as Database } from './containers/Database';
 import { TabsContainer as Tabs } from './containers/Tabs';
 import { CheckButtonContainer as CheckButton } from './containers/CheckButton';
@@ -139,18 +142,19 @@ class Training extends Component {
                     </>
                 ) : (
                     <section className="training">
-                        <PerfectScrollbar className="task-info">
+                        <CustomScrollbars className="task-info">
                             <Questions />
                             <Database />
-                        </PerfectScrollbar>
-                        <PerfectScrollbar className="task-editor">
+                        </CustomScrollbars>
+                        <CustomScrollbars className="task-editor">
                             <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
                                 <Tabs openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })} />
-                                <PerfectScrollbar
+                                <CustomScrollbars
                                     className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
+                                    prefix="editor"
                                 >
                                     <SQLEditor />
-                                </PerfectScrollbar>
+                                </CustomScrollbars>
                                 <CheckButton />
                                 <button
                                     className={classNames('next-question', {
@@ -169,9 +173,11 @@ class Training extends Component {
                                     />
                                 ) : null}
                             </div>
-                        </PerfectScrollbar>
+                        </CustomScrollbars>
                     </section>
                 )}
+
+                <AllQuestions />
 
                 <CompletedPopup />
 
@@ -182,6 +188,8 @@ class Training extends Component {
                     onClose={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
                     maxHeight={500}
                     maxWidth={600}
+                    animation="fade"
+                    fullscreen
                 >
                     <div className="settings-group">
                         <div className="settings-group-title">Цветовая схема редактора</div>

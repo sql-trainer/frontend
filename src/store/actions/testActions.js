@@ -1,5 +1,6 @@
 import * as types from '../../constants';
 import retryFetch from '../../modules/retry-fetch';
+import persist from '../index.js';
 
 import { loadQuestions, isLoading as isQuestionsLoading } from './questionActions';
 import { isLoading as isDatabaseLoading } from './databaseActions';
@@ -26,8 +27,8 @@ const changeTestLoaderErrorMessage = (message, isLogoVisible = true) => {
 
 const resetTest = () => {
     return async function(dispatch, getState) {
-        localStorage.removeItem('persist:training');
         dispatch({ type: 'RESET_TEST' });
+        persist().persistor.flush();
         dispatch(loadTest());
     };
 };
@@ -36,10 +37,16 @@ const loadTest = (testID = 'open') => {
     return async function(dispatch, getState) {
         retryFetch(
             async () => {
+                const timestamp = getState().test.testTimestamp;
                 const testMeta = await fetch(`http://localhost:8080/api/v1/tests/${testID}/meta/`).then(res =>
                     res.json(),
                 );
-                if (getState().test.testTimestamp !== testMeta.date_changed) {
+
+                if (timestamp !== testMeta.date_changed) {
+                    if (timestamp !== null) {
+                        dispatch({ type: 'RESET_TEST' });
+                        persist().persistor.flush();
+                    }
                     dispatch(loadQuestions(testID));
                     dispatch(changeTestTimestamp(testMeta.date_changed));
                 }

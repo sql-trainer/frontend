@@ -4,6 +4,8 @@ import propTypes from 'prop-types';
 import posed, { PoseGroup } from 'react-pose';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
+import CustomScrollbars from '../../pages/Training/CustomScrollbars';
+
 import './index.scss';
 
 const ModalArea = posed.div({
@@ -80,7 +82,7 @@ class Modal extends Component {
                                     <FontAwesomeIcon icon="times" className="modal-close" onClick={onClose} />
                                 )}
                             </h1>
-                            <PerfectScrollbar className="modal-content">{children}</PerfectScrollbar>
+                            <CustomScrollbars className="modal-content">{children}</CustomScrollbars>
                         </ModalAnimBlock>
                     </ModalArea>
                 )}

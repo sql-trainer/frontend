@@ -4,6 +4,8 @@ const setEditorTheme = theme => {
     return { type: types.CHANGE_EDITOR_THEME, theme };
 };
 
+const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
+
 const changeEditorTheme = theme => {
     return async function(dispatch, getState) {
         const editorThemes = [
@@ -19,12 +21,10 @@ const changeEditorTheme = theme => {
 
         theme = editorThemes.includes(theme) ? theme : 'prism';
 
-        // store.set('editorTheme', theme);
-
         import(`../../styles/themes/${theme}.scss`).then(() => {
             dispatch(setEditorTheme(theme));
         });
     };
 };
 
-export { changeEditorTheme };
+export { changeEditorTheme, pinInputArea };

@@ -1,20 +1,15 @@
 import { connect } from 'react-redux';
-import {
-    createNewTab,
-    changeTab,
-    deleteTab,
-    pinInputArea,
-    saveTabsToLocalStorage,
-} from '../../../../store/actions/tabsActions';
+import { createNewTab, changeTab, deleteTab, saveTabsToLocalStorage } from '../../../../store/actions/tabsActions';
+import { pinInputArea } from '../../../../store/actions/settingsActions';
 import * as selectors from '../../../../store/selectors';
 
 import Tabs from '../Tabs';
 
-const mapStateToProps = ({ questions, tabs }, ownProps) => {
+const mapStateToProps = ({ questions, tabs, settings }, ownProps) => {
     return {
         questions: questions.questions,
         currQuestionIndex: questions.currQuestionIndex,
-        isInputAreaPinned: questions.isInputAreaPinned,
+        isInputAreaPinned: settings.isInputAreaPinned,
         // allTabs: tabs.tabs,
         tabs: selectors.getCurrentTabs({ questions, tabs }),
         currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),

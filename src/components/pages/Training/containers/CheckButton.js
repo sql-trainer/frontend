@@ -2,17 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { changeTableActivity } from '../../../../store/actions/databaseActions';
 import { changeQuestionStatus, changeSolvedQuestionSQL } from '../../../../store/actions/questionActions';
-import {
-    changeTabResponse,
-    isChecking,
-    changeSQLResponseType,
-    saveTabsToLocalStorage,
-} from '../../../../store/actions/tabsActions';
+import { changeTabResponse, isChecking, changeSQLResponseType } from '../../../../store/actions/tabsActions';
 import { changePopupVisibility, changeTestStatus } from '../../../../store/actions/testActions';
 import { addNotification } from '../../../../store/actions/notificationActions';
 import * as selectors from '../../../../store/selectors';
-
-import store from '../../../../modules/store';
 
 import CheckButton from '../CheckButton';
 
@@ -25,13 +18,11 @@ class CheckButtonC extends Component {
             changeSQLResponseType,
             changePopupVisibility,
             currTabIndex,
-            questions,
             isChecking,
             addNotification,
             isTestCompleted,
             currTab,
             currQuestion,
-            saveTabsToLocalStorage,
         } = this.props;
 
         const sql = currTab.html;
@@ -65,8 +56,6 @@ class CheckButtonC extends Component {
                 .finally(() => {
                     isChecking(currQuestion.id, currTabIndex, false);
                     changeSQLResponseType(responseType, currTabIndex, currQuestion.id);
-                    saveTabsToLocalStorage();
-                    store.setItems({ questions: questions });
                 });
         }, 1000);
     };
@@ -104,7 +93,6 @@ const mapDispatchToProps = dispatch => ({
     changeTestStatus: index => dispatch(changeTestStatus(index)),
     addNotification: (message, level) => dispatch(addNotification(message, level)),
     changeSQLResponseType: (SQLResponseType, tid, qid) => dispatch(changeSQLResponseType(SQLResponseType, tid, qid)),
-    saveTabsToLocalStorage: () => dispatch(saveTabsToLocalStorage()),
 });
 
 export const CheckButtonContainer = connect(

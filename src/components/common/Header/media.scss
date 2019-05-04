@@ -7,16 +7,7 @@
                 padding-top: 20px;
                 .header__nav {
                     margin-top: 15px;
-                    .nav-links {
-                        .nav-item:nth-last-child(3) {
-                            padding-right: 20px;
-                            margin-right: 0px;
-                        }
-                    }
-                    .nav-item.login-button {
-                        box-shadow: -5px 0 15px 0 white;
-                        border-left-color: #aaa;
-                    }
+                    padding-left: 0px;
                 }
             }
         }

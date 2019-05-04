@@ -9,14 +9,11 @@ const initialState = {
 const tabs = (state = initialState, action) => {
     switch (action.type) {
         case REHYDRATE: {
-            if (action.key === 'test-data' && action.payload) {
-                const tabs = action.payload.tabs.tabs;
+            if (action.key === 'test-tabs' && action.payload) {
+                const tabs = action.payload.tabs;
                 Object.keys(tabs).forEach(key => tabs[key].tabs.map(t => delete t.loading));
 
-                return {
-                    ...state,
-                    tabs,
-                };
+                return { ...state, tabs };
             } else return { ...state };
         }
 

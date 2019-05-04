@@ -12,7 +12,7 @@ const mapStateToProps = ({ questions, tabs, test, settings }, ownProps) => {
         currQuestionIndex: questions.currQuestionIndex,
         isTestLoaderVisible: test.isTestLoaderVisible,
         testLoaderErrorMessage: test.testLoaderErrorMessage,
-        isInputAreaPinned: questions.isInputAreaPinned,
+        isInputAreaPinned: settings.isInputAreaPinned,
         isLogoVisible: test.isLogoVisible,
         editorTheme: settings.editorTheme,
         currTab: selectors.getCurrentTab({ questions, tabs }),

@@ -37,8 +37,7 @@ class Database extends Component {
                                 </div>
                             </div>
                         );
-                    })
-                }
+                    })}
             </div>
         );
     }

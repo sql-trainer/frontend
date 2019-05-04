@@ -1,5 +1,5 @@
 import * as types from '../../constants';
-import { REHYDRATE, PURGE } from 'redux-persist';
+import { REHYDRATE } from 'redux-persist';
 
 const initialState = {
     isCompletedPopupVisible: false,
@@ -13,18 +13,14 @@ const initialState = {
 const test = (state = initialState, action) => {
     switch (action.type) {
         case REHYDRATE: {
-            if (action.key === 'test-metadata' && action.payload)
+            if (action.key === 'test-metadata' && action.payload) {
                 return {
                     ...state,
                     isTestLoaderVisible: false,
                     testTimestamp: action.payload.testTimestamp,
                 };
-            else return { ...state };
+            } else return { ...state };
         }
-
-        case PURGE:
-            console.log('purged');
-            return initialState;
 
         case types.CHANGE_COMPLETED_POPUP_VISIBILITY:
             return {

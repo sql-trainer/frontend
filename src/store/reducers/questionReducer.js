@@ -3,21 +3,19 @@ import { REHYDRATE } from 'redux-persist';
 
 const initialState = {
     questions: [],
-    testMeta: undefined,
     isQuestionsLoading: true,
     currQuestionIndex: 0,
-    isInputAreaPinned: false,
+    isAllQOpen: false,
 };
 
 const questions = (state = initialState, action) => {
     switch (action.type) {
         case REHYDRATE: {
-            if (action.key === 'test-data' && action.payload) {
+            if (action.key === 'test-questions' && action.payload) {
                 return {
                     ...state,
-                    questions: action.payload.questions.questions,
-                    currQuestionIndex: action.payload.questions.currQuestionIndex,
-                    isInputAreaPinned: action.payload.questions.isInputAreaPinned,
+                    questions: action.payload.questions,
+                    currQuestionIndex: action.payload.currQuestionIndex,
                 };
             } else return { ...state };
         }
@@ -26,8 +24,8 @@ const questions = (state = initialState, action) => {
             return { ...state, questions: action.payload };
         }
 
-        case types.PIN_INPUT_AREA:
-            return { ...state, isInputAreaPinned: !state.isInputAreaPinned };
+        case types.CHANGE_ALL_QUESTIONS_VISIBILITY:
+            return { ...state, isAllQOpen: !state.isAllQOpen };
 
         case types.QUESTIONS_LOADING:
             return { ...state, isQuestionsLoading: action.payload };

@@ -49,6 +49,8 @@ const changeSolvedQuestionSQL = sql => ({ type: types.CHANGE_SOLVED_QUESTION_SQL
 
 const isLoading = payload => ({ type: types.QUESTIONS_LOADING, payload });
 
+const changeAllQuestionsVisibility = () => ({ type: types.CHANGE_ALL_QUESTIONS_VISIBILITY });
+
 const loadQuestions = testID => {
     return async function(dispatch, getState) {
         const res = await fetch(`http://localhost:8080/api/v1/tests/${testID}/`).then(res => res.json());
@@ -76,4 +78,5 @@ export {
     nextQuestion,
     prevQuestion,
     loadQuestions,
+    changeAllQuestionsVisibility,
 };

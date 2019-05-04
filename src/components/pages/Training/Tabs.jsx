@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import CustomScrollbars from './CustomScrollbars';
 
 class Tabs extends Component {
     _deleteTab = (e, qid) => {
@@ -29,31 +31,33 @@ class Tabs extends Component {
         return (
             <>
                 <div className="tabs">
-                    <div>
-                        {tabs.map((tab, index) => (
-                            <div
-                                className={classNames('tab', { active: currTabIndex === index })}
-                                onClick={e => this._changeTab(index, questions[currQuestionIndex].id)}
-                                key={index}
-                            >
-                                {tab.title}
-                                <FontAwesomeIcon
-                                    icon="times"
-                                    className="tab-close"
-                                    onClick={e => this._deleteTab(e, questions[currQuestionIndex].id)}
-                                />
-                            </div>
-                        ))}
+                    <PerfectScrollbar>
+                        <div>
+                            {tabs.map((tab, index) => (
+                                <div
+                                    className={classNames('tab', { active: currTabIndex === index })}
+                                    onClick={e => this._changeTab(index, questions[currQuestionIndex].id)}
+                                    key={index}
+                                >
+                                    {tab.title}
+                                    <FontAwesomeIcon
+                                        icon="times"
+                                        className="tab-close"
+                                        onClick={e => this._deleteTab(e, questions[currQuestionIndex].id)}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </PerfectScrollbar>
 
-                        <FontAwesomeIcon
-                            className="tabs-icon"
-                            icon="plus"
-                            data-tip="Добавить новую вкладку"
-                            onClick={e => {
-                                createNewTab(questions[currQuestionIndex].id);
-                            }}
-                        />
-                    </div>
+                    <FontAwesomeIcon
+                        className="tabs-icon"
+                        icon="plus"
+                        data-tip="Добавить новую вкладку"
+                        onClick={e => {
+                            createNewTab(questions[currQuestionIndex].id);
+                        }}
+                    />
                     <div className="tools">
                         <FontAwesomeIcon
                             className={classNames('tabs-icon pin', isInputAreaPinned ? 'pin-active' : 'pin-inactive')}

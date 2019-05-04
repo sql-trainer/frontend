@@ -2,6 +2,7 @@ import * as types from '../../constants';
 
 const initialState = {
     editorTheme: 'prism',
+    isInputAreaPinned: false,
 };
 
 const tabs = (state = initialState, action) => {
@@ -11,6 +12,9 @@ const tabs = (state = initialState, action) => {
                 ...state,
                 editorTheme: action.theme,
             };
+
+        case types.PIN_INPUT_AREA:
+            return { ...state, isInputAreaPinned: !state.isInputAreaPinned };
 
         default:
             return state;
