@@ -1,5 +1,5 @@
 import * as types from '../../constants';
-import store from '../../modules/store';
+import { addNotification } from './notificationActions';
 
 const createNewTab = id => {
     return {
@@ -7,9 +7,17 @@ const createNewTab = id => {
         payload: {
             html: '',
             title: 'Tab',
-            response: undefined,
         },
         id,
+    };
+};
+
+const copyAnswerToClipboard = html => {
+    return async dispatch => {
+        navigator.clipboard
+            .writeText(html)
+            .then(() => dispatch(addNotification('Скопировано', 'info')))
+            .catch(() => dispatch(addNotification('Ошибка при копировании', 'error')));
     };
 };
 
@@ -72,4 +80,5 @@ export {
     createInitialTabs,
     isChecking,
     changeSQLResponseType,
+    copyAnswerToClipboard,
 };

@@ -3,8 +3,10 @@
 @import '@fortawesome/fontawesome-free/scss/solid.scss';
 @import '@fortawesome/fontawesome-free/scss/regular.scss';
 @import '@fortawesome/fontawesome-free/scss/_animated.scss';
+@import './animations.scss';
 
 $solved-icon: $fa-var-check-circle;
+$copy-icon: $fa-var-clone;
 
 @import url('https://fonts.googleapis.com/css?family=Fira+Mono');
 
@@ -13,41 +15,6 @@ $solved-icon: $fa-var-check-circle;
     @extend .fas;
     content: fa-content($solved-icon);
     color: rgb(78, 211, 78);
-}
-
-%icon {
-    @extend %fa-icon;
-    border-radius: 50%;
-    background: transparent;
-    transition: all 0.2s ease-in-out;
-    padding: 5px;
-
-    &:hover {
-        cursor: pointer;
-        color: $icon-hover-color;
-    }
-}
-
-@keyframes colors {
-    0% {
-        background: #369cc7;
-    }
-
-    25% {
-        background: #6cac17;
-    }
-
-    50% {
-        background: #ebad1a;
-    }
-
-    75% {
-        background: #ec3d3d;
-    }
-
-    100% {
-        background: #369cc7;
-    }
 }
 
 .training {
@@ -147,17 +114,32 @@ $solved-icon: $fa-var-check-circle;
                     grid-template-columns: 48px 1fr repeat(2, 25px);
                     align-items: center;
                     .question-counter {
+                        display: flex;
+                    }
+
+                    .solved-icon {
                         &:after {
-                            content: '';
-                            transition: opacity 0.2s ease-in-out;
-                            opacity: 0;
+                            @extend %solved-icon;
+                            margin-left: 8px;
+                            font-size: 15px;
+                            opacity: 1;
                         }
-                        &.solved {
-                            &:after {
-                                @extend %solved-icon;
-                                margin-left: 8px;
-                                font-size: 15px;
-                                opacity: 1;
+                    }
+
+                    .copy-icon {
+                        &:after {
+                            @extend %fa-icon;
+                            @extend .fas;
+                            color: $icon-color;
+                            content: fa-content($copy-icon);
+                            cursor: pointer;
+                            transition: color 0.1s ease-in-out;
+                            margin-left: 8px;
+                            font-size: 15px;
+                            opacity: 1;
+
+                            &:hover {
+                                color: $icon-hover-color;
                             }
                         }
                     }
@@ -267,10 +249,11 @@ $solved-icon: $fa-var-check-circle;
                         display: flex;
                         flex-direction: column;
                         overflow: hidden;
-                        height: 0;
-
+                        max-height: 0; // height: 0;
                         &.active {
-                            height: auto;
+                            // height: auto;
+
+                            animation: tables 0.3s ease-in-out forwards;
                         }
 
                         .table-prop {
@@ -319,7 +302,7 @@ $solved-icon: $fa-var-check-circle;
                     }
                     & > div > div {
                         display: flex;
-                        align-items: center;
+                        // align-items: center;
 
                         .tab {
                             list-style: none;
@@ -332,7 +315,8 @@ $solved-icon: $fa-var-check-circle;
                             margin-right: 5px;
                             align-items: center;
                             box-sizing: border-box;
-                            height: 40px;
+                            height: 42px;
+                            position: relative;
 
                             &:last-child {
                                 margin-right: 0px;
@@ -344,12 +328,10 @@ $solved-icon: $fa-var-check-circle;
 
                             &.active {
                                 background: #f6f6f6;
+                                z-index: 2;
 
                                 .tab-close {
                                     display: block;
-                                }
-
-                                &:after {
                                 }
                             }
 
@@ -573,17 +555,26 @@ $solved-icon: $fa-var-check-circle;
     pointer-events: unset;
 }
 
+.notifications-tr {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: auto !important;
+}
+
 .notification {
-    border-radius: 4px !important;
+    border-radius: 10px !important;
     background-color: #f6f6f6 !important;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15) !important;
     border: none !important;
+    width: max-content !important;
 }
 
 .notification-message {
     height: max-content;
     font-size: 16px;
     color: white !important;
+    line-height: 1em;
 }
 
 .notification-success {
@@ -650,8 +641,18 @@ $solved-icon: $fa-var-check-circle;
     margin-right: 10px;
     &:after {
         @extend %fa-icon;
-        @extend %icon;
+        border-radius: 50%;
+        background: transparent;
+        transition: all 0.2s ease-in-out;
+        padding: 5px;
         color: $icon-color;
+        cursor: pointer;
+    }
+
+    &:hover {
+        &:after {
+            color: $icon-hover-color;
+        }
     }
 
     &.questionmark-icon {
@@ -667,14 +668,11 @@ $solved-icon: $fa-var-check-circle;
             @extend .fas;
             content: fa-content($fa-var-map-pin);
         }
+        animation: pinOut 0.4s ease-in-out forwards;
     }
 
     &.pin-active {
         animation: pin 0.4s ease-in-out forwards;
-    }
-
-    &.pin-inactive {
-        animation: pinOut 0.4s ease-in-out forwards;
     }
 }
 
@@ -717,7 +715,7 @@ $solved-icon: $fa-var-check-circle;
 
 .accordion__panel {
     padding: 10px 20px;
-    animation: fadein 0.3s ease-in-out forwards;
+    animation: accordion 0.3s ease-in-out forwards;
     max-height: 0;
     overflow: hidden;
     box-sizing: border-box;
@@ -733,23 +731,6 @@ $solved-icon: $fa-var-check-circle;
 
     p {
         padding-left: 0px;
-    }
-}
-
-@keyframes fadein {
-    0% {
-        opacity: 0;
-        max-height: 0;
-        padding: 0 20px;
-    }
-
-    55% {
-        opacity: 1;
-        padding: 10px 20px;
-    }
-
-    100% {
-        max-height: 300px;
     }
 }
 
@@ -769,20 +750,6 @@ $solved-icon: $fa-var-check-circle;
     margin-top: 10px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;
-}
-
-@keyframes blinking {
-    0% {
-        background: #efefef;
-    }
-
-    50% {
-        background: #ddd;
-    }
-
-    100% {
-        background: #efefef;
-    }
 }
 
 .placeholder {
@@ -858,40 +825,4 @@ $solved-icon: $fa-var-check-circle;
     text-align: center;
     font-size: 20px;
     line-height: 40px;
-}
-
-@keyframes pin {
-    0% {
-        transform: rotateZ(45deg);
-    }
-
-    50% {
-        transform: rotateZ(0deg) translateY(-10px);
-    }
-
-    70% {
-        transform: rotateZ(0deg) translateY(5px);
-    }
-
-    100% {
-        transform: rotateZ(0deg) translateY(0px);
-    }
-}
-
-@keyframes pinOut {
-    100% {
-        transform: rotateZ(45deg);
-    }
-
-    50% {
-        transform: rotateZ(0deg) translateY(-10px);
-    }
-
-    20% {
-        transform: rotateZ(0deg) translateY(5px);
-    }
-
-    0% {
-        transform: rotateZ(0deg) translateY(0px);
-    }
 }

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactTooltip from 'react-tooltip';
 
 class Questions extends Component {
+    componentDidUpdate() {
+        ReactTooltip.rebuild();
+    }
+
     render() {
         const {
             questions,
@@ -10,6 +15,7 @@ class Questions extends Component {
             prevQuestion,
             currQuestion,
             changeAllQuestionsVisibility,
+            copyAnswerToClipboard,
         } = this.props;
         const questionsLength = questions.length;
 
@@ -22,12 +28,18 @@ class Questions extends Component {
                             data-tip="Список всех вопросов"
                             onClick={changeAllQuestionsVisibility}
                         />
-                        <div
-                            className={`question-counter${
-                                questions.length && currQuestion.status === 'solved' ? ' solved' : ''
-                            }`}
-                        >
+                        <div className={`question-counter`}>
                             Вопрос {!questionsLength ? '' : `#${currQuestionIndex + 1} из ${questionsLength}`}
+                            {currQuestion.status && (
+                                <>
+                                    <div className="solved-icon" />
+                                    <div
+                                        className="copy-icon"
+                                        data-tip="Скопировать последний правильный ответ"
+                                        onClick={e => copyAnswerToClipboard(currQuestion.sql)}
+                                    />
+                                </>
+                            )}
                         </div>
                         {questionsLength ? (
                             <>

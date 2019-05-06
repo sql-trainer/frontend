@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { loadDatabaseFromAPI } from '../../../../store/actions/databaseActions';
+import { copyAnswerToClipboard } from '../../../../store/actions/tabsActions';
 import {
     changeCurrQuestion,
     nextQuestion,
@@ -31,6 +32,7 @@ const mapDispatchToProps = dispatch => {
         nextQuestion: () => dispatch(nextQuestion()),
         prevQuestion: () => dispatch(prevQuestion()),
         changeAllQuestionsVisibility: () => dispatch(changeAllQuestionsVisibility()),
+        copyAnswerToClipboard: html => dispatch(copyAnswerToClipboard(html)),
     };
 };
 

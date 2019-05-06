@@ -1,5 +1,5 @@
 import * as types from '../../constants';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, pickBy } from 'lodash';
 import { REHYDRATE } from 'redux-persist';
 
 const initialState = {
@@ -19,8 +19,10 @@ const tabs = (state = initialState, action) => {
 
         case types.CREATE_NEW_TAB: {
             const tabs = cloneDeep(state.tabs);
-            tabs[action.id].tabs = tabs[action.id].tabs.concat(action.payload);
+            action.payload.key = tabs[action.id].maxTabIndex + 1;
+            tabs[action.id].tabs.push(action.payload);
             tabs[action.id].currTabIndex = tabs[action.id].tabs.length - 1;
+            tabs[action.id].maxTabIndex = tabs[action.id].maxTabIndex + 1;
 
             return { ...state, tabs };
         }
@@ -33,18 +35,37 @@ const tabs = (state = initialState, action) => {
 
         case types.CREATE_INITIAL_TABS: {
             let tabs = {};
+            const qKeys = Object.keys(action.initialTabs);
 
-            if (Object.keys(action.initialTabs).length) {
-                Object.keys(action.initialTabs).forEach(key =>
+            if (qKeys.length) {
+                qKeys.forEach(key =>
                     action.initialTabs[key].tabs.map(
                         (tab, index) => delete action.initialTabs[key].tabs[index].loading,
                     ),
                 );
+
+                tabs = { ...action.initialTabs };
+            } else {
+                action.questions.forEach(
+                    q =>
+                        (tabs[q.id] = {
+                            tabs: [{ html: '', title: 'Tab', key: 0 }],
+                            currTabIndex: 0,
+                            maxTabIndex: 0,
+                        }),
+                );
             }
 
-            Object.keys(action.initialTabs).length
-                ? (tabs = { ...action.initialTabs })
-                : action.questions.forEach(q => (tabs[q.id] = { tabs: [{ html: '', title: 'Tab' }], currTabIndex: 0 }));
+            // Object.keys(action.initialTabs).length
+            //     ? (tabs = { ...action.initialTabs })
+            //     : action.questions.forEach(
+            //           (q, index) =>
+            //               (tabs[q.id] = {
+            //                   tabs: [{ html: '', title: 'Tab', key: `${q.id}-0` }],
+            //                   currTabIndex: 0,
+            //                   maxTabIndex: 0,
+            //               }),
+            //       );
 
             return { ...state, tabs };
         }

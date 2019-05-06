@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import CustomScrollbars from './CustomScrollbars';
@@ -52,7 +52,7 @@ class Tabs extends Component {
 
                     <div className="tools">
                         <div
-                            className={classNames('tool-icon pin', isInputAreaPinned ? 'pin-active' : 'pin-inactive')}
+                            className={classNames('tool-icon pin', { 'pin-active': isInputAreaPinned })}
                             data-tip={isInputAreaPinned ? 'Открепить' : 'Закрепить'}
                             onClick={pinInputArea}
                         />
