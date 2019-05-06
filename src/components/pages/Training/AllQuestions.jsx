@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import CustomScrollbars from './CustomScrollbars';
 
 class AllQuestions extends Component {

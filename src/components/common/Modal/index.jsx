@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import propTypes from 'prop-types';
 import posed, { PoseGroup } from 'react-pose';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import CustomScrollbars from '../../pages/Training/CustomScrollbars';
 

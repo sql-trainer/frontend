@@ -1,0 +1,76 @@
+.track-vertical {
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 4px;
+    z-index: 3;
+}
+
+.track-horizontal {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    border-radius: 4px;
+    z-index: 3;
+}
+
+.thumb-vertical,
+.thumb-horizontal {
+    background: black;
+    opacity: 0.1;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.thumb-vertical {
+    width: 5px !important;
+    margin-left: 1px !important;
+    transition-property: opacity, width, margin-left;
+
+    &:hover,
+    &:active {
+        opacity: 0.5;
+        width: 6px !important;
+        margin-left: 0 !important;
+    }
+}
+
+.thumb-horizontal {
+    height: 5px !important;
+    margin-top: 1px !important;
+    transition-property: opacity, height, margin-top;
+
+    &:hover,
+    &:active {
+        opacity: 0.5;
+        height: 6px !important;
+        margin-top: 0 !important;
+    }
+}
+
+.navbar-track-horizontal,
+.tabs-track-horizontal {
+    height: 2px !important;
+    bottom: 19px;
+}
+
+.tabs-track-horizontal {
+    height: 2px !important;
+    bottom: 0;
+}
+
+.navbar-thumb-horizontal,
+.tabs-thumb-horizontal {
+    height: 2px !important;
+    margin-top: 0px !important;
+
+    &:hover,
+    &:active {
+        height: 2px !important;
+    }
+}
+
+.editor-track-vertical {
+    right: 7px;
+}

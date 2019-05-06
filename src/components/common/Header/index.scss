@@ -45,30 +45,25 @@
         }
 
         .header__nav {
-            display: grid;
-            grid-template-columns: 1fr max-content;
+            display: flex;
+            width: 100%;
             align-items: center;
             padding-left: 20px;
-            // margin-right: 20px;
 
             .nav-links {
-                display: flex;
-                overflow: hidden;
-                &.scrollbar-container {
-                    height: auto !important;
-                    .ps__rail-x {
-                        height: 2px;
-                        .ps__thumb-x {
-                            height: 2px;
-                        }
-                    }
-                    .ps__rail-y {
-                        display: none;
-                    }
+                .navbar-view {
+                    display: flex;
                 }
+
                 .nav-item {
                     margin-right: 20px;
-                    &:nth-last-child(3) {
+                    align-self: center;
+
+                    &:first-child {
+                        margin-left: auto;
+                    }
+
+                    &:last-child {
                         margin-right: 0;
                     }
                 }
@@ -76,7 +71,6 @@
             .nav-item {
                 white-space: nowrap;
                 &.login-button {
-                    // border-left: 1px solid;
                     margin-left: 20px;
                     position: relative;
                     &:after {

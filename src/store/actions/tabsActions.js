@@ -56,8 +56,6 @@ const changeTabHtml = (index, html, id) => {
 
 const isChecking = (qid, tid, checking) => ({ type: types.SQL_CHECKING, qid, tid, checking });
 
-// const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
-
 const changeSQLResponseType = (SQLResponseType, tid, qid) => ({
     type: types.CHANGE_SQL_RESPONSE_TYPE,
     SQLResponseType,
@@ -65,21 +63,13 @@ const changeSQLResponseType = (SQLResponseType, tid, qid) => ({
     qid,
 });
 
-const saveTabsToLocalStorage = () => {
-    return async function(dispatch, getState) {
-        store.setItems({ tabs: getState().tabs.tabs });
-    };
-};
-
 export {
     createNewTab,
     changeTab,
     deleteTab,
     changeTabResponse,
     changeTabHtml,
-    // pinInputArea,
     createInitialTabs,
     isChecking,
     changeSQLResponseType,
-    saveTabsToLocalStorage,
 };

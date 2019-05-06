@@ -1,7 +1,7 @@
 .response-table {
     &.pinned {
         .fields {
-            top: 276px;
+            top: 279px;
         }
     }
 
@@ -23,7 +23,15 @@
         position: sticky;
         top: 0;
         background: #f6f6f6;
-        border-radius: 3px 0 0 3px;
+        border-radius: 4px 0 0 4px;
+        &:before {
+            content: '';
+            height: 10px;
+            width: 100%;
+            margin-top: -10px;
+            position: absolute;
+            background: white;
+        }
 
         .field {
             font-weight: 600;

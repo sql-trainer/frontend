@@ -6,7 +6,7 @@ import { NotificationsContainer as Notifications } from '../common/Notifications
 import DynamicImport from '../common/DynamicImport';
 
 import './index.scss';
-import '../../styles/scrollbar.css';
+import '../../styles/scrollbar.scss';
 
 import '../../icons';
 

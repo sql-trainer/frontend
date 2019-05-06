@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from '../Logo';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import CustomScrollbars from '../../pages/Training/CustomScrollbars';
 
 import './index.scss';
 import './media.scss';
@@ -15,7 +15,7 @@ const Header = props => (
                 </NavLink>
             </div>
             <nav className="header__nav">
-                <PerfectScrollbar className="nav-links" suppressScrollY={true}>
+                <CustomScrollbars className="nav-links" prefix="navbar">
                     <div className="nav-item">
                         <NavLink to="/training" activeClassName="nav-link-active">
                             Тренажер
@@ -27,7 +27,7 @@ const Header = props => (
                     <div className="nav-item">
                         <a href="/#">О проекте</a>
                     </div>
-                </PerfectScrollbar>
+                </CustomScrollbars>
                 <div className="tools">
                     <div className="tool-icon settings-icon" data-tip="Настройки" onClick={props.openSettingsModal} />
                 </div>
