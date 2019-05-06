@@ -3,17 +3,20 @@ import classNames from 'classnames';
 
 class CheckButton extends Component {
     render() {
-        const { checkResponseType, questions, currQuestion, currTab, checkSQL } = this.props;
+        const { questions, currQuestion, currTab, checkSQL, currTabIndex, currQuestionIndex } = this.props;
 
-        const className = classNames(
-            { solved: questions.length && currQuestion.status === 'solved' },
-            'check-sql',
-            checkResponseType,
+        const className = classNames({ solved: questions.length && currQuestion.status === 'solved' }, 'check-sql');
+
+        const isDisabled = !questions.length || currTab.loading || !currTab.html;
+
+        return (
+            <button
+                className={className}
+                onClick={e => checkSQL(currQuestionIndex, currTabIndex)}
+                disabled={isDisabled}
+                data-loading={currTab.loading}
+            />
         );
-
-        const isDisabled = !questions.length || currTab.loading || checkResponseType || !currTab.html;
-
-        return <button className={className} onClick={checkSQL} disabled={isDisabled} data-loading={currTab.loading} />;
     }
 }
 

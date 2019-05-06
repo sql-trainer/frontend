@@ -17,6 +17,10 @@ $copy-icon: $fa-var-clone;
     color: rgb(78, 211, 78);
 }
 
+div[tabindex='-1']:focus {
+    outline: 0;
+}
+
 .training {
     display: grid;
     grid-template-columns: 400px 1fr;
@@ -137,8 +141,10 @@ $copy-icon: $fa-var-clone;
                             margin-left: 8px;
                             font-size: 15px;
                             opacity: 1;
+                        }
 
-                            &:hover {
+                        &:hover {
+                            &:after {
                                 color: $icon-hover-color;
                             }
                         }

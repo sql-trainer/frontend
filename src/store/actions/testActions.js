@@ -2,6 +2,10 @@ import * as types from '../../constants';
 import retryFetch from '../../modules/retry-fetch';
 import persist from '../index.js';
 
+import { changeQuestionStatus, changeSolvedQuestionSQL } from './questionActions';
+import { changeTabResponse, isChecking, changeSQLResponseType } from './tabsActions';
+import { addNotification } from './notificationActions';
+
 import { loadQuestions, isLoading as isQuestionsLoading } from './questionActions';
 import { isLoading as isDatabaseLoading } from './databaseActions';
 
@@ -30,6 +34,56 @@ const resetTest = () => {
         dispatch({ type: 'RESET_TEST' });
         persist().persistor.flush();
         dispatch(loadTest());
+    };
+};
+
+const checkTestResult = questions => {
+    return questions.findIndex(q => q.status !== 'solved') === -1;
+};
+
+const checkSQL = (qid, tid) => {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const currQuestion = state.questions.questions[qid];
+        const currTab = state.tabs.tabs[currQuestion.id].tabs[tid];
+        const currTabIndex = tid;
+        const isTestCompleted = state.test.isTestCompleted;
+        const sql = currTab.html;
+
+        let responseType = 'error';
+
+        dispatch(isChecking(currQuestion.id, currTabIndex, true));
+
+        setTimeout(() => {
+            fetch(`http://localhost:8080/api/v1/tests/open/questions/${currQuestion.id}/check`, {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sql }),
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.error) {
+                        dispatch(addNotification(res.error.message, 'error'));
+                    } else {
+                        if (res.success) {
+                            if (currQuestion.status !== 'solved') dispatch(changeQuestionStatus('solved'));
+                            dispatch(changeSolvedQuestionSQL(sql));
+                            responseType = 'success';
+                        }
+
+                        dispatch(
+                            changeTabResponse(currQuestion.id, currTabIndex, { fields: res.fields, rows: res.rows }),
+                        );
+                        if (!isTestCompleted && checkTestResult(state.questions.questions))
+                            dispatch(changePopupVisibility());
+                    }
+                })
+                .catch(err => dispatch(addNotification('Ошибка сервера', 'error')))
+                .finally(() => {
+                    dispatch(isChecking(currQuestion.id, currTabIndex, false));
+                    dispatch(changeSQLResponseType(responseType, currTabIndex, currQuestion.id));
+                });
+        }, 1000);
     };
 };
 
@@ -74,4 +128,5 @@ export {
     changeTestLoaderErrorMessage,
     resetTest,
     loadTest,
+    checkSQL,
 };

@@ -21,11 +21,30 @@ const copyAnswerToClipboard = html => {
     };
 };
 
-const changeTab = (index, id) => {
+const changeTab = (tid, qid) => {
     return {
         type: types.CHANGE_TAB,
-        index,
-        id,
+        tid,
+        qid,
+    };
+};
+
+const nextTab = qid => {
+    return function(dispatch, getState) {
+        const tabs = getState().tabs.tabs;
+        const newTab = tabs[qid].currTabIndex + 1 > tabs[qid].tabs.length - 1 ? 0 : tabs[qid].currTabIndex + 1;
+
+        console.log(newTab);
+        dispatch(changeTab(newTab, qid));
+    };
+};
+
+const prevTab = qid => {
+    return function(dispatch, getState) {
+        const tabs = getState().tabs.tabs;
+        const newTab = tabs[qid].currTabIndex - 1 < 0 ? tabs[qid].tabs.length - 1 : tabs[qid].currTabIndex - 1;
+
+        dispatch(changeTab(newTab, qid));
     };
 };
 
@@ -81,4 +100,6 @@ export {
     isChecking,
     changeSQLResponseType,
     copyAnswerToClipboard,
+    prevTab,
+    nextTab,
 };
