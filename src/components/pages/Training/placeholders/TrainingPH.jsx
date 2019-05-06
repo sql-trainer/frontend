@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './index.scss';
+
 const TrainingPH = () => (
     <div className="placeholder">
         <div className="ph-left">

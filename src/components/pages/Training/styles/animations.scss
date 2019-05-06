@@ -53,17 +53,17 @@
 @keyframes accordion {
     0% {
         opacity: 0;
-        max-height: 0;
-        padding: 0 20px;
+        transform: scaleY(0);
+        height: auto;
     }
 
     55% {
         opacity: 1;
-        padding: 10px 20px;
+        transform: scaleY(1);
     }
 
     100% {
-        max-height: 1000px;
+        transform: scaleY(1);
     }
 }
 

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { changeTableActivity } from '../../../../store/actions/databaseActions';
 
 import Database from '../Database';
 
@@ -11,11 +10,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-const mapDispatchToProps = dispatch => ({
-    changeTableActivity: index => dispatch(changeTableActivity(index)),
-});
-
-export const DatabaseContainer = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Database);
+export const DatabaseContainer = connect(mapStateToProps)(Database);
