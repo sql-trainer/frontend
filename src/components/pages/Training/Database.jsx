@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Collapsible from 'react-collapsible';
+
+const Panel = props => {
+    return (
+        <Collapsible
+            className="table"
+            openedClassName="table"
+            triggerClassName="table-title"
+            triggerOpenedClassName="table-title"
+            contentInnerClassName="table-props"
+            trigger={props.trigger}
+        >
+            {props.children}
+        </Collapsible>
+    );
+};
 
 class Database extends Component {
     render() {
-        const { database, isDatabaseLoading, changeTableActivity } = this.props;
+        const { database, isDatabaseLoading } = this.props;
 
         return (
             <div className="tablesbox" data-loading={isDatabaseLoading}>
@@ -20,22 +36,14 @@ class Database extends Component {
                 {database !== undefined &&
                     database.tables.map((table, index) => {
                         return (
-                            <div className="table" key={index}>
-                                <div
-                                    className={`table-title ${table.active ? 'active' : ''}`}
-                                    onClick={e => changeTableActivity(index)}
-                                >
-                                    {table.title}
-                                </div>
-                                <div className={`table-props ${table.active ? 'active' : ''}`}>
-                                    {table.props.map((prop, index) => (
-                                        <div className={`table-prop ${prop.isKey ? 'key' : ''}`} key={index}>
-                                            <div>{prop.name}</div>
-                                            <div>{prop.type.toUpperCase()}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                            <Panel trigger={table.title} className="table" key={index}>
+                                {table.props.map((prop, index) => (
+                                    <div className={`table-prop ${prop.isKey ? 'key' : ''}`} key={index}>
+                                        <div>{prop.name}</div>
+                                        <div>{prop.type.toUpperCase()}</div>
+                                    </div>
+                                ))}
+                            </Panel>
                         );
                     })}
             </div>

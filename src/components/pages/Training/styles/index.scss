@@ -17,6 +17,10 @@ $copy-icon: $fa-var-clone;
     color: rgb(78, 211, 78);
 }
 
+div[tabindex='-1']:focus {
+    outline: 0;
+}
+
 .training {
     display: grid;
     grid-template-columns: 400px 1fr;
@@ -137,8 +141,10 @@ $copy-icon: $fa-var-clone;
                             margin-left: 8px;
                             font-size: 15px;
                             opacity: 1;
+                        }
 
-                            &:hover {
+                        &:hover {
+                            &:after {
                                 color: $icon-hover-color;
                             }
                         }
@@ -232,15 +238,6 @@ $copy-icon: $fa-var-clone;
                             }
                         }
 
-                        &.active {
-                            background: #fafafa;
-                            color: #333;
-
-                            &:after {
-                                transform: rotateZ(180deg);
-                            }
-                        }
-
                         &:hover {
                             background: lighten($icon-color, 40%);
                         }
@@ -248,13 +245,6 @@ $copy-icon: $fa-var-clone;
                     .table-props {
                         display: flex;
                         flex-direction: column;
-                        overflow: hidden;
-                        max-height: 0; // height: 0;
-                        &.active {
-                            // height: auto;
-
-                            animation: tables 0.3s ease-in-out forwards;
-                        }
 
                         .table-prop {
                             padding: 7px 15px;
@@ -676,50 +666,79 @@ $copy-icon: $fa-var-clone;
     }
 }
 
-.accordion__item:not(:last-child) {
+.Collapsible:not(:last-child) {
     border-bottom: 1px solid #efefef;
 }
 
-.accordion__button {
-    cursor: pointer;
-    padding: 10px 20px;
-    text-align: left;
-    border: none;
-    font-weight: 501;
-    outline: none;
+.Collapsible {
+    min-height: 41px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+
+    &.table {
+        border-bottom: none;
+        min-height: 35px;
+    }
 }
 
-.accordion__button:hover {
-    background-color: lighten($icon-color, 40%);
+.Collapsible__contentOuter {
+    opacity: 0;
+    transition: all 0.15s ease-in-out !important;
 }
 
-.accordion__button:after {
-    transform: scaleY(1) rotate(0deg);
-    transition: all 0.1s ease-in-out;
-    transform-origin: center;
-    @extend %fa-icon;
-    @extend .fas;
-    content: fa-content($fa-var-angle-down);
-    color: currentColor;
-    margin-right: 3px;
-    margin-top: 1px;
-}
-
-.accordion__button[aria-expanded='true']::after,
-.accordion__button[aria-selected='true']::after {
-    transform: scaleY(-1) rotate(0deg);
-}
-
-.accordion__panel {
+.Collapsible__trigger {
     padding: 10px 20px;
-    animation: accordion 0.3s ease-in-out forwards;
-    max-height: 0;
-    overflow: hidden;
     box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
 
+    &:hover {
+        background-color: lighten($icon-color, 40%);
+    }
+
+    &:after {
+        transform: scaleY(1) rotate(0deg);
+        transition: all 0.1s ease-in-out;
+        transform-origin: center;
+        @extend %fa-icon;
+        @extend .fas;
+        content: fa-content($fa-var-angle-down);
+        color: currentColor;
+        margin-right: 3px;
+        margin-top: 3px;
+        height: 12px;
+    }
+
+    &.table-title {
+        &:after {
+            margin-top: -3px;
+        }
+    }
+
+    &.is-open {
+        &:after {
+            margin-top: 6px;
+            transform: scaleY(-1) rotate(0deg);
+        }
+
+        &.table-title {
+            &:after {
+                margin-top: 2px;
+            }
+
+            background: #fafafa;
+            color: #333;
+        }
+
+        & + .Collapsible__contentOuter {
+            opacity: 1;
+        }
+    }
+}
+
+.Collapsible__contentInner {
     p,
     ul {
         margin: 0;
@@ -731,6 +750,12 @@ $copy-icon: $fa-var-clone;
 
     p {
         padding-left: 0px;
+    }
+
+    padding: 10px 20px;
+
+    &.table-props {
+        padding: 0;
     }
 }
 
@@ -750,75 +775,6 @@ $copy-icon: $fa-var-clone;
     margin-top: 10px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;
-}
-
-.placeholder {
-    display: grid;
-    grid-template-columns: 400px 1fr;
-    height: calc(100vh - 60px);
-    overflow-y: hidden;
-    min-width: $min-width;
-}
-
-.ph-left {
-    padding: 10px 0 0px 20px;
-}
-
-.ph-right {
-    padding: 10px 20px 0 15px;
-}
-
-.ph-block {
-    margin-bottom: 15px;
-}
-
-.ph-inline {
-    display: flex;
-
-    .ph {
-        margin-right: 10px;
-    }
-}
-
-.ph {
-    background: #efefef;
-    border-radius: 4px;
-    height: 20px;
-    animation: blinking 1.5s linear infinite;
-    margin-bottom: 10px;
-    position: relative;
-
-    &.ph-75 {
-        width: 75%;
-    }
-
-    &.ph-50 {
-        width: 50%;
-    }
-
-    &.ph-25 {
-        width: 25%;
-    }
-
-    &.ph-10 {
-        width: 10%;
-    }
-
-    &.ph-title {
-        height: 25px;
-        margin-bottom: 21px;
-    }
-
-    &.ph-circle {
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        right: 20px;
-        bottom: 20px;
-        animation-delay: 0.75s;
-        margin-bottom: 0;
-    }
 }
 
 .test-loader-error {

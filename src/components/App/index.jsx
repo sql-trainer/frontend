@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 
 import { NotificationsContainer as Notifications } from '../common/Notifications/containers';
@@ -33,4 +33,4 @@ const App = props => {
     );
 };
 
-export default withRouter(App);
+export default App;

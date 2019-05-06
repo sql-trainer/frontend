@@ -1,5 +1,5 @@
 import * as types from '../../constants';
-import { cloneDeep, pickBy } from 'lodash';
+import { cloneDeep } from 'lodash';
 import { REHYDRATE } from 'redux-persist';
 
 const initialState = {
@@ -56,23 +56,12 @@ const tabs = (state = initialState, action) => {
                 );
             }
 
-            // Object.keys(action.initialTabs).length
-            //     ? (tabs = { ...action.initialTabs })
-            //     : action.questions.forEach(
-            //           (q, index) =>
-            //               (tabs[q.id] = {
-            //                   tabs: [{ html: '', title: 'Tab', key: `${q.id}-0` }],
-            //                   currTabIndex: 0,
-            //                   maxTabIndex: 0,
-            //               }),
-            //       );
-
             return { ...state, tabs };
         }
 
         case types.CHANGE_TAB: {
             const tabs = cloneDeep(state.tabs);
-            tabs[action.id].currTabIndex = action.index;
+            tabs[action.qid].currTabIndex = action.tid;
 
             return { ...state, tabs };
         }

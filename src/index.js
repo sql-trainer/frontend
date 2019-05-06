@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import App from './components/App/';
+import App from './components/App';
 import persistedStore from './store/';
 
 const { store, persistor } = persistedStore();
@@ -12,7 +12,7 @@ const { store, persistor } = persistedStore();
 ReactDOM.render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <BrowserRouter basename="/frontend">
+            <BrowserRouter>
                 <App />
             </BrowserRouter>
         </PersistGate>

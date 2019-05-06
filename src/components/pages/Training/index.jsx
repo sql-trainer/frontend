@@ -15,6 +15,7 @@ import { CompletedPopupContainer as CompletedPopup } from './containers/Complete
 import { SQLEditorContainer as SQLEditor } from './containers/SQLEditor';
 import { HelpModal, SettingsModal } from './modals';
 import TrainingPH from './placeholders/TrainingPH';
+import { HotKeys } from 'react-hotkeys';
 
 // imported styles block
 import './styles/index.scss';
@@ -40,6 +41,7 @@ class Training extends Component {
 
     render() {
         const {
+            questions,
             isInputAreaPinned,
             changeEditorTheme,
             editorTheme,
@@ -47,12 +49,49 @@ class Training extends Component {
             testLoaderErrorMessage,
             currTab,
             currQuestion,
+            checkSQL,
+            currQuestionIndex,
+            currTabIndex,
+            nextQuestion,
+            prevQuestion,
+            prevTab,
+            nextTab,
+            deleteTab,
+            createNewTab,
         } = this.props;
 
         const { isModalHelpOpened, isModalSettingsOpened } = this.state;
 
+        const editorKeys = {
+            CHECK: 'f9',
+            NEXT_TAB: 'ctrl+alt+right',
+            PREVIOUS_TAB: 'ctrl+alt+left',
+            CREATE_TAB: 'shift+alt+n',
+            DELETE_TAB: 'shift+alt+d',
+        };
+
+        const disabled = !questions.length || currTab.loading || !currTab.html;
+
+        const editorHandlers = {
+            CHECK: event => !disabled && checkSQL(currQuestionIndex, currTabIndex),
+            NEXT_TAB: () => nextTab(currQuestion.id),
+            PREVIOUS_TAB: () => prevTab(currQuestion.id),
+            CREATE_TAB: () => createNewTab(currQuestion.id),
+            DELETE_TAB: () => deleteTab(currQuestion.id),
+        };
+
+        const questionKeys = {
+            NEXT_QUESTION: 'ctrl+alt+]',
+            PREVIOUS_QUESTION: 'ctrl+alt+[',
+        };
+
+        const questionHandlers = {
+            NEXT_QUESTION: () => nextQuestion(),
+            PREVIOUS_QUESTION: () => prevQuestion(),
+        };
+
         return (
-            <div>
+            <HotKeys keyMap={questionKeys} handlers={questionHandlers} focused>
                 <Header
                     style={{ minWidth: 900 }}
                     openSettingsModal={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
@@ -69,7 +108,11 @@ class Training extends Component {
                             <Database />
                         </CustomScrollbars>
                         <CustomScrollbars className="task-editor">
-                            <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
+                            <HotKeys
+                                keyMap={editorKeys}
+                                handlers={editorHandlers}
+                                className={classNames('inputbox', { pinned: isInputAreaPinned })}
+                            >
                                 <Tabs openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })} />
                                 <CustomScrollbars
                                     className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
@@ -85,7 +128,8 @@ class Training extends Component {
                                     onClick={this.props.nextQuestion}
                                     data-tip="Следующий вопрос"
                                 />
-                            </div>
+                            </HotKeys>
+
                             {currTab.response && (
                                 <div className={classNames('resultbox', { checking: currTab.loading })}>
                                     <Table
@@ -114,7 +158,7 @@ class Training extends Component {
                     visible={isModalHelpOpened}
                     onClose={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })}
                 />
-            </div>
+            </HotKeys>
         );
     }
 }
