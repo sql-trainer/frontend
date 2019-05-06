@@ -1,34 +1,30 @@
 import { connect } from 'react-redux';
 import { createNewTab, changeTab, deleteTab } from '../../../../store/actions/tabsActions';
+import { pinInputArea } from '../../../../store/actions/settingsActions';
+import * as selectors from '../../../../store/selectors';
 
 import Tabs from '../Tabs';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = ({ questions, tabs, settings }, ownProps) => {
     return {
-        tabs: state.tabs.tabs,
-        currTab: state.tabs.currTab,
-        isInputAreaPinned: ownProps.isInputAreaPinned,
-        pinInputArea: ownProps.pinInputArea,
+        isInputAreaPinned: settings.isInputAreaPinned,
+        currQuestion: selectors.getCurrentQuestion({ questions }),
+        tabs: selectors.getCurrentTabs({ questions, tabs }),
+        currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
+        ...ownProps,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        createNewTab: () => {
-            dispatch(createNewTab());
-        },
-        changeTab: index => {
-            dispatch(changeTab(index));
-        },
-        deleteTab: () => {
-            dispatch(deleteTab());
-        },
+        createNewTab: id => dispatch(createNewTab(id)),
+        changeTab: (index, id) => dispatch(changeTab(index, id)),
+        deleteTab: qid => dispatch(deleteTab(qid)),
+        pinInputArea: () => dispatch(pinInputArea()),
     };
 };
 
-const TabsContainer = connect(
+export const TabsContainer = connect(
     mapStateToProps,
     mapDispatchToProps,
 )(Tabs);
-
-export default TabsContainer;

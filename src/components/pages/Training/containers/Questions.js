@@ -1,37 +1,42 @@
 import { connect } from 'react-redux';
-import { deleteAllTabs } from '../../../../store/actions/tabsActions';
 import { loadDatabaseFromAPI } from '../../../../store/actions/databaseActions';
-import { changeCurrQuestion } from '../../../../store/actions/questionActions';
+import { copyAnswerToClipboard } from '../../../../store/actions/tabsActions';
+import {
+    changeCurrQuestion,
+    nextQuestion,
+    prevQuestion,
+    changeAllQuestionsVisibility,
+} from '../../../../store/actions/questionActions';
+import { addNotification } from '../../../../store/actions/notificationActions';
+import * as selectors from '../../../../store/selectors';
 
 import Questions from '../Questions';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = ({ questions, database }, ownProps) => {
     return {
-        questions: state.questions.questions,
-        isQuestionsLoading: state.questions.isQuestionsLoading,
-        currQuestion: state.questions.currQuestion,
-        database: state.database.database,
+        questions: questions.questions,
+        checkingFor: questions.checkingFor,
+        isQuestionsLoading: questions.isQuestionsLoading,
+        currQuestionIndex: questions.currQuestionIndex,
+        database: database.database,
+        currQuestion: selectors.getCurrentQuestion({ questions }),
         ...ownProps,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        deleteAllTabs: () => {
-            dispatch(deleteAllTabs());
-        },
-        loadDatabaseFromAPI: (id, addNotification) => {
-            dispatch(loadDatabaseFromAPI(id, addNotification));
-        },
-        changeCurrQuestion: id => {
-            dispatch(changeCurrQuestion(id));
-        },
+        loadDatabaseFromAPI: (id, addNotification) => dispatch(loadDatabaseFromAPI(id, addNotification)),
+        changeCurrQuestion: id => dispatch(changeCurrQuestion(id)),
+        addNotification: (message, level) => dispatch(addNotification(message, level)),
+        nextQuestion: () => dispatch(nextQuestion()),
+        prevQuestion: () => dispatch(prevQuestion()),
+        changeAllQuestionsVisibility: () => dispatch(changeAllQuestionsVisibility()),
+        copyAnswerToClipboard: html => dispatch(copyAnswerToClipboard(html)),
     };
 };
 
-const QuestionsContainer = connect(
+export const QuestionsContainer = connect(
     mapStateToProps,
     mapDispatchToProps,
 )(Questions);
-
-export default QuestionsContainer;

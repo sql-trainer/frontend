@@ -1,37 +1,45 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactTooltip from 'react-tooltip';
 
 class Questions extends Component {
-    state = {
-        isAllQOpen: false,
-    };
-
-    handleQuestionChange(index) {
-        this.props.setCurrQuestion(index);
-        this.setState({ isAllQOpen: false });
+    componentDidUpdate() {
+        ReactTooltip.rebuild();
     }
 
     render() {
-        const { questions, currQuestion, isQuestionsLoading, nextQuestion, prevQuestion } = this.props;
-        const { isAllQOpen } = this.state;
-
+        const {
+            questions,
+            currQuestionIndex,
+            nextQuestion,
+            prevQuestion,
+            currQuestion,
+            changeAllQuestionsVisibility,
+            copyAnswerToClipboard,
+        } = this.props;
         const questionsLength = questions.length;
 
         return (
             <>
-                <div className="questionbox" data-loading={isQuestionsLoading}>
+                <div className="questionbox">
                     <div className="title">
                         <div
                             className="menu-icon"
                             data-tip="Список всех вопросов"
-                            onClick={e => this.setState({ isAllQOpen: !isAllQOpen })}
+                            onClick={changeAllQuestionsVisibility}
                         />
-                        <div
-                            className={`question-counter${
-                                questions.length && questions[currQuestion].status === 'solved' ? ' solved' : ''
-                            }`}
-                        >
-                            Вопрос {!questionsLength ? '' : `#${currQuestion + 1} из ${questionsLength}`}
+                        <div className={`question-counter`}>
+                            Вопрос {!questionsLength ? '' : `#${currQuestionIndex + 1} из ${questionsLength}`}
+                            {currQuestion.status && (
+                                <>
+                                    <div className="solved-icon" />
+                                    <div
+                                        className="copy-icon"
+                                        data-tip="Скопировать последний правильный ответ"
+                                        onClick={e => copyAnswerToClipboard(currQuestion.sql)}
+                                    />
+                                </>
+                            )}
                         </div>
                         {questionsLength ? (
                             <>
@@ -55,32 +63,15 @@ class Questions extends Component {
                         <div className="placeholder">Вопрос не загружен</div>
                     ) : (
                         <div className="content">
-                            {questions[currQuestion].question}
-                            {questions[currQuestion].fields ? (
+                            {currQuestion.question}
+                            {currQuestion.fields ? (
                                 <div className="show">
-                                    <b>Вывести</b>: {questions[currQuestion].fields.join(', ')}
+                                    <b>Вывести</b>: {currQuestion.fields.join(', ')}
                                 </div>
                             ) : null}
                         </div>
                     )}
                 </div>
-                <div className={`all-questions ${isAllQOpen ? 'all-questions-active' : ''}`}>
-                    <h2>{questionsLength ? 'Все вопросы' : 'Вопросы отстутствуют'}</h2>
-                    {questions.map((q, index) => {
-                        const className = `question${index === currQuestion ? ' active' : ''}${
-                            questions[index].status === 'solved' ? ' solved' : ''
-                        }`;
-                        return (
-                            <div className={className} key={q.id} onClick={e => this.handleQuestionChange(index)}>
-                                <b>{index + 1}.</b> {q.question}
-                            </div>
-                        );
-                    })}
-                </div>
-                <div
-                    className={`all-questions-bg ${isAllQOpen ? 'all-questions-bg-active' : ''}`}
-                    onClick={e => this.setState({ isAllQOpen: !isAllQOpen })}
-                />
             </>
         );
     }

@@ -1,0 +1,56 @@
+.logo {
+    height: 40px;
+    width: 180px;
+    display: grid;
+    grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
+    grid-gap: 4px;
+    align-content: center;
+
+    .logo__quarter {
+        height: inherit;
+        height: 20px;
+        border-radius: 4px;
+        background: #47525e;
+    }
+
+    &.animated {
+        .logo__quarter {
+            background: #369cc7;
+            animation: colors infinite alternate 1s ease-in-out;
+            &:nth-child(2) {
+                animation-delay: 0.5s;
+                background: #6cac17;
+            }
+            &:nth-child(3) {
+                animation-delay: 0.3s;
+                background: #ebad1a;
+            }
+            &:nth-child(4) {
+                animation-delay: 0.8s;
+                background: #ec3d3d;
+            }
+        }
+    }
+}
+
+@keyframes colors {
+    0% {
+        background: #369cc7;
+    }
+
+    25% {
+        background: #6cac17;
+    }
+
+    50% {
+        background: #ebad1a;
+    }
+
+    75% {
+        background: #ec3d3d;
+    }
+
+    100% {
+        background: #369cc7;
+    }
+}

@@ -1,0 +1,22 @@
+.loader {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 88;
+    pointer-events: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: #fff;
+    width: 100% !important;
+
+    .loader-error-message {
+        color: #333;
+        font-size: 22px;
+        position: relative;
+        z-index: 5;
+        margin-top: 10px;
+        font-weight: 600;
+    }
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './Table.scss';
+import './styles/Table.scss';
 
 class Table extends Component {
     getData() {
@@ -29,7 +29,6 @@ class Table extends Component {
 
     render() {
         const { className } = this.props;
-
         return (
             <div className={className || ''}>
                 <div className="fields">{this.getFields()}</div>

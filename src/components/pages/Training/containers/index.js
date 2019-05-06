@@ -1,28 +1,30 @@
 import { connect } from 'react-redux';
-import * as questions from '../../../../store/actions/questionActions';
-import * as database from '../../../../store/actions/databaseActions';
-import * as tabs from '../../../../store/actions/tabsActions';
+import { nextQuestion } from '../../../../store/actions/questionActions';
+import { changeEditorTheme } from '../../../../store/actions/settingsActions';
+import { loadTest } from '../../../../store/actions/testActions';
 
+import * as selectors from '../../../../store/selectors';
 import Training from '../index';
 
-const mapStateToProps = ({ questions, database, tabs }, ownProps) => {
+const mapStateToProps = ({ questions, tabs, test, settings }, ownProps) => {
     return {
         questions: questions.questions,
-        isQuestionsLoading: questions.isQuestionsLoading,
-        currQuestion: questions.currQuestion,
-        database: database.database,
-        isDatabaseLoading: database.isDatabaseLoading,
-        tabs: tabs.tabs,
-        currTab: tabs.currTab,
-        tooltip: ownProps.tooltip,
+        currQuestionIndex: questions.currQuestionIndex,
+        isTestLoaderVisible: test.isTestLoaderVisible,
+        testLoaderErrorMessage: test.testLoaderErrorMessage,
+        isInputAreaPinned: settings.isInputAreaPinned,
+        isLogoVisible: test.isLogoVisible,
+        editorTheme: settings.editorTheme,
+        currTab: selectors.getCurrentTab({ questions, tabs }),
+        currQuestion: selectors.getCurrentQuestion({ questions }),
     };
 };
 
-const mapDispatchToProps = {
-    ...questions,
-    ...database,
-    ...tabs,
-};
+const mapDispatchToProps = dispatch => ({
+    loadTest: () => dispatch(loadTest()),
+    nextQuestion: () => dispatch(nextQuestion()),
+    changeEditorTheme: theme => dispatch(changeEditorTheme(theme)),
+});
 
 const TrainingContainer = connect(
     mapStateToProps,

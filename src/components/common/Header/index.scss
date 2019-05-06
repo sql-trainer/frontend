@@ -1,9 +1,14 @@
+@import '../../../styles/vars.scss';
+@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '@fortawesome/fontawesome-free/scss/regular.scss';
+@import '@fortawesome/fontawesome-free/scss/solid.scss';
+
 .header {
     .content {
         display: flex;
         min-height: 60px;
         margin: 0 auto;
-        padding: 0 30px;
+        padding: 0 20px;
         justify-content: space-between;
         overflow-x: hidden;
         .header__logo {
@@ -13,13 +18,11 @@
 
             .logo {
                 height: 40px;
-                min-width: 120px;
-                // background: #8190a5;
+                width: 180px;
                 display: grid;
                 grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
                 grid-gap: 4px;
                 align-content: center;
-                // animation: logoWidthChange 0.1s ease-in-out both;
                 .logo__quarter {
                     height: inherit;
                     height: 20px;
@@ -42,35 +45,41 @@
         }
 
         .header__nav {
-            display: grid;
-            grid-template-columns: 1fr max-content;
+            display: flex;
+            width: 100%;
             align-items: center;
+            padding-left: 20px;
 
             .nav-links {
-                display: flex;
-                overflow: hidden;
-                &.scrollbar-container {
-                    height: auto !important;
-                    .ps__rail-x {
-                        height: 0;
-                        display: none;
-                        opacity: 0;
-                        .ps__thumb-x {
-                            height: 2px;
-                            margin-bottom: -2px;
-                        }
-                    }
+                .navbar-view {
+                    display: flex;
                 }
+
                 .nav-item {
                     margin-right: 20px;
+                    align-self: center;
+
+                    &:first-child {
+                        margin-left: auto;
+                    }
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
                 }
             }
             .nav-item {
                 white-space: nowrap;
                 &.login-button {
-                    border-left: 1px solid;
-                    padding-left: 20px;
+                    margin-left: 20px;
                     position: relative;
+                    &:after {
+                        @extend %fa-icon;
+                        @extend .far;
+                        content: fa-content($fa-var-user-circle);
+                        color: #3d3d3d;
+                        font-size: 30px;
+                    }
                 }
 
                 .nav-link-active {
@@ -89,5 +98,54 @@
                 }
             }
         }
+
+        .tools {
+            display: none;
+            margin: 0 12px;
+            .tool-icon {
+                font-size: 20px;
+                margin-right: 0 !important;
+
+                &:after {
+                    @extend %fa-icon;
+                    @extend %icon;
+                    color: #3d3d3d;
+                }
+
+                &.settings-icon {
+                    &:after {
+                        @extend .fas;
+                        content: fa-content($fa-var-cog);
+                    }
+                }
+            }
+        }
+    }
+}
+
+%icon {
+    @extend %fa-icon;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.2s ease-in-out;
+    padding: 5px;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+    }
+}
+
+.training-component {
+    .tools {
+        display: flex !important;
+    }
+
+    .header__nav {
+        grid-template-columns: 1fr max-content max-content !important;
+    }
+
+    .login-button {
+        margin-left: 0 !important;
     }
 }
