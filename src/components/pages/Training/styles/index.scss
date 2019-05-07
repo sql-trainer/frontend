@@ -133,7 +133,7 @@ div[tabindex='-1']:focus {
                     .copy-icon {
                         &:after {
                             @extend %fa-icon;
-                            @extend .fas;
+                            @extend .far;
                             color: $icon-color;
                             content: fa-content($copy-icon);
                             cursor: pointer;
@@ -791,12 +791,24 @@ div[tabindex='-1']:focus {
     background: white;
     flex-direction: column;
     z-index: 3;
-    overflow: hidden;
     transform-origin: top left;
     transition: all 0.1s ease-in-out;
-    max-height: 100px;
+    max-height: 250px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;
+    overflow-y: auto;
+
+    .keyword-info-block {
+        position: absolute;
+        left: 100%;
+        margin-left: 5px;
+        max-width: 200px;
+        background: white;
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+        transition: opacity 0.1s ease-in-out;
+    }
 
     .keyword {
         height: 28px;
@@ -806,9 +818,6 @@ div[tabindex='-1']:focus {
         min-width: 140px;
         cursor: pointer;
         line-height: 16px;
-
-        display: grid;
-        grid-template-columns: auto auto 1fr auto;
 
         &:hover {
             background: #fafafa;
@@ -841,6 +850,10 @@ div[tabindex='-1']:focus {
                     margin-bottom: 2px;
                 }
             }
+        }
+
+        .keyword-text {
+            width: 100%;
         }
 
         .keyword-info {
