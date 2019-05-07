@@ -9,10 +9,15 @@ import { HotKeys } from 'react-hotkeys';
 import store from '../../../modules/store';
 
 class SQLEditor extends Component {
+    constructor(props) {
+        super(props);
+        props.currTables.forEach(t => (this.SQLKeywordsDesc[t] = { type: 'table' }));
+        this.SQLKeywords = Object.keys(this.SQLKeywordsDesc);
+    }
+
     state = {
         saveTimeoutID: undefined,
-        recommendations: [],
-        boundaries: [],
+        keywordList: [],
         position: [20, 10],
         searchString: '',
         selectPosition: 0,
@@ -20,18 +25,18 @@ class SQLEditor extends Component {
 
     SQLKeywordsDesc = {
         select: { type: 'keyword', info: '<a href="/handbook/select/"></a>', star: true },
-        from: { type: 'keyword' },
-        as: { type: 'keyword' },
-        insert: { type: 'keyword' },
-        into: { type: 'keyword' },
-        values: { type: 'keyword' },
-        update: { type: 'keyword' },
-        delete: { type: 'keyword' },
-        set: { type: 'function' },
+        from: {},
+        'group by': {},
+        where: {},
+        as: {},
+        insert: {},
+        into: {},
+        values: {},
+        update: {},
+        delete: {},
+        set: {},
         year: { type: 'function' },
     };
-
-    SQLKeywords = Object.keys(this.SQLKeywordsDesc);
 
     handleContentEditable = value => {
         const { changeTabHtml, currTabIndex, questions, currQuestionIndex, changeSQLResponseType } = this.props;
@@ -46,17 +51,10 @@ class SQLEditor extends Component {
     };
 
     filterKeywords = e => {
-        const forbiddenCodes = [37, 39, 9];
-        const forbiddenCodes1 = [38, 40];
+        const forbiddenCodes = { clear: [37, 39, 9], prevent: [38, 40] };
 
-        if (forbiddenCodes.includes(e.which)) {
-            this.setState({ recommendations: [] });
-            return false;
-        }
-
-        if (forbiddenCodes1.includes(e.which)) {
-            return false;
-        }
+        if (forbiddenCodes.clear.includes(e.which)) return this.setState({ keywordList: [] });
+        if (forbiddenCodes.prevent.includes(e.which)) return false;
 
         const inputEl = e.target;
         const textContent = inputEl.textContent;
@@ -66,45 +64,47 @@ class SQLEditor extends Component {
 
         const leftBoundary = this.getLeftBoundary(cursorPos, textContent);
 
-        const substr = textContent.slice(leftBoundary, cursorPos);
+        const searchString = textContent.slice(leftBoundary, cursorPos).toLowerCase();
 
         this.setState({
-            recommendations:
-                substr === ''
+            keywordList:
+                searchString === ''
                     ? []
-                    : this.SQLKeywords.filter(keyword => keyword !== substr && keyword.startsWith(substr)),
-            boundaries: [leftBoundary, cursorPos],
+                    : this.SQLKeywords.filter(keyword => {
+                          keyword = keyword.toLowerCase();
+                          return keyword !== searchString && keyword.startsWith(searchString);
+                      }),
             position: [caret.left, caret.top],
-            searchString: substr,
             selectPosition: 0,
+            searchString,
         });
     };
 
     insertKeyword = keyword => {
-        const { boundaries } = this.state;
+        const { searchString } = this.state;
 
         const inputEl = document.querySelector('.npm__react-simple-code-editor__textarea');
         inputEl.focus();
 
-        const cursorPos = boundaries[1];
+        const cursorPos = inputEl.selectionStart;
 
         const isKeywordFunction = this.SQLKeywordsDesc[keyword].type === 'function';
+        const textToInsert = keyword + (isKeywordFunction ? '()' : '') + ' ';
 
-        const textToInsert = keyword.slice(cursorPos - boundaries[0]) + (isKeywordFunction ? '()' : '');
-
+        inputEl.setSelectionRange(cursorPos - searchString.length, cursorPos);
         const isSuccess = document.execCommand('insertText', false, textToInsert);
 
         if (!isSuccess && typeof inputEl.setRangeText === 'function') {
             inputEl.setRangeText(textToInsert);
             inputEl.selectionStart = inputEl.selectionEnd = cursorPos + textToInsert.length;
-
-            const e = new Event('input');
+            const e = new Event('UIEvent');
+            e.initEvent('input', true, false);
             inputEl.dispatchEvent(e);
         }
 
-        if (isKeywordFunction) inputEl.setSelectionRange(inputEl.selectionStart - 1, inputEl.selectionStart - 1);
+        if (isKeywordFunction) inputEl.setSelectionRange(inputEl.selectionStart - 2, inputEl.selectionStart - 2);
 
-        this.setState({ recommendations: [] });
+        this.setState({ keywordList: [] });
     };
 
     highlightSQL = sql => {
@@ -128,13 +128,13 @@ class SQLEditor extends Component {
     changeSelectPosition = (e, direction) => {
         e.preventDefault();
 
-        const { recommendations, selectPosition } = this.state;
+        const { keywordList, selectPosition } = this.state;
 
-        if (recommendations.length) {
+        if (keywordList.length) {
             const position =
                 selectPosition + direction < 0
-                    ? recommendations.length - 1
-                    : selectPosition + direction >= recommendations.length
+                    ? keywordList.length - 1
+                    : selectPosition + direction >= keywordList.length
                     ? 0
                     : direction + selectPosition;
 
@@ -142,51 +142,61 @@ class SQLEditor extends Component {
         }
     };
 
-    render() {
-        const { currTab, editorTheme, currTables } = this.props;
-        const { recommendations, position, searchString, selectPosition } = this.state;
+    autocompletionKeys = {
+        UP: 'up',
+        DOWN: 'down',
+        TAB: 'tab',
+    };
 
-        const autocompletionKeys = {
-            UP: 'up',
-            DOWN: 'down',
-            TAB: 'tab',
-        };
-
-        const autocompletionHandlers = {
-            UP: e => this.changeSelectPosition(e, -1),
-            DOWN: e => this.changeSelectPosition(e, 1),
-            TAB: e => {
+    autocompletionHandlers = {
+        UP: e => this.changeSelectPosition(e, -1),
+        DOWN: e => this.changeSelectPosition(e, 1),
+        TAB: e => {
+            if (this.state.keywordList.length) {
                 e.preventDefault();
                 e.stopPropagation();
-                recommendations.length && this.insertKeyword(recommendations[selectPosition]);
-            },
-        };
+                this.insertKeyword(this.state.keywordList[this.state.selectPosition]);
+            }
+        },
+    };
+
+    render() {
+        const { currTab, editorTheme } = this.props;
+        const { keywordList, position, searchString, selectPosition } = this.state;
 
         return (
             <>
-                {recommendations && (
+                {keywordList && (
                     <div
                         className="autocompletion"
                         style={{ transform: `translate(${position[0]}px, ${position[1] + 20}px)` }}
                     >
-                        {recommendations.map((r, index) => (
+                        {keywordList.map((keyword, index) => (
                             <div
                                 key={index}
-                                onClick={e => this.insertKeyword(r)}
-                                className={classNames({
+                                onClick={e => this.insertKeyword(keyword)}
+                                className={classNames('keyword', {
                                     selected: selectPosition === index,
-                                    star: this.SQLKeywordsDesc[r].star,
+                                    star: this.SQLKeywordsDesc[keyword].star,
                                 })}
                             >
-                                <b>{r.slice(0, searchString.length)}</b>
-                                {r.slice(searchString.length)}
-                                {this.SQLKeywordsDesc[r] && this.SQLKeywordsDesc[r].type === 'function' ? '()' : ''}
+                                <div
+                                    className={classNames('keyword-type', {
+                                        table: this.SQLKeywordsDesc[keyword].type === 'table',
+                                    })}
+                                />
+                                <div className="keyword-text">
+                                    <b>{keyword.slice(0, searchString.length)}</b>
+                                    {keyword.slice(searchString.length)}
+                                </div>
+                                {this.SQLKeywordsDesc[keyword].type === 'function' ? '()' : ''}
+                                {this.SQLKeywordsDesc[keyword].info && <div className="keyword-info" />}
                             </div>
                         ))}
                     </div>
                 )}
 
-                <HotKeys keyMap={autocompletionKeys} handlers={autocompletionHandlers}>
+                <HotKeys keyMap={this.autocompletionKeys} handlers={this.autocompletionHandlers}>
                     <Editor
                         value={currTab.html}
                         onValueChange={code => this.handleContentEditable(code)}

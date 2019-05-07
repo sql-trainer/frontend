@@ -798,7 +798,7 @@ div[tabindex='-1']:focus {
     font-family: 'Fira Mono', monospace;
     font-size: 15px;
 
-    div {
+    .keyword {
         height: 28px;
         display: flex;
         align-items: center;
@@ -806,6 +806,9 @@ div[tabindex='-1']:focus {
         min-width: 140px;
         cursor: pointer;
         line-height: 16px;
+
+        display: grid;
+        grid-template-columns: auto auto 1fr auto;
 
         &:hover {
             background: #fafafa;
@@ -823,6 +826,32 @@ div[tabindex='-1']:focus {
                 color: #333;
                 font-size: 8px;
                 margin-right: 5px;
+            }
+        }
+
+        .keyword-type {
+            &.table {
+                &:after {
+                    @extend %fa-icon;
+                    @extend .fas;
+                    content: fa-content($fa-var-table);
+                    color: #333;
+                    font-size: 12px;
+                    margin-right: 5px;
+                    margin-bottom: 2px;
+                }
+            }
+        }
+
+        .keyword-info {
+            &:after {
+                @extend %fa-icon;
+                @extend .fas;
+                content: fa-content($fa-var-info-circle);
+                color: #333;
+                font-size: 12px;
+                margin-right: 5px;
+                margin-bottom: 2px;
             }
         }
 
