@@ -782,3 +782,53 @@ div[tabindex='-1']:focus {
     font-size: 20px;
     line-height: 40px;
 }
+
+.autocompletion {
+    display: flex;
+    position: absolute;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+    background: white;
+    flex-direction: column;
+    z-index: 3;
+    overflow: hidden;
+    transform-origin: top left;
+    transition: all 0.1s ease-in-out;
+    max-height: 100px;
+    font-family: 'Fira Mono', monospace;
+    font-size: 15px;
+
+    div {
+        height: 28px;
+        display: flex;
+        align-items: center;
+        padding: 0 7px;
+        min-width: 140px;
+        cursor: pointer;
+        line-height: 16px;
+
+        &:hover {
+            background: #fafafa;
+        }
+
+        &.selected {
+            background: lighten($icon-color, 40%);
+        }
+
+        &.star {
+            &:before {
+                @extend %fa-icon;
+                @extend .fas;
+                content: fa-content($fa-var-star);
+                color: #333;
+                font-size: 8px;
+                margin-right: 5px;
+            }
+        }
+
+        b {
+            font-weight: normal;
+            text-decoration: underline;
+        }
+    }
+}

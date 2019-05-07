@@ -4,7 +4,7 @@ import * as selectors from '../../../../store/selectors';
 
 import SQLEditor from '../SQLEditor';
 
-const mapStateToProps = ({ questions, tabs, settings }, ownProps) => {
+const mapStateToProps = ({ questions, tabs, settings, database }, ownProps) => {
     return {
         questions: questions.questions,
         tabs: tabs.tabs,
@@ -12,6 +12,7 @@ const mapStateToProps = ({ questions, tabs, settings }, ownProps) => {
         editorTheme: settings.editorTheme,
         currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
         currTab: selectors.getCurrentTab({ questions, tabs }),
+        currTables: selectors.getCurrentTables({ database }),
         ...ownProps,
     };
 };

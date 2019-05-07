@@ -34,7 +34,9 @@
         "redux-persist": "^5.10.0",
         "redux-thunk": "^2.3.0",
         "reselect": "^4.0.0",
-        "store": "^2.0.12"
+        "store": "^2.0.12",
+        "textarea-caret": "^3.1.0",
+        "textarea-caret-position": "^0.1.1"
     },
     "scripts": {
         "start": "react-scripts start",
