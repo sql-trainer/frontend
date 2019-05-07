@@ -69,6 +69,7 @@ class Autocompletion extends PureComponent {
                       ),
             position: [caret.left, caret.top],
             searchString,
+            selectedPosition: 0,
         });
     };
 
