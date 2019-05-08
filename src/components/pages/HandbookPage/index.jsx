@@ -20,9 +20,7 @@ class HandbookPage extends Component {
         <div className="handbook-page">
             <Header style={{ borderBottom: "2px solid #47515e" }}/>
                 <div className="wrapper">
-					<aside className="aside">
-              			<Menu />
-					</aside>
+              		<Menu />
 					<main className="main">
 						<Route path="/handbook/intro-in-sql" component={IntroInSQL} />
 					</main>
