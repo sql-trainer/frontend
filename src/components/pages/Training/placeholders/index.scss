@@ -1,0 +1,70 @@
+@import '../../../../styles/vars.scss';
+
+.placeholder {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    height: calc(100vh - 60px);
+    overflow-y: hidden;
+    min-width: $min-width;
+}
+
+.ph-left {
+    padding: 10px 0 0px 20px;
+}
+
+.ph-right {
+    padding: 10px 20px 0 15px;
+}
+
+.ph-block {
+    margin-bottom: 15px;
+}
+
+.ph-inline {
+    display: flex;
+
+    .ph {
+        margin-right: 10px;
+    }
+}
+
+.ph {
+    background: #efefef;
+    border-radius: 4px;
+    height: 20px;
+    animation: blinking 1.5s linear infinite;
+    margin-bottom: 10px;
+    position: relative;
+
+    &.ph-75 {
+        width: 75%;
+    }
+
+    &.ph-50 {
+        width: 50%;
+    }
+
+    &.ph-25 {
+        width: 25%;
+    }
+
+    &.ph-10 {
+        width: 10%;
+    }
+
+    &.ph-title {
+        height: 25px;
+        margin-bottom: 21px;
+    }
+
+    &.ph-circle {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        animation-delay: 0.75s;
+        margin-bottom: 0;
+    }
+}

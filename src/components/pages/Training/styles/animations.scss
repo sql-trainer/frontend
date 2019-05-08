@@ -1,0 +1,107 @@
+// placeholder  animation
+@keyframes blinking {
+    0% {
+        background: #efefef;
+    }
+
+    50% {
+        background: #ddd;
+    }
+
+    100% {
+        background: #efefef;
+    }
+}
+
+@keyframes pin {
+    0% {
+        transform: rotateZ(45deg);
+    }
+
+    50% {
+        transform: rotateZ(0deg) translateY(-10px);
+    }
+
+    70% {
+        transform: rotateZ(0deg) translateY(5px);
+    }
+
+    100% {
+        transform: rotateZ(0deg) translateY(0px);
+    }
+}
+
+@keyframes pinOut {
+    100% {
+        transform: rotateZ(45deg);
+    }
+
+    50% {
+        transform: rotateZ(0deg) translateY(-10px);
+    }
+
+    20% {
+        transform: rotateZ(0deg) translateY(5px);
+    }
+
+    0% {
+        transform: rotateZ(0deg) translateY(0px);
+    }
+}
+
+// help slider animaion
+@keyframes accordion {
+    0% {
+        opacity: 0;
+        transform: scaleY(0);
+        height: auto;
+    }
+
+    55% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+// table props slider animation
+@keyframes tables {
+    0% {
+        opacity: 0;
+        max-height: 0;
+    }
+
+    55% {
+        opacity: 1;
+    }
+
+    100% {
+        max-height: 1000px;
+    }
+}
+
+// loader animation
+@keyframes colors {
+    0% {
+        background: #369cc7;
+    }
+
+    25% {
+        background: #6cac17;
+    }
+
+    50% {
+        background: #ebad1a;
+    }
+
+    75% {
+        background: #ec3d3d;
+    }
+
+    100% {
+        background: #369cc7;
+    }
+}

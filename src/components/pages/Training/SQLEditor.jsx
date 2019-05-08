@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import Editor from 'react-simple-code-editor';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
+import classNames from 'classnames';
 
 import store from '../../../modules/store';
-
-import 'prismjs/themes/prism.css';
 
 class SQLEditor extends Component {
     state = {
@@ -13,8 +12,9 @@ class SQLEditor extends Component {
     };
 
     handleContentEditable = value => {
-        const { changeTabHtml, currTabIndex, questions, currQuestionIndex } = this.props;
+        const { changeTabHtml, currTabIndex, questions, currQuestionIndex, changeSQLResponseType } = this.props;
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
+        changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };
 
     highlightSQL = sql => {
@@ -36,18 +36,20 @@ class SQLEditor extends Component {
     };
 
     render() {
-        const { currTab } = this.props;
+        const { currTab, editorTheme } = this.props;
 
         return (
-            <Editor
-                value={currTab.html}
-                onValueChange={code => this.handleContentEditable(code)}
-                highlight={code => this.highlightSQL(code)}
-                className="textarea"
-                tabSize={4}
-                onKeyUp={this.saveOnEdit}
-                placeholder="Введите свой запрос..."
-            />
+            <>
+                <Editor
+                    value={currTab.html}
+                    onValueChange={code => this.handleContentEditable(code)}
+                    highlight={code => this.highlightSQL(code)}
+                    className={classNames('textarea', editorTheme)}
+                    tabSize={4}
+                    placeholder="Введите свой запрос..."
+                    autoFocus
+                />
+            </>
         );
     }
 }

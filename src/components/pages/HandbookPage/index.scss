@@ -4,8 +4,41 @@
         display: flex;
 
         .aside {
+            position: sticky;
+            top: 0px;
+            height: 100vh;
             width: 300px;
             background: #f2f2f2;
+            box-shadow: 0px 0px 1px #47515e;
+
+            .content {
+
+                .nav {
+                    padding: 40px 30px 20px;
+
+                    .title {
+                        color: #aaa;
+                    }
+
+                    .links {
+                        margin-top: 20px;
+                        margin-left: 10px;
+
+                        .link {
+                            margin-bottom: 10px;
+
+                            a {
+                                color: #666;
+                                text-decoration: none;
+
+                                &:hover {
+                                    color: #8255ca;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .main {
@@ -14,7 +47,11 @@
             max-width: 700px;;
     
             .content {
-    
+                
+                h3 {
+                    margin-top: 35px;
+                }
+
                 p {
                     line-height: 1.5em;
                 }

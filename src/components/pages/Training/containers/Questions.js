@@ -1,7 +1,14 @@
 import { connect } from 'react-redux';
 import { loadDatabaseFromAPI } from '../../../../store/actions/databaseActions';
-import { changeCurrQuestion, nextQuestion, prevQuestion } from '../../../../store/actions/questionActions';
+import { copyAnswerToClipboard } from '../../../../store/actions/tabsActions';
+import {
+    changeCurrQuestion,
+    nextQuestion,
+    prevQuestion,
+    changeAllQuestionsVisibility,
+} from '../../../../store/actions/questionActions';
 import { addNotification } from '../../../../store/actions/notificationActions';
+import * as selectors from '../../../../store/selectors';
 
 import Questions from '../Questions';
 
@@ -12,6 +19,7 @@ const mapStateToProps = ({ questions, database }, ownProps) => {
         isQuestionsLoading: questions.isQuestionsLoading,
         currQuestionIndex: questions.currQuestionIndex,
         database: database.database,
+        currQuestion: selectors.getCurrentQuestion({ questions }),
         ...ownProps,
     };
 };
@@ -23,6 +31,8 @@ const mapDispatchToProps = dispatch => {
         addNotification: (message, level) => dispatch(addNotification(message, level)),
         nextQuestion: () => dispatch(nextQuestion()),
         prevQuestion: () => dispatch(prevQuestion()),
+        changeAllQuestionsVisibility: () => dispatch(changeAllQuestionsVisibility()),
+        copyAnswerToClipboard: html => dispatch(copyAnswerToClipboard(html)),
     };
 };
 

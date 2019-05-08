@@ -11,6 +11,7 @@ import "./index.scss";
 
 class HandbookPage extends Component {
   componentDidMount() {
+	document.body.scrollTop = document.documentElement.scrollTop = 0;
     document.title = "HandbookPage";
   }
 

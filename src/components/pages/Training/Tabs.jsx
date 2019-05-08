@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import store from '../../../modules/store';
+import classNames from 'classnames';
+import CustomScrollbars from './CustomScrollbars';
 
 class Tabs extends Component {
     _deleteTab = (e, qid) => {
         e.stopPropagation();
         this.props.deleteTab(qid);
-        store.set('tabs', this.props.allTabs);
     };
-
-    _changeTab(index, id) {
-        this.props.changeTab(index, id);
-        store.set('tabs', this.props.allTabs);
-    }
 
     render() {
         const {
@@ -20,44 +15,51 @@ class Tabs extends Component {
             currTabIndex,
             isInputAreaPinned,
             pinInputArea,
+            currQuestion,
+            openHelpModal,
             createNewTab,
-            questions,
-            currQuestionIndex,
         } = this.props;
 
         return (
-            <div className="tabs">
-                <div>
-                    {tabs.map((tab, index) => (
-                        <div
-                            className={`tab ${currTabIndex === index ? 'active' : ''}`}
-                            onClick={e => this._changeTab(index, questions[currQuestionIndex].id)}
-                            key={index}
-                        >
-                            {tab.title}
-                            <FontAwesomeIcon
-                                icon="times"
-                                className="tab-close"
-                                onClick={e => this._deleteTab(e, questions[currQuestionIndex].id)}
-                            />
-                        </div>
-                    ))}
+            <>
+                <div className="tabs">
+                    <CustomScrollbars prefix="tabs">
+                        {tabs.map((tab, index) => (
+                            <div
+                                className={classNames('tab', { active: currTabIndex === index })}
+                                onClick={e => this.props.changeTab(index, currQuestion.id)}
+                                key={index}
+                            >
+                                {tab.title}
+                                <FontAwesomeIcon
+                                    icon="times"
+                                    className="tab-close"
+                                    onClick={e => this._deleteTab(e, currQuestion.id)}
+                                />
+                            </div>
+                        ))}
+                    </CustomScrollbars>
+
                     <FontAwesomeIcon
-                        className="tabs-icon"
+                        className="tabs-icon add-tab"
                         icon="plus"
                         data-tip="Добавить новую вкладку"
+                        data-multiline={false}
                         onClick={e => {
-                            createNewTab(questions[currQuestionIndex].id);
+                            createNewTab(currQuestion.id);
                         }}
                     />
+
+                    <div className="tools">
+                        <div
+                            className={classNames('tool-icon pin', { 'pin-active': isInputAreaPinned })}
+                            data-tip={isInputAreaPinned ? 'Открепить' : 'Закрепить'}
+                            onClick={pinInputArea}
+                        />
+                        <div className="tool-icon questionmark-icon" data-tip="Справка" onClick={openHelpModal} />
+                    </div>
                 </div>
-                <FontAwesomeIcon
-                    className={`tabs-icon pin ${isInputAreaPinned ? 'pin-active' : ''}`}
-                    icon="thumbtack"
-                    data-tip={isInputAreaPinned ? 'Открепить' : 'Закрепить'}
-                    onClick={pinInputArea}
-                />
-            </div>
+            </>
         );
     }
 }

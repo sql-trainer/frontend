@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import NotificationSystem from 'react-notification-system';
 
+import '../style.scss';
+
 class Notifications extends PureComponent {
     notificationSystem = React.createRef();
 

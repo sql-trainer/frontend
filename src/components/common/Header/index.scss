@@ -45,34 +45,33 @@
         }
 
         .header__nav {
-            display: grid;
-            grid-template-columns: 1fr max-content;
+            display: flex;
+            width: 100%;
             align-items: center;
+            padding-left: 20px;
 
             .nav-links {
-                display: flex;
-                overflow: hidden;
-                &.scrollbar-container {
-                    height: auto !important;
-                    .ps__rail-x {
-                        height: 0;
-                        display: none;
-                        opacity: 0;
-                        .ps__thumb-x {
-                            height: 2px;
-                            margin-bottom: -2px;
-                        }
-                    }
+                .navbar-view {
+                    display: flex;
                 }
+
                 .nav-item {
                     margin-right: 20px;
+                    align-self: center;
+
+                    &:first-child {
+                        margin-left: auto;
+                    }
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
                 }
             }
             .nav-item {
                 white-space: nowrap;
                 &.login-button {
-                    // border-left: 1px solid;
-                    // padding-left: 20px;
+                    margin-left: 20px;
                     position: relative;
                     &:after {
                         @extend %fa-icon;
@@ -102,14 +101,10 @@
 
         .tools {
             display: none;
-            // padding: 10px 15px;
-            margin-right: 5px;
-
+            margin: 0 12px;
             .tool-icon {
                 font-size: 20px;
-                // &:not(:last-child) {
-                margin-right: 10px;
-                // }
+                margin-right: 0 !important;
 
                 &:after {
                     @extend %fa-icon;
@@ -117,31 +112,10 @@
                     color: #3d3d3d;
                 }
 
-                &.theme-icon {
-                    &:after {
-                        @extend .far;
-                        content: fa-content($fa-var-sun);
-                    }
-
-                    &.night {
-                        &:after {
-                            content: fa-content($fa-var-moon);
-                            font-size: 18px;
-                        }
-                    }
-                }
-
-                &.reset-icon {
+                &.settings-icon {
                     &:after {
                         @extend .fas;
-                        content: fa-content($fa-var-eraser);
-                    }
-                }
-
-                &.questionmark-icon {
-                    &:after {
-                        @extend .far;
-                        content: fa-content($fa-var-question-circle);
+                        content: fa-content($fa-var-cog);
                     }
                 }
             }
@@ -169,5 +143,9 @@
 
     .header__nav {
         grid-template-columns: 1fr max-content max-content !important;
+    }
+
+    .login-button {
+        margin-left: 0 !important;
     }
 }

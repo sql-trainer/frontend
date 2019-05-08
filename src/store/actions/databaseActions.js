@@ -22,7 +22,7 @@ const loadDatabaseFromAPI = dbID => {
                 ),
             )
             .catch(err => dispatch(addNotification({ message: 'Ошибка при загрузке базы данных', level: 'error' })))
-            .finally(() => dispatch(isLoading(false)), dispatch(changeLoaderVisibility(false)));
+            .finally(() => { dispatch(isLoading(false)); dispatch(changeLoaderVisibility(false)) });
     };
 };
 

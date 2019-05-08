@@ -2,10 +2,22 @@ import React, { Component } from "react";
 
 class MenuHandbookPage extends Component {
 	
-	componentDidMount() {
+	componentWillMount() {
 		this.setState({
-			opened: true
-		})
+			opened: true,
+			navigation: []
+		});
+	}
+
+	componentDidMount() {
+		const anchors = document.querySelectorAll('.handbook-page-anchor');
+		const navigation = [...anchors].map(anchor => {
+			return {
+				label: anchor.outerText,
+				link: `#${anchor.name}`
+			}
+		});
+		this.setState({ navigation })
 	}
 
   	render() {
@@ -18,8 +30,18 @@ class MenuHandbookPage extends Component {
 			</div>
 			<div className="content">
 				<div className="nav">
-					{/* <a href="#">Введение в SQL</a>
-					<a href="#">Введение в SQL</a> */}
+					<div className="title">Навигация по уроку</div>
+					<div className="links">
+						{
+							(this.state.navigation || []).map(anchor=>{
+								return (
+									<div className="link" key={anchor.link}>
+										<a href={anchor.link}>{anchor.label}</a>
+									</div>
+								)
+							})
+						}
+					</div>
 				</div>
 			</div>
       	</div>);

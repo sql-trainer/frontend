@@ -1,14 +1,16 @@
 import { connect } from 'react-redux';
-import { createNewTab, changeTab, deleteTab, pinInputArea } from '../../../../store/actions/tabsActions';
+import { createNewTab, changeTab, deleteTab } from '../../../../store/actions/tabsActions';
+import { pinInputArea } from '../../../../store/actions/settingsActions';
+import * as selectors from '../../../../store/selectors';
 
 import Tabs from '../Tabs';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = ({ questions, tabs, settings }, ownProps) => {
     return {
-        questions: state.questions.questions,
-        currQuestionIndex: state.questions.currQuestionIndex,
-        isInputAreaPinned: state.questions.isInputAreaPinned,
-        allTabs: state.tabs.tabs,
+        isInputAreaPinned: settings.isInputAreaPinned,
+        currQuestion: selectors.getCurrentQuestion({ questions }),
+        tabs: selectors.getCurrentTabs({ questions, tabs }),
+        currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
         ...ownProps,
     };
 };

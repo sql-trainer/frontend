@@ -1,4 +1,5 @@
 import * as types from '../../constants';
+import { addNotification } from './notificationActions';
 
 const createNewTab = id => {
     return {
@@ -6,17 +7,44 @@ const createNewTab = id => {
         payload: {
             html: '',
             title: 'Tab',
-            response: undefined,
         },
         id,
     };
 };
 
-const changeTab = (index, id) => {
+const copyAnswerToClipboard = html => {
+    return async dispatch => {
+        navigator.clipboard
+            .writeText(html)
+            .then(() => dispatch(addNotification('Скопировано', 'info')))
+            .catch(() => dispatch(addNotification('Ошибка при копировании', 'error')));
+    };
+};
+
+const changeTab = (tid, qid) => {
     return {
         type: types.CHANGE_TAB,
-        index,
-        id,
+        tid,
+        qid,
+    };
+};
+
+const nextTab = qid => {
+    return function(dispatch, getState) {
+        const tabs = getState().tabs.tabs;
+        const newTab = tabs[qid].currTabIndex + 1 > tabs[qid].tabs.length - 1 ? 0 : tabs[qid].currTabIndex + 1;
+
+        console.log(newTab);
+        dispatch(changeTab(newTab, qid));
+    };
+};
+
+const prevTab = qid => {
+    return function(dispatch, getState) {
+        const tabs = getState().tabs.tabs;
+        const newTab = tabs[qid].currTabIndex - 1 < 0 ? tabs[qid].tabs.length - 1 : tabs[qid].currTabIndex - 1;
+
+        dispatch(changeTab(newTab, qid));
     };
 };
 
@@ -55,7 +83,12 @@ const changeTabHtml = (index, html, id) => {
 
 const isChecking = (qid, tid, checking) => ({ type: types.SQL_CHECKING, qid, tid, checking });
 
-const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
+const changeSQLResponseType = (SQLResponseType, tid, qid) => ({
+    type: types.CHANGE_SQL_RESPONSE_TYPE,
+    SQLResponseType,
+    tid,
+    qid,
+});
 
 export {
     createNewTab,
@@ -63,7 +96,10 @@ export {
     deleteTab,
     changeTabResponse,
     changeTabHtml,
-    pinInputArea,
     createInitialTabs,
     isChecking,
+    changeSQLResponseType,
+    copyAnswerToClipboard,
+    prevTab,
+    nextTab,
 };

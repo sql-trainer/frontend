@@ -11,6 +11,7 @@ import {
     faSitemap,
     faTimes,
     faThumbtack,
+    faMapPin,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -25,4 +26,5 @@ library.add(
     faSitemap,
     faTimes,
     faThumbtack,
+    faMapPin,
 );
