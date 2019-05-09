@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import classNames from 'classnames';
 import getCaretCoordinates from 'textarea-caret';
 import { HotKeys } from 'react-hotkeys';
 
-class Autocompletion extends PureComponent {
+class Autocompletion extends Component {
     state = {
         keywordList: [],
-        position: [20, 10],
+        blockPosition: [20, 10],
         searchString: '',
         selectedPosition: 0,
     };
@@ -15,27 +15,22 @@ class Autocompletion extends PureComponent {
         currTables: [],
         keywords: {},
         options: {},
-        filterCondition: function(keyword, searchString, keywordsObj, options) {
-            let keywordL = keyword;
+        insertTransformation: keyword => keyword,
+        filterCondition: function(keyword, searchString, options) {
+            let keywordL = keyword.label;
             let searchStringL = searchString;
 
             if (!options.exactMatch) {
-                keywordL = keyword.toLowerCase();
-                searchStringL = searchString.toLowerCase();
+                keywordL = keywordL.toLowerCase();
+                searchStringL = searchStringL.toLowerCase();
             }
 
-            return (
-                (keywordL !== searchStringL ||
-                    (keywordL === searchStringL && keywordsObj[keyword].type === 'function')) &&
-                keywordL.startsWith(searchStringL)
-            );
+            return keywordL.startsWith(searchStringL);
         },
     };
 
-    constructor(props) {
-        super(props);
-
-        this.keywords = Object.keys(props.keywords);
+    componentDidMount() {
+        this.inputElement = document.querySelector(`#${this.props.inputElementID}`);
     }
 
     getLeftBoundary = (cursorPos, textContent, boundary = /[^\w]/) => {
@@ -45,7 +40,9 @@ class Autocompletion extends PureComponent {
     };
 
     filterKeywords = e => {
-        const forbiddenCodes = { clear: [37, 39, 9], prevent: [38, 40] };
+        const { filterCondition, keywords, options } = this.props;
+
+        const forbiddenCodes = { clear: [37, 39, 9, 17], prevent: [38, 40] };
 
         if (forbiddenCodes.clear.includes(e.which)) return this.setState({ keywordList: [] });
         if (forbiddenCodes.prevent.includes(e.which)) return false;
@@ -54,36 +51,70 @@ class Autocompletion extends PureComponent {
         const textContent = inputEl.textContent;
         const cursorPos = inputEl.selectionStart;
 
+        if (/\w/.test(textContent[cursorPos]) && cursorPos !== textContent.length)
+            return this.setState({ keywordList: [] });
+
         const caret = getCaretCoordinates(inputEl, cursorPos);
-
         const leftBoundary = this.getLeftBoundary(cursorPos, textContent);
-
         const searchString = textContent.slice(leftBoundary, cursorPos);
 
-        this.setState({
-            keywordList:
-                searchString === ''
-                    ? []
-                    : this.keywords.filter(keyword =>
-                          this.props.filterCondition(keyword, searchString, this.props.keywords, this.props.options),
-                      ),
-            position: [caret.left, caret.top],
-            searchString,
-            selectedPosition: 0,
-        });
+        const filteredKeywords =
+            searchString === '' ? [] : keywords.filter(keyword => filterCondition(keyword, searchString, options));
+
+        const keywordList = filteredKeywords;
+
+        filteredKeywords.forEach(f => (f.snippets ? keywordList.push(...f.snippets) : false));
+
+        this.setState({ keywordList, blockPosition: caret, searchString, selectedPosition: 0, cursorPos });
+    };
+
+    buildNewString = keyword => {
+        const {
+            options: { insertBracketsAfterFunction, insertSpaceAfterKeyword },
+            insertTransformation,
+        } = this.props;
+
+        const isKeywordFunction = keyword.type === 'function';
+
+        let textToInsert = keyword.insert
+            ? keyword.insert
+            : keyword.transform
+            ? insertTransformation(keyword)
+            : keyword.label;
+
+        if (insertBracketsAfterFunction) textToInsert += isKeywordFunction ? '()' : '';
+        if (insertSpaceAfterKeyword) textToInsert += ' ';
+
+        return textToInsert;
+    };
+
+    getCursorOffsetAfterInsert = keyword => {
+        const {
+            options: { insertBracketsAfterFunction, insertSpaceAfterKeyword },
+        } = this.props;
+
+        let newCursorPosition = 0;
+
+        if (keyword.type === 'function') {
+            if (insertBracketsAfterFunction) {
+                newCursorPosition -= 1;
+                if (insertSpaceAfterKeyword) newCursorPosition -= 1;
+            }
+        }
+
+        return newCursorPosition;
     };
 
     insertKeyword = keyword => {
-        const { value, keywords } = this.props;
+        const { value } = this.props;
 
-        const inputEl = document.querySelector('.npm__react-simple-code-editor__textarea');
+        const inputEl = this.inputElement;
         inputEl.focus();
 
         const cursorPosition = inputEl.selectionStart;
         const leftBoundary = this.getLeftBoundary(cursorPosition, value);
 
-        const isKeywordFunction = keywords[keyword].type === 'function';
-        const textToInsert = keyword + (isKeywordFunction ? '()' : '') + ' ';
+        const textToInsert = this.buildNewString(keyword);
 
         inputEl.setSelectionRange(leftBoundary, cursorPosition);
         const isSuccess = document.execCommand('insertText', false, textToInsert);
@@ -96,29 +127,35 @@ class Autocompletion extends PureComponent {
             inputEl.dispatchEvent(e);
         }
 
-        if (isKeywordFunction) {
-            const newCursorPosition = leftBoundary + textToInsert.length - 2;
-            inputEl.setSelectionRange(newCursorPosition, newCursorPosition);
-        }
+        const newCursorPosition = inputEl.selectionStart + this.getCursorOffsetAfterInsert(keyword);
+        inputEl.setSelectionRange(newCursorPosition, newCursorPosition);
 
         this.setState({ keywordList: [] });
     };
 
-    changeselectedPosition = (e, direction) => {
-        e.preventDefault();
-
+    changeSelectedPosition = (e, direction) => {
         const { keywordList, selectedPosition } = this.state;
 
         if (keywordList.length) {
-            const position =
+            e.preventDefault();
+            const blockPosition =
                 selectedPosition + direction < 0
                     ? keywordList.length - 1
                     : selectedPosition + direction >= keywordList.length
                     ? 0
                     : direction + selectedPosition;
 
-            this.setState({ selectedPosition: position });
+            this.setState({ selectedPosition: blockPosition });
         }
+    };
+
+    onPositionChange = type => {
+        const { cursorPos } = this.state;
+        const inputEl = this.inputElement;
+        inputEl.focus();
+
+        const cursorPosition = inputEl.selectionStart;
+        if (cursorPos !== cursorPosition || type === 'scroll') this.setState({ keywordList: [] });
     };
 
     autocompletionKeys = {
@@ -128,8 +165,8 @@ class Autocompletion extends PureComponent {
     };
 
     autocompletionHandlers = {
-        UP: e => this.changeselectedPosition(e, -1),
-        DOWN: e => this.changeselectedPosition(e, 1),
+        UP: e => this.changeSelectedPosition(e, -1),
+        DOWN: e => this.changeSelectedPosition(e, 1),
         TAB: e => {
             if (this.state.keywordList.length) {
                 e.preventDefault();
@@ -139,45 +176,52 @@ class Autocompletion extends PureComponent {
         },
     };
 
+    getKeywordList = () => {
+        const { selectedPosition, searchString, keywordList } = this.state;
+
+        return keywordList.map((keyword, index) => (
+            <div
+                key={index}
+                onClick={e => this.insertKeyword(keyword)}
+                className={classNames('keyword', { selected: selectedPosition === index, star: keyword.star })}
+            >
+                <div className={classNames('keyword-type', keyword.type)} />
+
+                <div className="keyword-text">
+                    {keyword.type === 'snippet' ? (
+                        keyword.label
+                    ) : (
+                        <>
+                            <b>{keyword.label.slice(0, searchString.length)}</b>
+                            {keyword.label.slice(searchString.length)}
+                        </>
+                    )}
+                </div>
+
+                {keyword.info && <div className="keyword-info" />}
+            </div>
+        ));
+    };
+
     render() {
-        const { keywordList, position, selectedPosition, searchString } = this.state;
-        const { children, value, keywords } = this.props;
+        const { keywordList, blockPosition } = this.state;
+        const { children, scrollRef } = this.props;
+
+        const inputElScrollTop = (scrollRef && scrollRef.getScrollTop()) || 0;
+
+        const autocompletionStyle = {
+            transform: `translate(${blockPosition.left}px, ${blockPosition.top + 20 - inputElScrollTop}px)`,
+        };
 
         return (
-            <>
-                {keywordList && (
-                    <>
-                        <div
-                            className="autocompletion"
-                            style={{ transform: `translate(${position[0]}px, ${position[1] + 20}px)` }}
-                        >
-                            {keywordList.map((keyword, index) => (
-                                <div
-                                    key={index}
-                                    onClick={e => this.insertKeyword(keyword)}
-                                    className={classNames('keyword', {
-                                        selected: selectedPosition === index,
-                                        star: keywords[keyword].star,
-                                    })}
-                                >
-                                    <div className={classNames('keyword-type', keywords[keyword].type)} />
-
-                                    <div className="keyword-text">
-                                        <b>{keyword.slice(0, searchString.length)}</b>
-                                        {keyword.slice(searchString.length)}
-                                        {keywords[keyword].type === 'function' ? '()' : ''}
-                                    </div>
-
-                                    {keywords[keyword].info && <div className="keyword-info" />}
-                                </div>
-                            ))}
-                        </div>
-                    </>
-                )}
+            <div>
+                <div className="autocompletion" style={autocompletionStyle}>
+                    {this.getKeywordList(keywordList)}
+                </div>
                 <HotKeys keyMap={this.autocompletionKeys} handlers={this.autocompletionHandlers}>
-                    {React.cloneElement(children, { onKeyUp: this.filterKeywords, value })}
+                    {children(this.filterKeywords, this.onPositionChange)}
                 </HotKeys>
-            </>
+            </div>
         );
     }
 }

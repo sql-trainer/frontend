@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-const CustomScrollbars = forwardRef(({ className, prefix, children }, ref) => {
+const CustomScrollbars = forwardRef(({ className, prefix, children, ...ownProps }, ref) => {
     return (
         <Scrollbars
+            {...ownProps}
             ref={ref}
             className={className}
             renderTrackHorizontal={props => (

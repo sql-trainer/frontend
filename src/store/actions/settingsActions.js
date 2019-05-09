@@ -17,6 +17,7 @@ const changeEditorTheme = theme => {
             'prism-coy',
             'prism-solarizedlight',
             'prism-tomorrow',
+            'prism-hopscotch',
         ];
 
         theme = editorThemes.includes(theme) ? theme : 'prism';

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
+import { HotKeys } from 'react-hotkeys';
 
 // imported own comopnents block
 import CustomScrollbars from './CustomScrollbars';
@@ -15,7 +16,6 @@ import { CompletedPopupContainer as CompletedPopup } from './containers/Complete
 import { SQLEditorContainer as SQLEditor } from './containers/SQLEditor';
 import { HelpModal, SettingsModal } from './modals';
 import TrainingPH from './placeholders/TrainingPH';
-import { HotKeys } from 'react-hotkeys';
 
 // imported styles block
 import './styles/index.scss';
@@ -114,12 +114,12 @@ class Training extends Component {
                                 className={classNames('inputbox', { pinned: isInputAreaPinned })}
                             >
                                 <Tabs openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })} />
-                                <CustomScrollbars
+                                {/* <CustomScrollbars
                                     className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
                                     prefix="editor"
-                                >
-                                    <SQLEditor />
-                                </CustomScrollbars>
+                                > */}
+                                <SQLEditor />
+                                {/* </CustomScrollbars> */}
                                 <CheckButton />
                                 <button
                                     className={classNames('next-question', {

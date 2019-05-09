@@ -39,6 +39,7 @@ const SettingsModal = props => {
         { value: 'prism-coy', label: 'Coy' },
         { value: 'prism-solarizedlight', label: 'Solarized light' },
         { value: 'prism-tomorrow', label: 'Tomorrow night' },
+        { value: 'prism-hopscotch', label: 'Hopscotch' },
     ];
 
     return (
