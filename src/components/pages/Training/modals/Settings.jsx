@@ -1,8 +1,16 @@
 import React from 'react';
 import Modal from '../../../common/Modal';
 import Select from 'react-select';
+import classNames from 'classnames';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
+import posed from 'react-pose';
+
+const Switch = props => (
+    <div className={classNames('switch', props.checked ? 'on' : 'off')}>
+        <input type="checkbox" checked={props.checked} onChange={props.onChange} />
+    </div>
+);
 
 const SettingsModal = props => {
     const { visible, onClose, changeEditorTheme, editorTheme } = props;
@@ -50,7 +58,8 @@ const SettingsModal = props => {
             onClose={onClose}
             maxHeight={500}
             maxWidth={600}
-            animation="fade"
+            // animation="fade"
+            fullscreenMargin={40}
             fullscreen
         >
             <div className="settings-group">
@@ -78,6 +87,16 @@ const SettingsModal = props => {
                     placeholder="Выберите тему"
                     theme={selectTheme}
                 />
+            </div>
+
+            <div className="settings-group">
+                <div className="settings-group-title">
+                    <label>
+                        <span>Система автодополнения</span>
+                        <Switch checked={props.isACAvailable} onChange={props.changeACAvailability} />
+                    </label>
+                </div>
+                Система автодополнения предлагает основные ключевые слова языка SQL, а также названия таблиц и их поля.
             </div>
         </Modal>
     );

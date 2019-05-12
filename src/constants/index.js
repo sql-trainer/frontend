@@ -41,6 +41,7 @@ export const ADD_NOTIFICATION = 'notification/ADD_NOTIFICATION';
 
 // settings constants
 export const CHANGE_EDITOR_THEME = 'settings/CHANGE_EDITOR_THEME';
+export const CHANGE_AC_AVAILABILITY = 'settings/CHANGE_AC_AVAILABILITY';
 
 //autocomplete
 export const REPLACE_KEYWORDS = 'ac/REPLACE_KEYWORDS';

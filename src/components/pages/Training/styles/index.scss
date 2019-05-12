@@ -897,3 +897,86 @@ div[tabindex='-1']:focus {
         }
     }
 }
+
+label {
+    display: flex;
+    align-items: center;
+    height: 20px;
+    span {
+        line-height: 17px;
+        height: 20px;
+    }
+}
+
+.switch {
+    width: 40px;
+    height: 20px;
+    background: transparent;
+    position: relative;
+    border-radius: 10px;
+    margin-left: 10px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:before {
+        content: '';
+        background: white;
+        height: 18px;
+        width: 18px;
+        margin-top: 1px;
+        position: absolute;
+        left: 0px;
+        transform: translateX(1px);
+        border-radius: 50%;
+        transition: all 0.2s ease-in-out;
+    }
+
+    &.on {
+        background: #8255ca;
+
+        &:before {
+            animation: switch 0.2s linear forwards;
+        }
+    }
+
+    &.off {
+        background: #ec3d3d;
+
+        &:before {
+            animation: switchOff 0.2s linear forwards;
+        }
+    }
+
+    input {
+        width: 0;
+        height: 0;
+    }
+}
+
+@keyframes switch {
+    0% {
+        transform: translateX(1px) scale(1);
+    }
+
+    50% {
+        transform: translateX(11px) scale(0.9);
+    }
+
+    100% {
+        transform: translateX(21px) scale(1);
+    }
+}
+
+@keyframes switchOff {
+    0% {
+        transform: translateX(21px) scale(1);
+    }
+
+    50% {
+        transform: translateX(11px) scale(0.9);
+    }
+
+    100% {
+        transform: translateX(1px) scale(1);
+    }
+}

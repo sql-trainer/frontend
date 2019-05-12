@@ -8859,6 +8859,13 @@ react-simple-code-editor@^0.9.4:
   resolved "https://registry.yarnpkg.com/react-simple-code-editor/-/react-simple-code-editor-0.9.4.tgz#1c1bd621370d07ec43b25f67378036bbf7b9fbe1"
   integrity sha512-8+6lsL/WBgxqebPTdBWG2TfkeVdB7WEfky01qC+0U6RJ3/QtJKonYlveCnF4qXDTAH3D9KecOTk6k5mC45C9LA==
 
+react-switch@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-5.0.0.tgz#ecbb666f8789cb8138b3ba1160bc3745390ab502"
+  integrity sha512-+zxY9xj9dMc8Y4gv/kkqQrirfEiIQ+SlQfJDW1Wi81L3xoh1fcbBYyJyh0TnhM/U/b6HxuBmkmU4Ooxgtuoavw==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-tooltip@^3.10.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.10.0.tgz#268b5ef519fd8a1369288d1f086f42c90d5da7ef"

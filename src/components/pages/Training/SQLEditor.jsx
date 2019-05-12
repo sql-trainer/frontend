@@ -45,7 +45,7 @@ class SQLEditor extends Component {
     insertTransformation = keyword => (keyword.type !== 'table' ? keyword.label.toUpperCase() : keyword.label);
 
     render() {
-        const { currTab, editorTheme, keywords, options, visible, changeVisibility } = this.props;
+        const { currTab, editorTheme, keywords, options, visible, changeVisibility, isACAvailable } = this.props;
 
         return (
             <Autocompletion
@@ -57,6 +57,7 @@ class SQLEditor extends Component {
                 scrollRef={this.inputScrollRef}
                 visible={visible}
                 visibleHandler={changeVisibility}
+                isACAvailable={isACAvailable}
             >
                 {(onKeyUp, onPositionChange) => (
                     <CustomScrollbars

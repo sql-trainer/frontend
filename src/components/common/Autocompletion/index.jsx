@@ -34,7 +34,9 @@ class Autocompletion extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.value !== this.props.value) this.filterKeywords();
+        if (this.props.isACAvailable === true && prevProps.isACAvailable === false)
+            this.inputElement = document.querySelector(`#${this.props.inputElementID}`);
+        if (prevProps.value !== this.props.value && this.props.isACAvailable === true) this.filterKeywords();
     }
 
     getLeftBoundary = (cursorPos, textContent, boundary = /[^\w]/) => {
@@ -246,7 +248,7 @@ class Autocompletion extends Component {
 
     render() {
         const { keywordList, blockPosition } = this.state;
-        const { children, scrollRef, visible } = this.props;
+        const { children, scrollRef, visible, isACAvailable } = this.props;
 
         const inputElScrollTop = (scrollRef && scrollRef.getScrollTop()) || 0;
 
@@ -255,7 +257,7 @@ class Autocompletion extends Component {
             display: visible ? 'flex' : 'none',
         };
 
-        return (
+        return isACAvailable ? (
             <div>
                 <div className="autocompletion" style={autocompletionStyle}>
                     {this.getKeywordList(keywordList)}
@@ -264,6 +266,8 @@ class Autocompletion extends Component {
                     {children(this.filterKeys, this.onPositionChange)}
                 </HotKeys>
             </div>
+        ) : (
+            children()
         );
     }
 }

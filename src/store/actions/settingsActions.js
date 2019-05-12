@@ -6,6 +6,8 @@ const setEditorTheme = theme => {
 
 const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
 
+const changeACAvailability = () => ({ type: types.CHANGE_AC_AVAILABILITY });
+
 const changeEditorTheme = theme => {
     return async function(dispatch, getState) {
         const editorThemes = [
@@ -28,4 +30,4 @@ const changeEditorTheme = theme => {
     };
 };
 
-export { changeEditorTheme, pinInputArea };
+export { changeEditorTheme, pinInputArea, changeACAvailability };

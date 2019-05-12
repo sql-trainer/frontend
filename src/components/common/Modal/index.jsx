@@ -31,6 +31,7 @@ class Modal extends Component {
         exitStyle: Modal.fadeScaleAnimation,
         enterStyle: Modal.fadeScaleAnimation,
         animation: 'fadeScale',
+        fullscreenMargin: 0,
     };
 
     static propTypes = {
@@ -45,36 +46,30 @@ class Modal extends Component {
         showCloseButton: propTypes.bool,
     };
 
-    render() {
-        const {
-            title,
-            onClose,
-            style,
-            children,
-            opened,
-            poseKey,
-            maxHeight,
-            maxWidth,
-            fullscreen,
-            showCloseButton,
-            animation,
-        } = this.props;
+    constructor(props) {
+        super(props);
 
-        const modalStyle = {
+        const { style, maxHeight, maxWidth, fullscreen, animation, fullscreenMargin } = props;
+
+        this.modalStyle = {
             ...style,
-            maxHeight: !fullscreen ? maxHeight : '100vh',
-            maxWidth: !fullscreen ? maxWidth : '100vw',
-            borderRadius: fullscreen ? 0 : 'auto',
+            maxHeight: !fullscreen ? maxHeight : `calc(100vh - ${fullscreenMargin * 2}px)`,
+            maxWidth: !fullscreen ? maxWidth : `calc(100vw - ${fullscreenMargin * 2}px)`,
+            borderRadius: fullscreen && fullscreenMargin === 0 ? 0 : 'auto',
         };
 
-        const ModalAnimBlock = posed.div(Modal[animation]);
+        this.ModalAnimBlock = posed.div(Modal[animation]);
+    }
+
+    render() {
+        const { title, onClose, children, opened, poseKey, showCloseButton } = this.props;
 
         return (
             <PoseGroup>
                 {opened && (
                     <ModalArea className="modal-area" key={poseKey}>
                         <div className="modal-background" onClick={onClose} />
-                        <ModalAnimBlock className="modal" style={modalStyle} key="modal">
+                        <this.ModalAnimBlock className="modal" style={this.modalStyle} key="modal">
                             <h1 className="modal-title">
                                 <span>{title}</span>
                                 {showCloseButton && (
@@ -82,7 +77,7 @@ class Modal extends Component {
                                 )}
                             </h1>
                             <CustomScrollbars className="modal-content">{children}</CustomScrollbars>
-                        </ModalAnimBlock>
+                        </this.ModalAnimBlock>
                     </ModalArea>
                 )}
             </PoseGroup>

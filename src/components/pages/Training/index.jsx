@@ -24,7 +24,7 @@ import './styles/media.scss';
 class Training extends Component {
     state = {
         isModalHelpOpened: false,
-        isModalSettingsOpened: false,
+        isModalSettingsOpened: true,
     };
 
     componentDidMount() {
@@ -58,6 +58,8 @@ class Training extends Component {
             nextTab,
             deleteTab,
             createNewTab,
+            changeACAvailability,
+            isACAvailable,
         } = this.props;
 
         const { isModalHelpOpened, isModalSettingsOpened } = this.state;
@@ -152,6 +154,8 @@ class Training extends Component {
                     onClose={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
                     changeEditorTheme={changeEditorTheme}
                     editorTheme={editorTheme}
+                    changeACAvailability={changeACAvailability}
+                    isACAvailable={isACAvailable}
                 />
 
                 <HelpModal

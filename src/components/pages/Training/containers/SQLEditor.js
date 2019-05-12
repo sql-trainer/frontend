@@ -14,6 +14,7 @@ const mapStateToProps = ({ questions, tabs, settings, database, ac }, ownProps) 
         keywords: ac.keywords,
         options: ac.options,
         visible: ac.visible,
+        isACAvailable: settings.isACAvailable,
         currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
         currTab: selectors.getCurrentTab({ questions, tabs }),
         ...ownProps,
