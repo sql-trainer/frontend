@@ -4,5 +4,6 @@ import tabs from './tabsActions';
 import test from './testActions';
 import notification from './notificationActions';
 import settings from './settingsActions';
+import ac from './autocompleteActions';
 
-export { questions, database, tabs, test, notification, settings };
+export { questions, database, tabs, test, notification, settings, ac };

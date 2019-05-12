@@ -30,7 +30,7 @@ class Questions extends Component {
                         />
                         <div className={`question-counter`}>
                             Вопрос {!questionsLength ? '' : `#${currQuestionIndex + 1} из ${questionsLength}`}
-                            {currQuestion.status && (
+                            {currQuestion.sql !== undefined && (
                                 <>
                                     <div className="solved-icon" />
                                     <div

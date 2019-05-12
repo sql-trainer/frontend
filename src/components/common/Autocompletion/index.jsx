@@ -33,21 +33,38 @@ class Autocompletion extends Component {
         this.inputElement = document.querySelector(`#${this.props.inputElementID}`);
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.value !== this.props.value) this.filterKeywords();
+    }
+
     getLeftBoundary = (cursorPos, textContent, boundary = /[^\w]/) => {
-        let startPos = cursorPos - 1;
-        while (startPos > 0 && !boundary.test(textContent[startPos - 1])) startPos--;
+        let startPos = cursorPos;
+        while (startPos > 0) {
+            if (boundary.test(textContent[startPos - 1])) break;
+            startPos--;
+        }
         return startPos;
     };
 
+    filterKeys = e => {
+        const { visibleHandler } = this.props;
+
+        const forbiddenKeyCodes = {
+            //prettier-ignore
+            clear: [37, 39, 9, 17, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135]
+        };
+
+        if (forbiddenKeyCodes.clear.includes(e.which)) visibleHandler(false);
+    };
+
     filterKeywords = e => {
-        const { filterCondition, keywords, options } = this.props;
+        const { filterCondition, keywords, options, visibleHandler, visible } = this.props;
 
-        const forbiddenCodes = { clear: [37, 39, 9, 17], prevent: [38, 40] };
+        let kw = keywords;
 
-        if (forbiddenCodes.clear.includes(e.which)) return this.setState({ keywordList: [] });
-        if (forbiddenCodes.prevent.includes(e.which)) return false;
+        if (!visible) visibleHandler(true);
 
-        const inputEl = e.target;
+        const inputEl = this.inputElement;
         const textContent = inputEl.textContent;
         const cursorPos = inputEl.selectionStart;
 
@@ -57,13 +74,32 @@ class Autocompletion extends Component {
         const caret = getCaretCoordinates(inputEl, cursorPos);
         const leftBoundary = this.getLeftBoundary(cursorPos, textContent);
         const searchString = textContent.slice(leftBoundary, cursorPos);
+        let filteredKeywords;
 
-        const filteredKeywords =
-            searchString === '' ? [] : keywords.filter(keyword => filterCondition(keyword, searchString, options));
+        const delimiters = ['.'];
+        const delimiter = delimiters.find(d => textContent.slice(leftBoundary - d.length, leftBoundary) === d);
+
+        if (delimiter !== undefined) {
+            const parent = textContent.slice(
+                this.getLeftBoundary(leftBoundary - delimiter.length, textContent),
+                leftBoundary - delimiter.length,
+            );
+
+            kw = keywords.find(k => k.label === parent);
+
+            if (kw !== undefined) kw = kw.children ? kw.children[delimiter] || [] : [];
+            else kw = [];
+
+            filteredKeywords =
+                searchString === '' ? kw : kw.filter(keyword => filterCondition(keyword, searchString, options));
+        } else {
+            filteredKeywords =
+                searchString === '' ? [] : keywords.filter(keyword => filterCondition(keyword, searchString, options));
+        }
 
         const keywordList = filteredKeywords;
 
-        filteredKeywords.forEach(f => (f.snippets ? keywordList.push(...f.snippets) : false));
+        filteredKeywords.forEach((f, index) => (f.snippets ? keywordList.splice(index + 1, 0, ...f.snippets) : false));
 
         this.setState({ keywordList, blockPosition: caret, searchString, selectedPosition: 0, cursorPos });
     };
@@ -82,8 +118,9 @@ class Autocompletion extends Component {
             ? insertTransformation(keyword)
             : keyword.label;
 
-        if (insertBracketsAfterFunction) textToInsert += isKeywordFunction ? '()' : '';
-        if (insertSpaceAfterKeyword) textToInsert += ' ';
+        if (insertBracketsAfterFunction && isKeywordFunction) textToInsert += `(${keyword.props.join(', ')})`;
+        if ((insertSpaceAfterKeyword && keyword.insertSpace !== false) || keyword.insertSpace === true)
+            textToInsert += ' ';
 
         return textToInsert;
     };
@@ -127,8 +164,12 @@ class Autocompletion extends Component {
             inputEl.dispatchEvent(e);
         }
 
-        const newCursorPosition = inputEl.selectionStart + this.getCursorOffsetAfterInsert(keyword);
-        inputEl.setSelectionRange(newCursorPosition, newCursorPosition);
+        const offset = this.getCursorOffsetAfterInsert(keyword);
+        const newCursorPos = inputEl.selectionStart + offset;
+
+        if (keyword.type === 'function' && keyword.highlightProps)
+            inputEl.setSelectionRange(newCursorPos - keyword.props.join(', ').length, newCursorPos);
+        else inputEl.setSelectionRange(newCursorPos, newCursorPos);
 
         this.setState({ keywordList: [] });
     };
@@ -205,12 +246,13 @@ class Autocompletion extends Component {
 
     render() {
         const { keywordList, blockPosition } = this.state;
-        const { children, scrollRef } = this.props;
+        const { children, scrollRef, visible } = this.props;
 
         const inputElScrollTop = (scrollRef && scrollRef.getScrollTop()) || 0;
 
         const autocompletionStyle = {
             transform: `translate(${blockPosition.left}px, ${blockPosition.top + 20 - inputElScrollTop}px)`,
+            display: visible ? 'flex' : 'none',
         };
 
         return (
@@ -219,7 +261,7 @@ class Autocompletion extends Component {
                     {this.getKeywordList(keywordList)}
                 </div>
                 <HotKeys keyMap={this.autocompletionKeys} handlers={this.autocompletionHandlers}>
-                    {children(this.filterKeywords, this.onPositionChange)}
+                    {children(this.filterKeys, this.onPositionChange)}
                 </HotKeys>
             </div>
         );

@@ -5,22 +5,22 @@ import * as types from '../constants';
 
 import storage from 'redux-persist/lib/storage';
 
-import { questions, database, test, tabs, notification, settings } from './reducers';
+import { questions, database, test, tabs, notification, settings, ac } from './reducers';
 
 const persistConfig = {
     key: 'training',
     storage,
-    blacklist: ['notification', 'settings', 'questions', 'test', 'database', 'tabs'],
+    blacklist: ['notification', 'settings', 'questions', 'test', 'database', 'tabs', 'ac'],
 };
 
 const appReducer = persistCombineReducers(persistConfig, {
-    ...{ notification },
+    ...{ notification, ac },
     questions: persistReducer(
         { key: 'test-questions', storage, whitelist: ['questions', 'currQuestionIndex'] },
         questions,
     ),
     tabs: persistReducer({ key: 'test-tabs', storage }, tabs),
-    test: persistReducer({ key: 'test-metadata', storage, whitelist: ['testTimestamp'] }, test),
+    test: persistReducer({ key: 'test-metadata', storage, whitelist: ['testTimestamp', 'isTestCompleted'] }, test),
     database: persistReducer({ key: 'test-database', storage, blacklist: ['isDatabaseLoading'] }, database),
     settings: persistReducer({ key: 'app-settings', storage }, settings),
 });

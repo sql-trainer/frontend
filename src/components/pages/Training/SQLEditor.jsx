@@ -13,54 +13,17 @@ import Autocompletion from '../../common/Autocompletion';
 refractor.register(sql);
 
 class SQLEditor extends Component {
-    constructor(props) {
-        super(props);
-        const { currTables } = props;
-
-        this.keywords = [
-            {
-                label: 'select',
-                snippets: [
-                    { label: 'select * from …', type: 'snippet' },
-                    { label: 'select * from … where …', type: 'snippet' },
-                ],
-            },
-            { label: 'from' },
-            { label: 'group', snippets: [{ label: 'group by …' }] },
-            { label: 'by' },
-            { label: 'inner' },
-            { label: 'full' },
-            { label: 'left' },
-            { label: 'right' },
-            { label: 'join' },
-            { label: 'where' },
-            { label: 'as' },
-            { label: 'insert' },
-            { label: 'into' },
-            { label: 'values' },
-            { label: 'update' },
-            { label: 'delete' },
-            { label: 'set' },
-            { label: 'and' },
-            { label: 'or' },
-            { label: 'on' },
-            { label: 'year', type: 'function' },
-            { label: 'create' },
-            ...currTables.map(t => ({ label: t, type: 'table' })),
-        ];
-
-        this.insertTransformation = keyword => (keyword.type !== 'table' ? keyword.label.toUpperCase() : keyword.label);
-
-        this.options = {
-            insertSpaceAfterKeyword: true,
-            insertBracketsAfterFunction: true,
-        };
-    }
-
     handleContentEditable = value => {
-        const { changeTabHtml, currTabIndex, questions, currQuestionIndex, changeSQLResponseType } = this.props;
+        const {
+            changeTabHtml,
+            currTabIndex,
+            questions,
+            currQuestionIndex,
+            changeSQLResponseType,
+            currTab,
+        } = this.props;
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
-        changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
+        if (currTab.SQLResponseType !== '') changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };
 
     createReactElements = nodes =>
@@ -77,21 +40,23 @@ class SQLEditor extends Component {
     highlightSQL = sql => {
         const nodes = refractor.highlight(sql, 'sql');
         return this.createReactElements(nodes);
-
-        // return Prism.highlight(sql, Prism.languages.sql);
     };
 
+    insertTransformation = keyword => (keyword.type !== 'table' ? keyword.label.toUpperCase() : keyword.label);
+
     render() {
-        const { currTab, editorTheme } = this.props;
+        const { currTab, editorTheme, keywords, options, visible, changeVisibility } = this.props;
 
         return (
             <Autocompletion
                 value={currTab.html}
-                keywords={this.keywords}
-                options={this.options}
+                keywords={keywords}
+                options={options}
                 inputElementID="autocompletion-textarea"
                 insertTransformation={this.insertTransformation}
                 scrollRef={this.inputScrollRef}
+                visible={visible}
+                visibleHandler={changeVisibility}
             >
                 {(onKeyUp, onPositionChange) => (
                     <CustomScrollbars

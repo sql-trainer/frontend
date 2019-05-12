@@ -861,6 +861,13 @@ div[tabindex='-1']:focus {
                 }
             }
 
+            &.prop {
+                &:after {
+                    @extend .fas;
+                    content: fa-content($fa-var-wrench);
+                }
+            }
+
             &.function {
                 &:after {
                     content: '()';

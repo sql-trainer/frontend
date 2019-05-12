@@ -2,9 +2,10 @@ import * as types from '../../constants';
 import retryFetch from '../../modules/retry-fetch';
 import persist from '../index.js';
 
-import { changeQuestionStatus, changeSolvedQuestionSQL } from './questionActions';
+import { changeSolvedQuestionSQL } from './questionActions';
 import { changeTabResponse, isChecking, changeSQLResponseType } from './tabsActions';
 import { addNotification } from './notificationActions';
+import { createDatabaseKeywords } from './autocompleteActions';
 
 import { loadQuestions, isLoading as isQuestionsLoading } from './questionActions';
 import { isLoading as isDatabaseLoading } from './databaseActions';
@@ -66,16 +67,18 @@ const checkSQL = (qid, tid) => {
                         dispatch(addNotification(res.error.message, 'error'));
                     } else {
                         if (res.success) {
-                            if (currQuestion.status !== 'solved') dispatch(changeQuestionStatus('solved'));
+                            // if (currQuestion.status !== 'solved') dispatch(changeQuestionStatus('solved'));
                             dispatch(changeSolvedQuestionSQL(sql));
                             responseType = 'success';
+                            if (!isTestCompleted && checkTestResult(state.questions.questions)) {
+                                dispatch(changePopupVisibility(true));
+                                dispatch(changeTestStatus(true));
+                            }
                         }
 
                         dispatch(
                             changeTabResponse(currQuestion.id, currTabIndex, { fields: res.fields, rows: res.rows }),
                         );
-                        if (!isTestCompleted && checkTestResult(state.questions.questions))
-                            dispatch(changePopupVisibility());
                     }
                 })
                 .catch(err => dispatch(addNotification('Ошибка сервера', 'error')))
@@ -103,6 +106,9 @@ const loadTest = (testID = 'open') => {
                     }
                     dispatch(loadQuestions(testID));
                     dispatch(changeTestTimestamp(testMeta.date_changed));
+                } else {
+                    dispatch(createDatabaseKeywords());
+                    dispatch(changeLoaderVisibility(false));
                 }
             },
             {

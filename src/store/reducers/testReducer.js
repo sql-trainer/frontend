@@ -16,7 +16,8 @@ const test = (state = initialState, action) => {
             if (action.key === 'test-metadata' && action.payload) {
                 return {
                     ...state,
-                    isTestLoaderVisible: false,
+                    isTestLoaderVisible: true,
+                    isTestCompleted: action.payload.isTestCompleted,
                     testTimestamp: action.payload.testTimestamp,
                 };
             } else return { ...state };
