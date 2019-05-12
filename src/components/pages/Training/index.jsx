@@ -24,7 +24,7 @@ import './styles/media.scss';
 class Training extends Component {
     state = {
         isModalHelpOpened: false,
-        isModalSettingsOpened: true,
+        isModalSettingsOpened: false,
     };
 
     componentDidMount() {

@@ -6,7 +6,7 @@ import { HotKeys } from 'react-hotkeys';
 class Autocompletion extends Component {
     state = {
         keywordList: [],
-        blockPosition: [20, 10],
+        blockPosition: { left: 20, top: 10 },
         searchString: '',
         selectedPosition: 0,
     };

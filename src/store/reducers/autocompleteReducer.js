@@ -29,6 +29,7 @@ const initialState = {
         { label: 'values' },
         { label: 'update' },
         { label: 'delete' },
+        { label: 'distinct' },
         { label: 'set' },
         { label: 'and' },
         { label: 'or' },
