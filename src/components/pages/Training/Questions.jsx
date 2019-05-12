@@ -16,6 +16,7 @@ class Questions extends Component {
             currQuestion,
             changeAllQuestionsVisibility,
             copyAnswerToClipboard,
+            openStatModal,
         } = this.props;
         const questionsLength = questions.length;
 
@@ -43,6 +44,7 @@ class Questions extends Component {
                         </div>
                         {questionsLength ? (
                             <>
+                                <div className="test-info-icon" onClick={openStatModal} />
                                 <FontAwesomeIcon
                                     className="question__nav"
                                     icon="angle-left"

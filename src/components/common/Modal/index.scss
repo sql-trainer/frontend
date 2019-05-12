@@ -60,3 +60,68 @@
     height: 100%;
     display: flex;
 }
+
+.settings-group {
+    padding: 20px;
+    padding-top: 0;
+    .settings-group-title {
+        font-weight: 501;
+        margin-bottom: 10px;
+    }
+}
+
+.test-info {
+    .stat-question-title {
+        font-weight: 501;
+        margin: 20px 0 10px 0;
+        display: flex;
+        line-height: 20px;
+        align-items: center;
+    }
+
+    .stat-question-number {
+        border-radius: 4px;
+        padding-right: 7px;
+        margin-right: 0px;
+        max-height: 24px;
+        align-self: start;
+        text-decoration: underline;
+    }
+
+    .stat-question-answer {
+        border-radius: 4px;
+        background: #f6f6f6;
+        padding: 15px;
+        // margin-bottom: 20px;
+        font-family: 'Fira Mono', monospace;
+        font-size: 15px;
+    }
+
+    .stat-block {
+        display: flex;
+        padding: 20px;
+        padding-bottom: 40px;
+        // border-bottom: 1px solid #ccc;
+
+        justify-content: center;
+        .stat-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            &:not(:last-child) {
+                margin-right: 80px;
+            }
+
+            .stat-info {
+                font-size: 40px;
+                margin-bottom: 10px;
+            }
+
+            .stat-title {
+                font-weight: 501;
+                font-size: 16px;
+                text-transform: uppercase;
+            }
+        }
+    }
+}

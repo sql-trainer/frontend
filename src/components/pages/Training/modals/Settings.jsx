@@ -1,16 +1,10 @@
 import React from 'react';
 import Modal from '../../../common/Modal';
 import Select from 'react-select';
-import classNames from 'classnames';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
-import posed from 'react-pose';
 
-const Switch = props => (
-    <div className={classNames('switch', props.checked ? 'on' : 'off')}>
-        <input type="checkbox" checked={props.checked} onChange={props.onChange} />
-    </div>
-);
+import Switch from '../../../common/Switch';
 
 const SettingsModal = props => {
     const { visible, onClose, changeEditorTheme, editorTheme } = props;
@@ -91,7 +85,7 @@ const SettingsModal = props => {
 
             <div className="settings-group">
                 <div className="settings-group-title">
-                    <label>
+                    <label className="ac-switch">
                         <span>Система автодополнения</span>
                         <Switch checked={props.isACAvailable} onChange={props.changeACAvailability} />
                     </label>

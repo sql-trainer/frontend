@@ -120,7 +120,7 @@ class Autocompletion extends Component {
             ? insertTransformation(keyword)
             : keyword.label;
 
-        if (insertBracketsAfterFunction && isKeywordFunction) textToInsert += `(${keyword.props.join(', ')})`;
+        if (insertBracketsAfterFunction && isKeywordFunction) textToInsert += `(${(keyword.props || []).join(', ')})`;
         if ((insertSpaceAfterKeyword && keyword.insertSpace !== false) || keyword.insertSpace === true)
             textToInsert += ' ';
 
