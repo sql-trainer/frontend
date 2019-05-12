@@ -3,6 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
 
 class Questions extends Component {
+    componentDidMount() {
+        ReactTooltip.rebuild();
+    }
+
     componentDidUpdate() {
         ReactTooltip.rebuild();
     }
@@ -44,7 +48,11 @@ class Questions extends Component {
                         </div>
                         {questionsLength ? (
                             <>
-                                <div className="test-info-icon" onClick={openStatModal} />
+                                <div
+                                    className="test-info-icon"
+                                    onClick={openStatModal}
+                                    data-tip="Статистика по тесту"
+                                />
                                 <FontAwesomeIcon
                                     className="question__nav"
                                     icon="angle-left"

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import { HotKeys } from 'react-hotkeys';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-sql';
 
 // imported own comopnents block
 import CustomScrollbars from './CustomScrollbars';
