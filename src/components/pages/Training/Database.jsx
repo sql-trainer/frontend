@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Collapsible from 'react-collapsible';
 
@@ -17,7 +17,7 @@ const Panel = props => {
     );
 };
 
-class Database extends Component {
+class Database extends PureComponent {
     render() {
         const { database, isDatabaseLoading } = this.props;
 

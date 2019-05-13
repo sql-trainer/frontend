@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
 
-class Questions extends Component {
+class Questions extends PureComponent {
     componentDidMount() {
         ReactTooltip.rebuild();
     }

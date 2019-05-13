@@ -6,7 +6,7 @@ import CustomScrollbars from '../../pages/Training/CustomScrollbars';
 import './index.scss';
 import './media.scss';
 
-const Header = props => (
+const Header = React.memo(props => (
     <header className="header" style={props.style}>
         <div className="content">
             <div className="header__logo">
@@ -35,6 +35,6 @@ const Header = props => (
             </nav>
         </div>
     </header>
-);
+));
 
 export default Header;

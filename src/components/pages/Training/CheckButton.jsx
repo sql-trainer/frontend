@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
-import classNames from 'classnames';
+import React, { PureComponent } from 'react';
 
-class CheckButton extends Component {
+class CheckButton extends PureComponent {
+    _checkSQL = e => {
+        const { checkSQL, currTabIndex, currQuestionIndex } = this.props;
+        checkSQL(currQuestionIndex, currTabIndex);
+    };
+
     render() {
-        const { questions, currQuestion, currTab, checkSQL, currTabIndex, currQuestionIndex } = this.props;
-
-        const className = classNames({ solved: questions.length && currQuestion.status === 'solved' }, 'check-sql');
+        const { questions, currTab } = this.props;
 
         const isDisabled = !questions.length || currTab.loading || !currTab.html;
 
         return (
             <button
-                className={className}
-                onClick={e => checkSQL(currQuestionIndex, currTabIndex)}
+                className="check-sql"
+                onClick={this._checkSQL}
                 disabled={isDisabled}
                 data-loading={currTab.loading}
             />
