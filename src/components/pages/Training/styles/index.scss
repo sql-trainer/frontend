@@ -213,6 +213,27 @@ div[tabindex='-1']:focus {
                 .content {
                     .show {
                         margin-top: 10px;
+                        display: flex;
+                        flex-wrap: wrap;
+
+                        b:first-of-type {
+                            // margin-right: 5px;
+                        }
+
+                        & > div {
+                            margin-left: 5px;
+                        }
+
+                        .alias-icon {
+                            &:after {
+                                @extend %fa-icon;
+                                @extend .fas;
+                                color: #333;
+                                content: fa-content($fa-var-mask);
+                                margin-left: 5px;
+                                font-size: 15px;
+                            }
+                        }
                     }
                 }
             }
@@ -691,7 +712,7 @@ div[tabindex='-1']:focus {
 }
 
 .Collapsible {
-    min-height: 41px;
+    // min-height: 41px;
     display: flex;
     flex-direction: column;
 
@@ -803,7 +824,7 @@ div[tabindex='-1']:focus {
     flex-direction: column;
     z-index: 3;
     transform-origin: top left;
-    transition: all 0.1s ease-in-out;
+    // transition: all 0.1s ease-in-out;
     max-height: 200px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;

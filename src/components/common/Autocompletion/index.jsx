@@ -34,9 +34,13 @@ class Autocompletion extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (this.props.isACAvailable === true && prevProps.isACAvailable === false)
+        if (this.props.isACAvailable === true && prevProps.isACAvailable === false) {
             this.inputElement = document.querySelector(`#${this.props.inputElementID}`);
-        if (prevProps.value !== this.props.value && this.props.isACAvailable === true) this.filterKeywords();
+        }
+
+        if (prevProps.value !== this.props.value && this.props.isACAvailable === true) {
+            this.filterKeywords();
+        }
     }
 
     getLeftBoundary = (cursorPos, textContent, boundary = /[^\w]/) => {
@@ -59,6 +63,27 @@ class Autocompletion extends Component {
         if (forbiddenKeyCodes.clear.includes(e.which)) visibleHandler(false);
     };
 
+    setBlockPosition = () => {
+        const { scrollRef } = this.props;
+
+        const inputEl = this.inputElement;
+        const cursorPos = inputEl.selectionStart;
+
+        const caret = getCaretCoordinates(inputEl, cursorPos);
+
+        const inputElScrollTop = (scrollRef && scrollRef.getScrollTop()) || 0;
+        caret.top += 20 - inputElScrollTop;
+
+        if (this.acRef) {
+            caret.left =
+                caret.left + this.acRef.offsetWidth > this.acWrapperRef.offsetWidth
+                    ? this.acWrapperRef.offsetWidth - this.acRef.offsetWidth - 10
+                    : caret.left;
+        }
+
+        this.setState({ blockPosition: caret });
+    };
+
     filterKeywords = e => {
         const { filterCondition, keywords, options, visibleHandler, visible } = this.props;
 
@@ -73,9 +98,9 @@ class Autocompletion extends Component {
         if (/\w/.test(textContent[cursorPos]) && cursorPos !== textContent.length)
             return this.setState({ keywordList: [] });
 
-        const caret = getCaretCoordinates(inputEl, cursorPos);
         const leftBoundary = this.getLeftBoundary(cursorPos, textContent);
         const searchString = textContent.slice(leftBoundary, cursorPos);
+
         let filteredKeywords;
 
         const delimiters = ['.'];
@@ -103,7 +128,7 @@ class Autocompletion extends Component {
 
         filteredKeywords.forEach((f, index) => (f.snippets ? keywordList.splice(index + 1, 0, ...f.snippets) : false));
 
-        this.setState({ keywordList, blockPosition: caret, searchString, selectedPosition: 0, cursorPos });
+        this.setState({ keywordList, searchString, selectedPosition: 0, cursorPos }, this.setBlockPosition);
     };
 
     buildNewString = keyword => {
@@ -178,15 +203,16 @@ class Autocompletion extends Component {
 
     changeSelectedPosition = (e, direction) => {
         const { keywordList, selectedPosition } = this.state;
+        const { visible } = this.props;
 
-        if (keywordList.length) {
+        let blockPosition;
+
+        if (keywordList.length && visible) {
             e.preventDefault();
-            const blockPosition =
-                selectedPosition + direction < 0
-                    ? keywordList.length - 1
-                    : selectedPosition + direction >= keywordList.length
-                    ? 0
-                    : direction + selectedPosition;
+
+            if (selectedPosition + direction < 0) blockPosition = keywordList.length - 1;
+            else if (selectedPosition + direction >= keywordList.length) blockPosition = 0;
+            else blockPosition = direction + selectedPosition;
 
             this.setState({ selectedPosition: blockPosition });
         }
@@ -248,18 +274,16 @@ class Autocompletion extends Component {
 
     render() {
         const { keywordList, blockPosition } = this.state;
-        const { children, scrollRef, visible, isACAvailable } = this.props;
-
-        const inputElScrollTop = (scrollRef && scrollRef.getScrollTop()) || 0;
+        const { children, visible, isACAvailable } = this.props;
 
         const autocompletionStyle = {
-            transform: `translate(${blockPosition.left}px, ${blockPosition.top + 20 - inputElScrollTop}px)`,
+            transform: `translate(${blockPosition.left}px, ${blockPosition.top}px)`,
             display: visible ? 'flex' : 'none',
         };
 
         return isACAvailable ? (
-            <div>
-                <div className="autocompletion" style={autocompletionStyle}>
+            <div ref={ref => (this.acWrapperRef = ref)}>
+                <div className="autocompletion" style={autocompletionStyle} ref={ref => (this.acRef = ref)}>
                     {this.getKeywordList(keywordList)}
                 </div>
                 <HotKeys keyMap={this.autocompletionKeys} handlers={this.autocompletionHandlers}>

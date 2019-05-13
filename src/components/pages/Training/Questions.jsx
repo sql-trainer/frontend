@@ -76,7 +76,20 @@ class Questions extends PureComponent {
                             {currQuestion.question}
                             {currQuestion.fields ? (
                                 <div className="show">
-                                    <b>Вывести</b>: {currQuestion.fields.join(', ')}
+                                    <b>Вывести:</b>
+                                    {currQuestion.fields.map((f, index) => (
+                                        <div key={index}>
+                                            {f.endsWith('[alias]') ? (
+                                                <>
+                                                    {f.slice(0, f.length - 7)}
+                                                    <b>[alias]</b>
+                                                </>
+                                            ) : (
+                                                f
+                                            )}
+                                            {currQuestion.fields.length - 1 !== index ? ',' : ''}
+                                        </div>
+                                    ))}
                                 </div>
                             ) : null}
                         </div>
