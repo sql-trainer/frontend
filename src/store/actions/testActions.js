@@ -30,14 +30,6 @@ const changeTestLoaderErrorMessage = (message, isLogoVisible = true) => {
     return { type: types.LOADER_ERROR, message, isLogoVisible };
 };
 
-const resetTest = () => {
-    return async function(dispatch, getState) {
-        dispatch({ type: 'RESET_TEST' });
-        persist().persistor.flush();
-        dispatch(loadTest());
-    };
-};
-
 const checkTestResult = questions => {
     return questions.findIndex(q => q.status !== 'solved') === -1;
 };
@@ -50,6 +42,7 @@ const checkSQL = (qid, tid) => {
         const currTabIndex = tid;
         const isTestCompleted = state.test.isTestCompleted;
         const sql = currTab.html;
+        console.log(sql);
 
         let responseType = 'error';
 
@@ -101,7 +94,7 @@ const loadTest = (testID = 'open') => {
 
                 if (timestamp !== testMeta.date_changed) {
                     if (timestamp !== null) {
-                        dispatch({ type: 'RESET_TEST' });
+                        dispatch({ type: types.RESET_TEST });
                         persist().persistor.flush();
                     }
                     dispatch(loadQuestions(testID));
@@ -124,6 +117,14 @@ const loadTest = (testID = 'open') => {
                 },
             },
         );
+    };
+};
+
+const resetTest = () => {
+    return function(dispatch, getState) {
+        dispatch({ type: types.RESET_TEST });
+        persist().persistor.flush();
+        dispatch(loadTest('open'));
     };
 };
 

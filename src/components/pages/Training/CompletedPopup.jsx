@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from '../../common/Modal';
 
+import { StatisticsBlockContainer as StatisticsBlock } from './containers/StatisticsBlock';
+
 class CompletedPopup extends Component {
     render() {
         const { isCompletedPopupVisible, changePopupVisibility } = this.props;
@@ -15,7 +17,7 @@ class CompletedPopup extends Component {
                 fullscreen
             >
                 <div className="test-completed">
-                    <h2>Вы полностью прошли тест!</h2>
+                    <h2>Тест завершён!</h2>
                     <h3>
                         Теперь вы можете&nbsp;
                         <a
@@ -30,6 +32,10 @@ class CompletedPopup extends Component {
                         </a>
                         &nbsp;свой результат и пройти тест заново, либо посмотреть свои ответы на вопросы.
                     </h3>
+                    <StatisticsBlock
+                        style={{ maxWidth: '900px', marginTop: '30px', width: '100%' }}
+                        markLabel="Итоговый балл"
+                    />
                 </div>
             </Modal>
         );

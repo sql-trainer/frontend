@@ -87,6 +87,10 @@ class Training extends Component {
         };
     };
 
+    openSettingsModal = () => this.setState({ isModalSettingsOpened: !this.state.isModalSettingsOpened });
+    openStatModal = () => this.setState({ isModalStatOpened: !this.state.isModalStatOpened });
+    openHelpModal = () => this.setState({ isModalHelpOpened: !this.state.isModalHelpOpened });
+
     render() {
         const {
             isInputAreaPinned,
@@ -98,17 +102,13 @@ class Training extends Component {
             currQuestion,
             changeACAvailability,
             isACAvailable,
-            questions,
         } = this.props;
 
         const { isModalHelpOpened, isModalSettingsOpened, isModalStatOpened } = this.state;
 
         return (
             <HotKeys keyMap={this.questionKeys} handlers={this.questionHandlers()} focused>
-                <Header
-                    style={{ minWidth: 900 }}
-                    openSettingsModal={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
-                />
+                <Header style={{ minWidth: 900 }} openSettingsModal={this.openSettingsModal} />
                 {isTestLoaderVisible ? (
                     <>
                         <div className="test-loader-error">{testLoaderErrorMessage}</div>
@@ -117,7 +117,7 @@ class Training extends Component {
                 ) : (
                     <section className="training">
                         <CustomScrollbars className="task-info">
-                            <Questions openStatModal={() => this.setState({ isModalStatOpened: !isModalStatOpened })} />
+                            <Questions openStatModal={this.openStatModal} />
                             <Database />
                         </CustomScrollbars>
                         <CustomScrollbars className="task-editor">
@@ -126,7 +126,7 @@ class Training extends Component {
                                 handlers={this.editorHandlers()}
                                 className={classNames('inputbox', { pinned: isInputAreaPinned })}
                             >
-                                <Tabs openHelpModal={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })} />
+                                <Tabs openHelpModal={this.openHelpModal} />
                                 <SQLEditor />
                                 <CheckButton />
                                 <button
@@ -157,24 +157,16 @@ class Training extends Component {
 
                 <SettingsModal
                     visible={isModalSettingsOpened}
-                    onClose={() => this.setState({ isModalSettingsOpened: !isModalSettingsOpened })}
+                    onClose={this.openSettingsModal}
                     changeEditorTheme={changeEditorTheme}
                     editorTheme={editorTheme}
                     changeACAvailability={changeACAvailability}
                     isACAvailable={isACAvailable}
                 />
 
-                <StatisticsModal
-                    visible={isModalStatOpened}
-                    editorTheme={editorTheme}
-                    questions={questions}
-                    onClose={() => this.setState({ isModalStatOpened: !isModalStatOpened })}
-                />
+                <StatisticsModal visible={isModalStatOpened} onClose={this.openStatModal} />
 
-                <HelpModal
-                    visible={isModalHelpOpened}
-                    onClose={() => this.setState({ isModalHelpOpened: !isModalHelpOpened })}
-                />
+                <HelpModal visible={isModalHelpOpened} onClose={this.openHelpModal} />
             </HotKeys>
         );
     }

@@ -607,8 +607,9 @@ div[tabindex='-1']:focus {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100%;
-    margin-top: -20px;
+    // height: 100%;
+    min-height: 100%;
+    // margin-top: -20px;
 
     h1,
     h2,
@@ -916,4 +917,10 @@ label.ac-switch {
         line-height: 17px;
         height: 20px;
     }
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
 }
