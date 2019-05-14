@@ -123,9 +123,9 @@ class Training extends Component {
                     </>
                 ) : (
                     <section className="training">
-                        <CustomScrollbars className="task-info">
+                        <CustomScrollbars className="task-info" key="leftside">
                             <Questions openStatModal={this.openStatModal} />
-                            <Database />
+                            <Database key="database" />
                         </CustomScrollbars>
                         <CustomScrollbars className="task-editor">
                             <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>

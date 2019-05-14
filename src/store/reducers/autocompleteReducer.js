@@ -35,6 +35,11 @@ const initialState = {
         { label: 'or' },
         { label: 'on' },
         { label: 'year', type: 'function', props: ['DATE'], highlightProps: true },
+        { label: 'length', type: 'function' },
+        { label: 'min', type: 'function' },
+        { label: 'max', type: 'function' },
+        { label: 'avg', type: 'function' },
+        { label: 'sum', type: 'function' },
         { label: 'create' },
     ],
     options: {

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Editor from 'react-simple-code-editor';
-// import Prism from 'prismjs';
-// import 'prismjs/components/prism-sql';
 import classNames from 'classnames';
 import CustomScrollbars from './CustomScrollbars';
 
@@ -21,9 +19,11 @@ class SQLEditor extends Component {
             currQuestionIndex,
             changeSQLResponseType,
             currTab,
+            changeVisibility,
         } = this.props;
 
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
+        changeVisibility(true);
         if (currTab.SQLResponseType !== '') changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };
 
@@ -60,7 +60,7 @@ class SQLEditor extends Component {
                 visibleHandler={changeVisibility}
                 isACAvailable={isACAvailable}
             >
-                {(onKeyUp, onPositionChange) => (
+                {(filterKeys, onPositionChange) => (
                     <CustomScrollbars
                         className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
                         ref={ref => (this.inputScrollRef = ref)}
@@ -70,7 +70,7 @@ class SQLEditor extends Component {
                         <Editor
                             value={currTab.html}
                             onValueChange={code => this.handleContentEditable(code)}
-                            onKeyUp={onKeyUp}
+                            onKeyDown={filterKeys}
                             highlight={code => this.highlightSQL(code)}
                             className={classNames('textarea', editorTheme)}
                             tabSize={4}
