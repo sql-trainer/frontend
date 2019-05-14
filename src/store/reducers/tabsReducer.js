@@ -1,5 +1,5 @@
 import * as types from '../../constants';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash.clonedeep';
 import { REHYDRATE } from 'redux-persist';
 
 const initialState = {

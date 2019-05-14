@@ -6,7 +6,7 @@ import { HotKeys } from 'react-hotkeys';
 class Autocompletion extends Component {
     state = {
         keywordList: [],
-        blockPosition: { left: 20, top: 10 },
+        blockPosition: { left: 20, top: 30 },
         searchString: '',
         selectedPosition: 0,
     };
@@ -53,14 +53,14 @@ class Autocompletion extends Component {
     };
 
     filterKeys = e => {
-        const { visibleHandler } = this.props;
+        const { visibleHandler, visible } = this.props;
 
         const forbiddenKeyCodes = {
             //prettier-ignore
             clear: [37, 39, 9, 17, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135]
         };
 
-        if (forbiddenKeyCodes.clear.includes(e.which)) visibleHandler(false);
+        if (visible && forbiddenKeyCodes.clear.includes(e.which)) visibleHandler(false);
     };
 
     setBlockPosition = () => {
@@ -228,9 +228,9 @@ class Autocompletion extends Component {
     };
 
     autocompletionKeys = {
-        UP: 'up',
-        DOWN: 'down',
-        TAB: 'tab',
+        UP: 'Up',
+        DOWN: 'Down',
+        TAB: 'Tab',
     };
 
     autocompletionHandlers = {
@@ -286,7 +286,7 @@ class Autocompletion extends Component {
                 <div className="autocompletion" style={autocompletionStyle} ref={ref => (this.acRef = ref)}>
                     {this.getKeywordList(keywordList)}
                 </div>
-                <HotKeys keyMap={this.autocompletionKeys} handlers={this.autocompletionHandlers}>
+                <HotKeys keyMap={this.autocompletionKeys} handlers={this.autocompletionHandlers} allowChanges={true}>
                     {children(this.filterKeys, this.onPositionChange)}
                 </HotKeys>
             </div>

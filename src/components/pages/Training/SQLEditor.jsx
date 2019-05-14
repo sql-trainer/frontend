@@ -22,6 +22,7 @@ class SQLEditor extends Component {
             changeSQLResponseType,
             currTab,
         } = this.props;
+
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
         if (currTab.SQLResponseType !== '') changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };

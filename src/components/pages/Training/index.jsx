@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
-import { HotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
+import { configure } from 'react-hotkeys';
 
 // imported own comopnents block
 import CustomScrollbars from './CustomScrollbars';
@@ -20,6 +21,18 @@ import TrainingPH from './placeholders/TrainingPH';
 // imported styles block
 import './styles/index.scss';
 import './styles/media.scss';
+
+configure({
+    ignoreEventsCondition: event => {
+        const { target } = event;
+
+        if (target && target.tagName === 'TEXTAREA') {
+            return event.which === 191 && event.shiftKey;
+        } else {
+            return false;
+        }
+    },
+});
 
 class Training extends Component {
     state = {
@@ -40,50 +53,43 @@ class Training extends Component {
         ReactTooltip.rebuild();
     }
 
-    editorKeys = {
-        CHECK: 'f9',
-        NEXT_TAB: 'ctrl+alt+right',
-        PREVIOUS_TAB: 'ctrl+alt+left',
-        CREATE_TAB: 'shift+alt+n',
-        DELETE_TAB: 'shift+alt+d',
-    };
+    nextTab = e => this.props.nextTab(this.props.currQuestion.id);
 
-    editorHandlers = () => {
-        const {
-            checkSQL,
-            nextTab,
-            prevTab,
-            createNewTab,
-            deleteTab,
-            questions,
-            currTab,
-            currQuestion,
-            currTabIndex,
-            currQuestionIndex,
-        } = this.props;
+    prevTab = () => this.props.prevTab(this.props.currQuestion.id);
 
+    createNewTab = () => this.props.createNewTab(this.props.currQuestion.id);
+
+    deleteTab = () => this.props.deleteTab(this.props.currQuestion.id);
+
+    checkSQL = () => {
+        const { questions, currTab, currQuestionIndex, checkSQL, currTabIndex } = this.props;
         const disabled = !questions.length || currTab.loading || !currTab.html;
-
-        return {
-            CHECK: event => !disabled && checkSQL(currQuestionIndex, currTabIndex),
-            NEXT_TAB: () => nextTab(currQuestion.id),
-            PREVIOUS_TAB: () => prevTab(currQuestion.id),
-            CREATE_TAB: () => createNewTab(currQuestion.id),
-            DELETE_TAB: () => deleteTab(currQuestion.id),
-        };
+        return !disabled && checkSQL(currQuestionIndex, currTabIndex);
     };
 
-    questionKeys = {
-        NEXT_QUESTION: 'ctrl+alt+]',
-        PREVIOUS_QUESTION: 'ctrl+alt+[',
+    globalKeys = {
+        NEXT_QUESTION: 'Control+Alt+]',
+        PREVIOUS_QUESTION: 'Control+Alt+[',
+        TEST_STAT: 'Shift+?',
+        CHECK: 'F9',
+        NEXT_TAB: 'Control+Alt+ArrowRight',
+        PREVIOUS_TAB: 'Control+Alt+ArrowLeft',
+        CREATE_TAB: 'Shift+Alt+N',
+        DELETE_TAB: 'Shift+Alt+D',
     };
 
-    questionHandlers = () => {
+    globalHandlers = () => {
         const { nextQuestion, prevQuestion } = this.props;
 
         return {
             NEXT_QUESTION: () => nextQuestion(),
             PREVIOUS_QUESTION: () => prevQuestion(),
+            TEST_STAT: () => this.setState({ isModalStatOpened: !this.state.isModalStatOpened }),
+            CHECK: this.checkSQL,
+            NEXT_TAB: this.nextTab,
+            PREVIOUS_TAB: this.prevTab,
+            CREATE_TAB: this.createNewTab,
+            DELETE_TAB: this.deleteTab,
         };
     };
 
@@ -99,7 +105,6 @@ class Training extends Component {
             isTestLoaderVisible,
             testLoaderErrorMessage,
             currTab,
-            currQuestion,
             changeACAvailability,
             isACAvailable,
         } = this.props;
@@ -107,7 +112,8 @@ class Training extends Component {
         const { isModalHelpOpened, isModalSettingsOpened, isModalStatOpened } = this.state;
 
         return (
-            <HotKeys keyMap={this.questionKeys} handlers={this.questionHandlers()} focused>
+            <>
+                <GlobalHotKeys keyMap={this.globalKeys} handlers={this.globalHandlers()} />
                 <Header style={{ minWidth: 900 }} openSettingsModal={this.openSettingsModal} />
                 {isTestLoaderVisible ? (
                     <>
@@ -121,23 +127,16 @@ class Training extends Component {
                             <Database />
                         </CustomScrollbars>
                         <CustomScrollbars className="task-editor">
-                            <HotKeys
-                                keyMap={this.editorKeys}
-                                handlers={this.editorHandlers()}
-                                className={classNames('inputbox', { pinned: isInputAreaPinned })}
-                            >
+                            <div className={classNames('inputbox', { pinned: isInputAreaPinned })}>
                                 <Tabs openHelpModal={this.openHelpModal} />
                                 <SQLEditor />
                                 <CheckButton />
                                 <button
-                                    className={classNames('next-question', {
-                                        active: currQuestion.status === 'solved',
-                                    })}
+                                    className="next-question"
                                     onClick={this.props.nextQuestion}
                                     data-tip="Следующий вопрос"
                                 />
-                            </HotKeys>
-
+                            </div>
                             {currTab.response && (
                                 <div className={classNames('resultbox', { checking: currTab.loading })}>
                                     <Table
@@ -167,7 +166,7 @@ class Training extends Component {
                 <StatisticsModal visible={isModalStatOpened} onClose={this.openStatModal} />
 
                 <HelpModal visible={isModalHelpOpened} onClose={this.openHelpModal} />
-            </HotKeys>
+            </>
         );
     }
 }

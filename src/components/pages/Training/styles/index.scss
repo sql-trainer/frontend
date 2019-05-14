@@ -734,6 +734,7 @@ div[tabindex='-1']:focus {
     display: flex;
     align-content: center;
     justify-content: space-between;
+    font-weight: 501;
 
     &:hover {
         background-color: lighten($icon-color, 40%);
@@ -824,7 +825,7 @@ div[tabindex='-1']:focus {
     flex-direction: column;
     z-index: 3;
     transform-origin: top left;
-    // transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
     max-height: 200px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;
