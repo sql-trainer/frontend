@@ -3,6 +3,7 @@ import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import { GlobalHotKeys } from 'react-hotkeys';
 import { configure } from 'react-hotkeys';
+import debounce from 'lodash.debounce';
 
 // imported own comopnents block
 import CustomScrollbars from './CustomScrollbars';
@@ -57,9 +58,9 @@ class Training extends Component {
 
     prevTab = () => this.props.prevTab(this.props.currQuestion.id);
 
-    createNewTab = () => this.props.createNewTab(this.props.currQuestion.id);
+    createNewTab = debounce(() => this.props.createNewTab(this.props.currQuestion.id), 50);
 
-    deleteTab = () => this.props.deleteTab(this.props.currQuestion.id);
+    deleteTab = debounce(() => this.props.deleteTab(this.props.currQuestion.id), 50);
 
     checkSQL = () => {
         const { questions, currTab, currQuestionIndex, checkSQL, currTabIndex } = this.props;
