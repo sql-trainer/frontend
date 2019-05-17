@@ -24,6 +24,7 @@ class SQLEditor extends Component {
 
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
         changeVisibility(true);
+
         if (currTab.SQLResponseType !== '') changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };
 

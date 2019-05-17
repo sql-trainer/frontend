@@ -1,5 +1,9 @@
 import { connect } from 'react-redux';
-import { changeCurrQuestion, changeAllQuestionsVisibility } from '../../../../store/actions/questionActions';
+import {
+    changeCurrQuestion,
+    changeAllQuestionsVisibility,
+    loadDatabaseOnChange,
+} from '../../../../store/actions/questionActions';
 
 import AllQuestions from '../AllQuestions';
 
@@ -15,6 +19,7 @@ const mapStateToProps = ({ questions, database }, ownProps) => {
 const mapDispatchToProps = dispatch => {
     return {
         changeCurrQuestion: id => dispatch(changeCurrQuestion(id)),
+        loadDatabaseOnChange: id => dispatch(loadDatabaseOnChange(id)),
         changeAllQuestionsVisibility: () => dispatch(changeAllQuestionsVisibility()),
     };
 };

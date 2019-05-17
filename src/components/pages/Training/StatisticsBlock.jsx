@@ -12,7 +12,9 @@ const StatisticsBlock = React.memo(({ questions, editorTheme, style, markLabel }
         <div className="test-info" style={style}>
             <div className="stat-block">
                 <div className="stat-group">
-                    <div className="stat-info">{questions.filter(q => q.sql !== undefined).length}/12</div>
+                    <div className="stat-info">
+                        {questions.filter(q => q.sql !== undefined).length}/{questions.length}
+                    </div>
                     <div className="stat-title">Дано ответов</div>
                 </div>
                 <div className="stat-group">

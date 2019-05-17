@@ -3,7 +3,7 @@ import CustomScrollbars from './CustomScrollbars';
 
 class AllQuestions extends Component {
     handleQuestionChange(index) {
-        this.props.changeCurrQuestion(index);
+        this.props.loadDatabaseOnChange(index);
         this.props.changeAllQuestionsVisibility();
     }
 

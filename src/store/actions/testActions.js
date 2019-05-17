@@ -60,7 +60,6 @@ const checkSQL = (qid, tid) => {
                         dispatch(addNotification(res.error.message, 'error'));
                     } else {
                         if (res.success) {
-                            // if (currQuestion.status !== 'solved') dispatch(changeQuestionStatus('solved'));
                             dispatch(changeSolvedQuestionSQL(sql));
                             responseType = 'success';
                             if (!isTestCompleted && checkTestResult(state.questions.questions)) {
@@ -94,8 +93,8 @@ const loadTest = (testID = 'open') => {
 
                 if (timestamp !== testMeta.date_changed) {
                     if (timestamp !== null) {
-                        dispatch({ type: types.RESET_TEST });
-                        persist().persistor.flush();
+                        // dispatch({ type: types.RESET_TEST });
+                        // persist().persistor.flush();
                     }
                     dispatch(loadQuestions(testID));
                     dispatch(changeTestTimestamp(testMeta.date_changed));

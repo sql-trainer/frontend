@@ -38,7 +38,7 @@ class Autocompletion extends Component {
             this.inputElement = document.querySelector(`#${this.props.inputElementID}`);
         }
 
-        if (prevProps.value !== this.props.value && this.props.isACAvailable === true) {
+        if (prevProps.value !== this.props.value && this.props.isACAvailable === true && this.props.visible) {
             this.filterKeywords();
         }
     }
@@ -169,7 +169,7 @@ class Autocompletion extends Component {
     };
 
     insertKeyword = keyword => {
-        const { value } = this.props;
+        const { value, visibleHandler } = this.props;
 
         const inputEl = this.inputElement;
         inputEl.focus();
@@ -198,7 +198,7 @@ class Autocompletion extends Component {
             inputEl.setSelectionRange(newCursorPos - keyword.props.join(', ').length, newCursorPos);
         else inputEl.setSelectionRange(newCursorPos, newCursorPos);
 
-        this.setState({ keywordList: [] });
+        visibleHandler(false);
     };
 
     changeSelectedPosition = (e, direction) => {
@@ -220,11 +220,12 @@ class Autocompletion extends Component {
 
     onPositionChange = type => {
         const { cursorPos } = this.state;
+        const { visibleHandler } = this.props;
         const inputEl = this.inputElement;
         inputEl.focus();
 
         const cursorPosition = inputEl.selectionStart;
-        if (cursorPos !== cursorPosition || type === 'scroll') this.setState({ keywordList: [] });
+        if (cursorPos !== cursorPosition || type === 'scroll') visibleHandler(false);
     };
 
     autocompletionKeys = {
