@@ -1,8 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
 
-class Questions extends Component {
+class Questions extends PureComponent {
+    componentDidMount() {
+        ReactTooltip.rebuild();
+    }
+
     componentDidUpdate() {
         ReactTooltip.rebuild();
     }
@@ -16,6 +20,7 @@ class Questions extends Component {
             currQuestion,
             changeAllQuestionsVisibility,
             copyAnswerToClipboard,
+            openStatModal,
         } = this.props;
         const questionsLength = questions.length;
 
@@ -30,7 +35,7 @@ class Questions extends Component {
                         />
                         <div className={`question-counter`}>
                             Вопрос {!questionsLength ? '' : `#${currQuestionIndex + 1} из ${questionsLength}`}
-                            {currQuestion.status && (
+                            {currQuestion.sql !== undefined && (
                                 <>
                                     <div className="solved-icon" />
                                     <div
@@ -43,6 +48,11 @@ class Questions extends Component {
                         </div>
                         {questionsLength ? (
                             <>
+                                <div
+                                    className="test-info-icon"
+                                    onClick={openStatModal}
+                                    data-tip="Статистика по тесту"
+                                />
                                 <FontAwesomeIcon
                                     className="question__nav"
                                     icon="angle-left"
@@ -66,7 +76,20 @@ class Questions extends Component {
                             {currQuestion.question}
                             {currQuestion.fields ? (
                                 <div className="show">
-                                    <b>Вывести</b>: {currQuestion.fields.join(', ')}
+                                    <b>Вывести:</b>
+                                    {currQuestion.fields.map((f, index) => (
+                                        <div key={index}>
+                                            {f.endsWith('[alias]') ? (
+                                                <>
+                                                    {f.slice(0, f.length - 7)}
+                                                    <b>[alias]</b>
+                                                </>
+                                            ) : (
+                                                f
+                                            )}
+                                            {currQuestion.fields.length - 1 !== index ? ',' : ''}
+                                        </div>
+                                    ))}
                                 </div>
                             ) : null}
                         </div>

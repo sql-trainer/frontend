@@ -4,6 +4,8 @@ import Select from 'react-select';
 import Prism from 'prismjs';
 import 'prismjs/components/prism-sql';
 
+import Switch from '../../../common/Switch';
+
 const SettingsModal = props => {
     const { visible, onClose, changeEditorTheme, editorTheme } = props;
 
@@ -39,6 +41,7 @@ const SettingsModal = props => {
         { value: 'prism-coy', label: 'Coy' },
         { value: 'prism-solarizedlight', label: 'Solarized light' },
         { value: 'prism-tomorrow', label: 'Tomorrow night' },
+        { value: 'prism-hopscotch', label: 'Hopscotch' },
     ];
 
     return (
@@ -49,7 +52,8 @@ const SettingsModal = props => {
             onClose={onClose}
             maxHeight={500}
             maxWidth={600}
-            animation="fade"
+            // animation="fade"
+            fullscreenMargin={40}
             fullscreen
         >
             <div className="settings-group">
@@ -77,6 +81,16 @@ const SettingsModal = props => {
                     placeholder="Выберите тему"
                     theme={selectTheme}
                 />
+            </div>
+
+            <div className="settings-group">
+                <div className="settings-group-title">
+                    <label className="ac-switch">
+                        <span>Система автодополнения</span>
+                        <Switch checked={props.isACAvailable} onChange={props.changeACAvailability} />
+                    </label>
+                </div>
+                Система автодополнения предлагает основные ключевые слова языка SQL, а также названия таблиц и их поля.
             </div>
         </Modal>
     );

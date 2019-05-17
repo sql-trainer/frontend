@@ -3,7 +3,7 @@ import CustomScrollbars from './CustomScrollbars';
 
 class AllQuestions extends Component {
     handleQuestionChange(index) {
-        this.props.changeCurrQuestion(index);
+        this.props.loadDatabaseOnChange(index);
         this.props.changeAllQuestionsVisibility();
     }
 
@@ -14,11 +14,11 @@ class AllQuestions extends Component {
         return (
             <>
                 <div className={`all-questions ${isAllQOpen ? 'all-questions-active' : ''}`}>
-                    <CustomScrollbars>
+                    <CustomScrollbars prefix="all-questions">
                         <h2>{questionsLength ? 'Все вопросы' : 'Вопросы отстутствуют'}</h2>
                         {questions.map((q, index) => {
                             const className = `question${index === currQuestionIndex ? ' active' : ''}${
-                                questions[index].status === 'solved' ? ' solved' : ''
+                                questions[index].sql !== undefined ? ' solved' : ''
                             }`;
                             return (
                                 <div className={className} key={q.id} onClick={e => this.handleQuestionChange(index)}>
