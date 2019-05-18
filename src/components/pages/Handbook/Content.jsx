@@ -26,7 +26,7 @@ const HandbookContent = props => (
 							</Link>
 						</li>
 						<li>
-							<Link to="handbook/intro-in-sql">
+							<Link to="handbook/basic-concept">
 								1.2 Основные понятия 
 							</Link>
 						</li>

@@ -5,7 +5,7 @@ import * as types from '../constants';
 
 import storage from 'redux-persist/lib/storage';
 
-import { questions, database, test, tabs, notification, settings, ac } from './reducers';
+import { questions, database, test, tabs, notification, settings, ac, handbookPage } from './reducers';
 
 const persistConfig = {
     key: 'training',
@@ -14,7 +14,7 @@ const persistConfig = {
 };
 
 const appReducer = persistCombineReducers(persistConfig, {
-    ...{ notification, ac },
+    ...{ notification, ac, handbookPage },
     questions: persistReducer(
         { key: 'test-questions', storage, whitelist: ['questions', 'currQuestionIndex'] },
         questions,

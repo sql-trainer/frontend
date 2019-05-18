@@ -46,3 +46,7 @@ export const CHANGE_AC_AVAILABILITY = 'settings/CHANGE_AC_AVAILABILITY';
 //autocomplete
 export const REPLACE_KEYWORDS = 'ac/REPLACE_KEYWORDS';
 export const CHANGE_VISIBILITY = 'ac/CHANGE_VISIBILITY';
+
+// hanbookPage
+export const CHANGE_HANDBOOK_PAGE_NAV_LINKS = 'handbook/CHANGE_HANDBOOK_NAV_LINKS';
+export const CHANGE_HANDBOOK_PAGE_NAV = 'handbook/CHANGE_HANDBOOK_NAV';

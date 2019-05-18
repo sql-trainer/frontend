@@ -7,17 +7,11 @@ import {
 
 class IntroInSQLHandbookPage extends Component {
     componentDidMount() {
-        document.title = "Введение в SQL";
-        this.props.changeHandbookPageLinks(null, "basic-concept");
+        document.title = "Базовые концепции";
+        this.props.changeHandbookPageLinks("intro-in-sql", null);
         this.props.changeHandbookPageNav([{
             label: "Введение в SQL1",
             link: `#vvedenie-v-sql-1`
-        }, {
-            label: "Введение в SQL2",
-            link: `#vvedenie-v-sql-2`
-        }, {
-            label: "Введение в SQL3",
-            link: `#vvedenie-v-sql-3`
         }]);
     }
 
@@ -25,7 +19,7 @@ class IntroInSQLHandbookPage extends Component {
         return (
             <div className="wrapper">
                 <div className="content">
-                    <h1> Введение в SQL </h1>
+                    <h1> Базовые концепции </h1>
                     <h3>
                         <a href="#vvedenie-v-sql-1" name="vvedenie-v-sql-1" className="handbook-page-anchor"> Введение в SQL1 </a>
                     </h3>

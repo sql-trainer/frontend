@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 
 import Menu from "./Menu";
 import IntroInSQL from "./pages/IntroInSql";
+import BasicConcept from "./pages/basicConcept";
 
 import "./index.scss";
 import "./media.scss";
@@ -22,6 +23,7 @@ class HandbookPage extends Component {
 					<Menu />
 					<main className="main">
 						<Route path="/handbook/intro-in-sql" component={IntroInSQL} />
+						<Route path="/handbook/basic-concept" component={BasicConcept} />
 					</main>
 				</div>
 			<Footer />

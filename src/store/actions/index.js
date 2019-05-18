@@ -5,5 +5,6 @@ import test from './testActions';
 import notification from './notificationActions';
 import settings from './settingsActions';
 import ac from './autocompleteActions';
+import handbookPage from './handbookPageActions';
 
-export { questions, database, tabs, test, notification, settings, ac };
+export { questions, database, tabs, test, notification, settings, ac, handbookPage };

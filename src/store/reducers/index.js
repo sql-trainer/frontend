@@ -6,6 +6,7 @@ import tabs from './tabsReducer';
 import notification from './notificationReducer';
 import settings from './settingsReducer';
 import ac from './autocompleteReducer';
+import handbookPage from './handbookPageReducer';
 
 const appReducer = combineReducers({
     questions,
@@ -14,7 +15,8 @@ const appReducer = combineReducers({
     tabs,
     notification,
     settings,
+    handbookPage
 });
 
-export { questions, database, test, tabs, notification, settings, ac };
+export { questions, database, test, tabs, notification, settings, ac, handbookPage };
 export default appReducer;
