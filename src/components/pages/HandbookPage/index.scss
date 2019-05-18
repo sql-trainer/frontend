@@ -3,6 +3,58 @@
     .wrapper {
         display: flex;
 
+        .nav {
+                
+            .nav_prev {
+                position: fixed;
+                top: calc(50vh - 20px);
+                font-size: 2em;
+
+                &.--opened {
+                    left: 270px;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                a {
+                    color: #666;
+
+                    &:hover {
+                        color: #8255ca;
+                    }
+                    
+                    .icon {
+                        padding: 15px 27px;
+                    }
+                }
+            }
+
+            .nav_next{
+                position: fixed;
+                top: calc(50vh - 20px);
+                font-size: 2em;
+                right: 0px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                a {
+                    color: #666;
+
+                    &:hover {
+                        color: #8255ca;
+                    }
+                    
+                    .icon {
+                        padding: 15px 27px;
+                    }
+                }
+            }
+        }
+
         .aside {
 
             .handbook__menu {
@@ -74,13 +126,17 @@
 
         .main {
             margin: 60px auto;
-            padding: 0 30px 0 80px;
+            padding: 0 70px;
             max-width: 700px;
     
             .content {
                 
                 h3 {
                     margin-top: 35px;
+
+                    a {
+                        text-decoration: none;
+                    }
                 }
 
                 p {

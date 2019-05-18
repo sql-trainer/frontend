@@ -1,32 +1,31 @@
 import React, { Component } from "react";
 import { Header, Footer } from "../../common";
+import { Route } from "react-router-dom";
 
-import { Route } from 'react-router-dom';
-
-import Menu from './Menu';
-
-import IntroInSQL from './pages/IntroInSql'
+import Menu from "./Menu";
+import IntroInSQL from "./pages/IntroInSql";
 
 import "./index.scss";
+import "./media.scss";
 
 class HandbookPage extends Component {
-  componentDidMount() {
-	document.body.scrollTop = document.documentElement.scrollTop = 0;
-    document.title = "HandbookPage";
-  }
+	componentDidMount() {
+		document.body.scrollTop = document.documentElement.scrollTop = 0;
+		document.title = "HandbookPage";
+	}
 
   render() {
     return (
-        <div className="handbook-page">
-            <Header style={{ borderBottom: "2px solid #47515e" }}/>
-                <div className="wrapper">
-              		<Menu />
+		<div className="handbook-page">
+			<Header style={{ borderBottom: "2px solid #47515e" }} />
+				<div className="wrapper">
+					<Menu />
 					<main className="main">
 						<Route path="/handbook/intro-in-sql" component={IntroInSQL} />
 					</main>
 				</div>
-            <Footer />
-      </div>
+			<Footer />
+		</div>
     );
   }
 }
