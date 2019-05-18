@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { createNewTab, changeTab, deleteTab } from '../../../../store/actions/tabsActions';
 import { pinInputArea } from '../../../../store/actions/settingsActions';
+import { changeVisibility } from '../../../../store/actions/autocompleteActions';
 import * as selectors from '../../../../store/selectors';
 
 import Tabs from '../Tabs';
@@ -21,6 +22,7 @@ const mapDispatchToProps = dispatch => {
         changeTab: (index, id) => dispatch(changeTab(index, id)),
         deleteTab: qid => dispatch(deleteTab(qid)),
         pinInputArea: () => dispatch(pinInputArea()),
+        changeVisibility: visible => dispatch(changeVisibility(visible)),
     };
 };
 

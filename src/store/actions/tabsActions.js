@@ -22,11 +22,7 @@ const copyAnswerToClipboard = html => {
 };
 
 const changeTab = (tid, qid) => {
-    return {
-        type: types.CHANGE_TAB,
-        tid,
-        qid,
-    };
+    return { type: types.CHANGE_TAB, tid, qid };
 };
 
 const nextTab = qid => {
@@ -34,7 +30,6 @@ const nextTab = qid => {
         const tabs = getState().tabs.tabs;
         const newTab = tabs[qid].currTabIndex + 1 > tabs[qid].tabs.length - 1 ? 0 : tabs[qid].currTabIndex + 1;
 
-        console.log(newTab);
         dispatch(changeTab(newTab, qid));
     };
 };

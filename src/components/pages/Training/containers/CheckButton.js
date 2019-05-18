@@ -10,9 +10,8 @@ const mapStateToProps = ({ questions, test, tabs }, ownProps) => {
         currQuestionIndex: questions.currQuestionIndex,
         isCompletedPopupVisible: test.isCompletedPopupVisible,
         isTestCompleted: test.isTestCompleted,
-        tabs: tabs.tabs,
         currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
-        currQuestion: selectors.getCurrentQuestion({ questions }),
+        // currQuestion: selectors.getCurrentQuestion({ questions }),
         currTab: selectors.getCurrentTab({ questions, tabs }),
         ...ownProps,
     };

@@ -1,55 +1,88 @@
 import React, { Component } from 'react';
 import Editor from 'react-simple-code-editor';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-sql';
 import classNames from 'classnames';
+import CustomScrollbars from './CustomScrollbars';
 
-import store from '../../../modules/store';
+import refractor from 'refractor/core.js';
+import sql from 'refractor/lang/sql.js';
+
+import Autocompletion from '../../common/Autocompletion';
+
+refractor.register(sql);
 
 class SQLEditor extends Component {
-    state = {
-        saveTimeoutID: undefined,
+    handleContentEditable = value => {
+        const {
+            changeTabHtml,
+            currTabIndex,
+            questions,
+            currQuestionIndex,
+            changeSQLResponseType,
+            currTab,
+            changeVisibility,
+        } = this.props;
+
+        changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
+        changeVisibility(true);
+
+        if (currTab.SQLResponseType !== '') changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };
 
-    handleContentEditable = value => {
-        const { changeTabHtml, currTabIndex, questions, currQuestionIndex, changeSQLResponseType } = this.props;
-        changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
-        changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
-    };
+    createReactElements = nodes =>
+        nodes.map((node, index) =>
+            node.type === 'text'
+                ? node.value
+                : React.createElement(
+                      node.tagName,
+                      { className: node.properties.className.join(' '), key: index },
+                      this.createReactElements(node.children),
+                  ),
+        );
 
     highlightSQL = sql => {
-        sql = Prism.highlight(sql, Prism.languages.sql);
-        return sql;
+        const nodes = refractor.highlight(sql, 'sql');
+        return this.createReactElements(nodes);
     };
 
-    saveOnEdit = () => {
-        const { tabs } = this.props;
-        const { saveTimeoutID } = this.state;
-
-        if (saveTimeoutID !== undefined) {
-            clearTimeout(saveTimeoutID);
-        }
-
-        const timeoutID = setTimeout(() => store.set('tabs', tabs), 1000);
-
-        this.setState({ saveTimeoutID: timeoutID });
-    };
+    insertTransformation = keyword => (keyword.type !== 'table' ? keyword.label.toUpperCase() : keyword.label);
 
     render() {
-        const { currTab, editorTheme } = this.props;
+        const { currTab, editorTheme, keywords, options, visible, changeVisibility, isACAvailable } = this.props;
 
         return (
-            <>
-                <Editor
-                    value={currTab.html}
-                    onValueChange={code => this.handleContentEditable(code)}
-                    highlight={code => this.highlightSQL(code)}
-                    className={classNames('textarea', editorTheme)}
-                    tabSize={4}
-                    placeholder="Введите свой запрос..."
-                    autoFocus
-                />
-            </>
+            <Autocompletion
+                value={currTab.html}
+                keywords={keywords}
+                options={options}
+                inputElementID="autocompletion-textarea"
+                insertTransformation={this.insertTransformation}
+                scrollRef={this.inputScrollRef}
+                visible={visible}
+                visibleHandler={changeVisibility}
+                isACAvailable={isACAvailable}
+            >
+                {(filterKeys, onPositionChange) => (
+                    <CustomScrollbars
+                        className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
+                        ref={ref => (this.inputScrollRef = ref)}
+                        onScroll={onPositionChange}
+                        prefix="editor"
+                    >
+                        <Editor
+                            value={currTab.html}
+                            onValueChange={code => this.handleContentEditable(code)}
+                            onKeyDown={filterKeys}
+                            highlight={code => this.highlightSQL(code)}
+                            className={classNames('textarea', editorTheme)}
+                            tabSize={4}
+                            placeholder="Введите свой запрос..."
+                            textareaId="autocompletion-textarea"
+                            onClick={onPositionChange}
+                            autoFocus
+                        />
+                    </CustomScrollbars>
+                )}
+            </Autocompletion>
         );
     }
 }

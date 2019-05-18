@@ -6,7 +6,8 @@
     border-radius: 10px;
     background: white;
     z-index: 3;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.05) 0 27px 24px 0;
     flex-direction: column;
     box-sizing: border-box;
     width: 100%;
@@ -23,7 +24,7 @@
         text-align: center;
         margin: 0;
         font-size: 19px;
-        font-weight: 500;
+        font-weight: 501;
         font-family: inherit;
         line-height: 16px;
         margin-bottom: 22px;
@@ -59,4 +60,69 @@
     width: 100%;
     height: 100%;
     display: flex;
+}
+
+.settings-group {
+    padding: 20px;
+    padding-top: 0;
+    .settings-group-title {
+        font-weight: 501;
+        margin-bottom: 10px;
+    }
+}
+
+.test-info {
+    .stat-question-title {
+        font-weight: 501;
+        margin: 20px 0 10px 0;
+        display: flex;
+        line-height: 20px;
+        align-items: center;
+    }
+
+    .stat-question-number {
+        border-radius: 4px;
+        padding-right: 7px;
+        margin-right: 0px;
+        max-height: 24px;
+        align-self: start;
+        text-decoration: underline;
+    }
+
+    .stat-question-answer {
+        border-radius: 4px;
+        background: #f6f6f6;
+        padding: 15px;
+        // margin-bottom: 20px;
+        font-family: 'Fira Mono', monospace;
+        font-size: 15px;
+    }
+
+    .stat-block {
+        display: flex;
+        padding: 20px;
+        padding-bottom: 40px;
+        // border-bottom: 1px solid #ccc;
+
+        justify-content: center;
+        .stat-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            &:not(:last-child) {
+                margin-right: 80px;
+            }
+
+            .stat-info {
+                font-size: 40px;
+                margin-bottom: 10px;
+            }
+
+            .stat-title {
+                font-weight: 501;
+                font-size: 16px;
+                text-transform: uppercase;
+            }
+        }
+    }
 }

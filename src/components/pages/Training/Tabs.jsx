@@ -4,9 +4,15 @@ import classNames from 'classnames';
 import CustomScrollbars from './CustomScrollbars';
 
 class Tabs extends Component {
-    _deleteTab = (e, qid) => {
+    _deleteTab = e => {
         e.stopPropagation();
-        this.props.deleteTab(qid);
+        this.props.deleteTab(this.props.currQuestion.id);
+        this.props.changeVisibility(false);
+    };
+
+    _createTab = e => {
+        this.props.createNewTab(this.props.currQuestion.id);
+        this.props.changeVisibility(false);
     };
 
     render() {
@@ -17,7 +23,8 @@ class Tabs extends Component {
             pinInputArea,
             currQuestion,
             openHelpModal,
-            createNewTab,
+            changeTab,
+            changeVisibility,
         } = this.props;
 
         return (
@@ -27,15 +34,14 @@ class Tabs extends Component {
                         {tabs.map((tab, index) => (
                             <div
                                 className={classNames('tab', { active: currTabIndex === index })}
-                                onClick={e => this.props.changeTab(index, currQuestion.id)}
+                                onClick={e => {
+                                    changeTab(index, currQuestion.id);
+                                    changeVisibility(false);
+                                }}
                                 key={index}
                             >
                                 {tab.title}
-                                <FontAwesomeIcon
-                                    icon="times"
-                                    className="tab-close"
-                                    onClick={e => this._deleteTab(e, currQuestion.id)}
-                                />
+                                <FontAwesomeIcon icon="times" className="tab-close" onClick={this._deleteTab} />
                             </div>
                         ))}
                     </CustomScrollbars>
@@ -45,9 +51,7 @@ class Tabs extends Component {
                         icon="plus"
                         data-tip="Добавить новую вкладку"
                         data-multiline={false}
-                        onClick={e => {
-                            createNewTab(currQuestion.id);
-                        }}
+                        onClick={this._createTab}
                     />
 
                     <div className="tools">
