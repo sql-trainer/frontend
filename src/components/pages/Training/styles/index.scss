@@ -423,13 +423,14 @@ $copy-icon: $fa-var-clone;
                 .textarea {
                     padding: 10px 15px !important;
                     min-height: 220px;
-                    font-family: 'Fira Mono', monospace;
+                    font-family: 'Fira Mono', Arial, monospace !important;
                     font-size: 15px;
                     white-space: pre;
 
                     textarea {
                         outline: none !important;
                         padding: inherit !important;
+                        font-family: 'Fira Mono', Arial, monospace !important;
 
                         &::selection {
                             background: #d6d639 !important;
@@ -473,7 +474,7 @@ $copy-icon: $fa-var-clone;
                             animation: fa-spin 2s infinite linear;
                             font-size: 16px;
                             content: fa-content($fa-var-spinner);
-                            margin-bottom: 1px;
+                            // margin-bottom: 1px;
                         }
                     }
 
@@ -481,47 +482,6 @@ $copy-icon: $fa-var-clone;
                         background: #777;
                         cursor: unset;
                         box-shadow: none;
-                    }
-
-                    &.solved {
-                        right: 65px;
-                    }
-                }
-
-                .next-question {
-                    border: none;
-                    background: transparent;
-                    color: #444;
-                    border-radius: 50%;
-                    bottom: 20px;
-                    right: 15px;
-                    position: absolute;
-                    outline: none;
-                    cursor: pointer;
-                    width: 40px;
-                    height: 40px;
-                    display: flex;
-                    justify-content: center;
-                    opacity: 0;
-                    pointer-events: none;
-                    transition: all 0.2s ease-in-out;
-
-                    &:hover {
-                        color: black;
-                    }
-
-                    &:after {
-                        @extend %fa-icon;
-                        @extend .fas;
-                        content: fa-content($fa-var-arrow-right);
-                        margin-bottom: 1px;
-                        font-size: 16px;
-                    }
-
-                    &.active {
-                        opacity: 1;
-                        pointer-events: unset;
-                        transform: scale(1);
                     }
                 }
             }
@@ -645,6 +605,8 @@ $copy-icon: $fa-var-clone;
 .tool-icon {
     font-size: 18px;
     margin-right: 10px;
+    cursor: pointer;
+
     &:after {
         @extend %fa-icon;
         border-radius: 50%;
@@ -652,7 +614,6 @@ $copy-icon: $fa-var-clone;
         transition: all 0.2s ease-in-out;
         padding: 5px;
         color: $icon-color;
-        cursor: pointer;
     }
 
     &:hover {
@@ -680,99 +641,6 @@ $copy-icon: $fa-var-clone;
 
     &.pin-active {
         animation: pin 0.4s ease-in-out forwards;
-    }
-}
-
-.Collapsible:not(:last-child) {
-    border-bottom: 1px solid #efefef;
-}
-
-.Collapsible {
-    display: flex;
-    flex-direction: column;
-
-    &.table {
-        border-bottom: none;
-        min-height: 35px;
-    }
-}
-
-.Collapsible__contentOuter {
-    opacity: 0;
-    transition: all 0.15s ease-in-out !important;
-}
-
-.Collapsible__trigger {
-    padding: 10px 20px;
-    box-sizing: border-box;
-    cursor: pointer;
-    display: flex;
-    align-content: center;
-    justify-content: space-between;
-    font-weight: 501;
-
-    &:hover {
-        background-color: lighten($icon-color, 40%);
-    }
-
-    &:after {
-        transform: scaleY(1) rotate(0deg);
-        transition: all 0.1s ease-in-out;
-        transform-origin: center;
-        @extend %fa-icon;
-        @extend .fas;
-        content: fa-content($fa-var-angle-down);
-        color: currentColor;
-        margin-right: 3px;
-        margin-top: 3px;
-        height: 12px;
-    }
-
-    &.table-title {
-        &:after {
-            margin-top: -3px;
-        }
-    }
-
-    &.is-open {
-        &:after {
-            margin-top: 6px;
-            transform: scaleY(-1) rotate(0deg);
-        }
-
-        &.table-title {
-            &:after {
-                margin-top: 2px;
-            }
-
-            background: #fafafa;
-            color: #333;
-        }
-
-        & + .Collapsible__contentOuter {
-            opacity: 1;
-        }
-    }
-}
-
-.Collapsible__contentInner {
-    p,
-    ul {
-        margin: 0;
-    }
-
-    ul {
-        padding-left: 30px;
-    }
-
-    p {
-        padding-left: 0px;
-    }
-
-    padding: 10px 20px;
-
-    &.table-props {
-        padding: 0;
     }
 }
 
@@ -859,7 +727,7 @@ $copy-icon: $fa-var-clone;
     flex-direction: column;
     z-index: 3;
     transform-origin: top left;
-    transition: all 0.1s ease-in-out;
+    // transition: all 0.1s ease-in-out;
     max-height: 200px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;

@@ -121,11 +121,6 @@ class Training extends React.PureComponent {
                                 <Tabs openHelpModal={this.openHelpModal} />
                                 <SQLEditor />
                                 <CheckButton />
-                                <button
-                                    className="next-question"
-                                    onClick={this.props.nextQuestion}
-                                    data-tip="Следующий вопрос"
-                                />
                             </div>
                             {currTab.response && (
                                 <div className={classNames('resultbox', { checking: currTab.loading })}>
