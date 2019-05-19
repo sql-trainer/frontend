@@ -6,6 +6,7 @@ import { changeSolvedQuestionSQL } from './questionActions';
 import { changeTabResponse, isChecking, changeSQLResponseType } from './tabsActions';
 import { addNotification } from './notificationActions';
 import { createDatabaseKeywords } from './autocompleteActions';
+import { loadDatabaseFromAPI } from './databaseActions';
 
 import { loadQuestions, isLoading as isQuestionsLoading } from './questionActions';
 import { isLoading as isDatabaseLoading } from './databaseActions';
@@ -86,21 +87,23 @@ const loadTest = (testID = 'open') => {
     return async function(dispatch, getState) {
         retryFetch(
             async () => {
+                const state = getState();
                 const timestamp = getState().test.testTimestamp;
                 const testMeta = await fetch(`http://localhost:8080/api/v1/tests/${testID}/meta/`).then(res =>
                     res.json(),
                 );
 
                 if (timestamp !== testMeta.date_changed) {
-                    if (timestamp !== null) {
-                        // dispatch({ type: types.RESET_TEST });
-                        // persist().persistor.flush();
-                    }
                     dispatch(loadQuestions(testID));
                     dispatch(changeTestTimestamp(testMeta.date_changed));
                 } else {
-                    dispatch(createDatabaseKeywords());
-                    dispatch(changeLoaderVisibility(false));
+                    const currQuestion = state.questions.questions[state.questions.currQuestionIndex];
+                    if (currQuestion.database !== state.database.id) {
+                        dispatch(loadDatabaseFromAPI(currQuestion.database));
+                    } else {
+                        dispatch(createDatabaseKeywords());
+                        dispatch(changeLoaderVisibility(false));
+                    }
                 }
             },
             {

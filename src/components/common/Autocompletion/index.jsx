@@ -11,6 +11,9 @@ class Autocompletion extends Component {
         selectedPosition: 0,
     };
 
+    //prettier-ignore
+    forbiddenKeyCodes = new Set([37, 39, 17, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135])
+
     static defaultProps = {
         currTables: [],
         keywords: {},
@@ -57,12 +60,11 @@ class Autocompletion extends Component {
 
         const { keywordList } = this.state;
 
-        // prettier-ignore
-        const forbiddenKeyCodes = new Set([37, 39, 17, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135]);
-
-        if (visible && keywordList.length && e.which === 9) e.preventDefault();
-
-        if (visible && keywordList.length && forbiddenKeyCodes.has(e.which)) visibleHandler(false);
+        const isModified = e.altKey || e.shiftKey || e.metaKey || e.ctrlKey;
+        if (!isModified) {
+            if (visible && keywordList.length && e.which === 9) e.preventDefault();
+            if (visible && keywordList.length && this.forbiddenKeyCodes.has(e.which)) visibleHandler(false);
+        }
     };
 
     setBlockPosition = () => {
@@ -228,22 +230,24 @@ class Autocompletion extends Component {
         if (cursorPos !== cursorPosition || type === 'scroll') visibleHandler(false);
     };
 
-    autocompletionKeys = {
-        UP: 'Up',
-        DOWN: 'Down',
-        TAB: 'Tab',
-    };
-
     handleTab = e => {
         if (this.state.keywordList.length && this.props.visible) {
             this.insertKeyword(this.state.keywordList[this.state.selectedPosition]);
         }
     };
 
+    autocompletionKeys = {
+        UP: 'Up',
+        DOWN: 'Down',
+        TAB: 'Tab',
+        ESC: 'Escape',
+    };
+
     autocompletionHandlers = {
         UP: e => this.changeSelectedPosition(e, -1),
         DOWN: e => this.changeSelectedPosition(e, 1),
         TAB: this.handleTab,
+        ESC: e => this.props.visibleHandler(false),
     };
 
     getKeywordList = () => {

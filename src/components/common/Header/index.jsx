@@ -7,7 +7,7 @@ import './index.scss';
 import './media.scss';
 
 const Header = React.memo(props => (
-    <header className="header" style={props.style}>
+    <header className="header">
         <div className="content">
             <div className="header__logo">
                 <NavLink to="/">

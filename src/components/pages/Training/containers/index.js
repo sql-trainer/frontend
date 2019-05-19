@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { nextQuestion, prevQuestion } from '../../../../store/actions/questionActions';
-import { changeEditorTheme, changeACAvailability } from '../../../../store/actions/settingsActions';
+import { changeEditorTheme } from '../../../../store/actions/settingsActions';
 import { loadTest, checkSQL } from '../../../../store/actions/testActions';
 import { prevTab, nextTab, createNewTab, deleteTab } from '../../../../store/actions/tabsActions';
 
@@ -16,10 +16,10 @@ const mapStateToProps = ({ questions, tabs, test, settings }, ownProps) => {
         isInputAreaPinned: settings.isInputAreaPinned,
         isLogoVisible: test.isLogoVisible,
         editorTheme: settings.editorTheme,
-        isACAvailable: settings.isACAvailable,
         currTab: selectors.getCurrentTab({ questions, tabs }),
         currQuestion: selectors.getCurrentQuestion({ questions }),
         currTabIndex: selectors.getCurrentTabIndex({ questions, tabs }),
+        globalKeyMap: selectors.getGlobalKeyMap({ settings }),
     };
 };
 
@@ -31,7 +31,6 @@ const mapDispatchToProps = dispatch => ({
     nextTab: qid => dispatch(nextTab(qid)),
     createNewTab: qid => dispatch(createNewTab(qid)),
     deleteTab: qid => dispatch(deleteTab(qid)),
-    changeACAvailability: () => dispatch(changeACAvailability()),
     checkSQL: (qid, tid) => dispatch(checkSQL(qid, tid)),
     changeEditorTheme: theme => dispatch(changeEditorTheme(theme)),
 });

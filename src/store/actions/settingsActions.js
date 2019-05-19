@@ -4,6 +4,14 @@ const setEditorTheme = theme => {
     return { type: types.CHANGE_EDITOR_THEME, theme };
 };
 
+const changeShortcut = (shortcutType, shortcutName, combination) => {
+    return { type: types.CHANGE_SHORTCUT, shortcutType, shortcutName, combination };
+};
+
+const enableShortcutDetectorMode = enable => {
+    return { type: types.ENABLE_DETECTOR, enable };
+};
+
 const pinInputArea = () => ({ type: types.PIN_INPUT_AREA });
 
 const changeACAvailability = () => ({ type: types.CHANGE_AC_AVAILABILITY });
@@ -30,4 +38,4 @@ const changeEditorTheme = theme => {
     };
 };
 
-export { changeEditorTheme, pinInputArea, changeACAvailability };
+export { changeEditorTheme, pinInputArea, changeACAvailability, changeShortcut, enableShortcutDetectorMode };
