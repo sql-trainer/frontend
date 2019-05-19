@@ -216,10 +216,6 @@ $copy-icon: $fa-var-clone;
                         display: flex;
                         flex-wrap: wrap;
 
-                        b:first-of-type {
-                            // margin-right: 5px;
-                        }
-
                         & > div {
                             margin-left: 5px;
                         }
@@ -266,6 +262,12 @@ $copy-icon: $fa-var-clone;
                         }
                     }
 
+                    &:nth-child(2) {
+                        .table-title {
+                            border-radius: 0 0 4px 0;
+                        }
+                    }
+
                     .table-title {
                         padding: 7px 15px;
                         cursor: pointer;
@@ -275,6 +277,7 @@ $copy-icon: $fa-var-clone;
                         position: relative;
                         font-weight: 501;
                         outline: none;
+                        border-radius: 0 4px 4px 0;
 
                         &:after {
                             @extend %fa-icon;
@@ -297,17 +300,8 @@ $copy-icon: $fa-var-clone;
                             background: lighten($icon-color, 40%);
                         }
                     }
+
                     .table-props {
-                        // display: flex;
-                        flex-direction: column;
-                        // transform: scaleY(0);
-                        transform-origin: top;
-                        transition: all 0.2s ease-in-out;
-
-                        &[aria-hidden='false'] {
-                            // transform: scaleY(1);
-                        }
-
                         .table-prop {
                             padding: 7px 15px;
                             padding-left: 35px;
@@ -354,7 +348,6 @@ $copy-icon: $fa-var-clone;
                     }
                     & > div > div {
                         display: flex;
-                        // align-items: center;
 
                         .tab {
                             list-style: none;
@@ -695,7 +688,6 @@ $copy-icon: $fa-var-clone;
 }
 
 .Collapsible {
-    // min-height: 41px;
     display: flex;
     flex-direction: column;
 
