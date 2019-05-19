@@ -1,8 +1,8 @@
 import * as types from '../../constants';
 
-const changeACVisibility = visible => ({ type: types.CHANGE_VISIBILITY, visible });
+const changeAutocompletionVisibility = visible => ({ type: types.CHANGE_VISIBILITY, visible });
 
-const changeKeywords = keywords => ({ type: types.REPLACE_KEYWORDS, keywords });
+const appendKeywords = keywords => ({ type: types.REPLACE_KEYWORDS, keywords });
 
 const replaceKeywords = (newKeywords, replaceType) => {
     return function(dispatch, getState) {
@@ -11,7 +11,7 @@ const replaceKeywords = (newKeywords, replaceType) => {
         keywords = keywords.filter(k => k.type !== replaceType);
         keywords.push(...newKeywords);
 
-        dispatch(changeKeywords(keywords));
+        dispatch(appendKeywords(keywords));
     };
 };
 
@@ -38,4 +38,4 @@ const createDatabaseKeywords = () => {
     };
 };
 
-export { replaceKeywords, createDatabaseKeywords, changeACVisibility };
+export { replaceKeywords, createDatabaseKeywords, changeAutocompletionVisibility };

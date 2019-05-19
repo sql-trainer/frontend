@@ -78,9 +78,9 @@ const changeTabHtml = (index, html, id) => {
 
 const isChecking = (qid, tid, checking) => ({ type: types.SQL_CHECKING, qid, tid, checking });
 
-const changeSQLResponseType = (SQLResponseType, tid, qid) => ({
+const changeIndicatorType = (indicatorType, tid, qid) => ({
     type: types.CHANGE_SQL_RESPONSE_TYPE,
-    SQLResponseType,
+    indicatorType,
     tid,
     qid,
 });
@@ -93,7 +93,7 @@ export {
     changeTabHtml,
     createInitialTabs,
     isChecking,
-    changeSQLResponseType,
+    changeIndicatorType,
     copyAnswerToClipboard,
     prevTab,
     nextTab,

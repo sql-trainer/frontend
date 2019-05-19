@@ -4,11 +4,11 @@ import CustomScrollbars from './CustomScrollbars';
 class AllQuestions extends Component {
     handleQuestionChange(index) {
         this.props.loadDatabaseOnChange(index);
-        this.props.changeAllQuestionsVisibility();
+        this.props.changeAllQuestionsBlockVisibility();
     }
 
     render() {
-        const { questions, currQuestionIndex, isAllQOpen, changeAllQuestionsVisibility } = this.props;
+        const { questions, currQuestionIndex, isAllQOpen, changeAllQuestionsBlockVisibility } = this.props;
         const questionsLength = questions.length;
 
         return (
@@ -30,7 +30,7 @@ class AllQuestions extends Component {
                 </div>
                 <div
                     className={`all-questions-bg ${isAllQOpen ? 'all-questions-bg-active' : ''}`}
-                    onClick={changeAllQuestionsVisibility}
+                    onClick={changeAllQuestionsBlockVisibility}
                 />
             </>
         );

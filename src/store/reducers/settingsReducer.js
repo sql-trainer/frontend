@@ -7,7 +7,7 @@ const initialState = {
     isACAvailable: true,
     shortcuts: {
         global: {
-            NEXT_QUESTION: { sequence: ['Ctrl', 'Alt', ']'], description: 'Следующий вопрос' },
+            NEXT_QUESTION: { sequence: ['Ctrl', 'Alt', 'ArrowDown'], description: 'Следующий вопрос' },
             PREVIOUS_QUESTION: { sequence: ['Ctrl', 'Alt', '['], description: 'Предыдущий вопрос' },
             TEST_STAT: { sequence: ['Ctrl', 'Shift', '?'], description: 'Вызвать статистику по тесту' },
             CHECK: { sequence: ['F9'], description: 'Запустить проверку запроса' },

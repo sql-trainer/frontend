@@ -24,6 +24,7 @@ import './styles/index.scss';
 import './styles/media.scss';
 
 configure({
+    logLevel: 'debug',
     ignoreEventsCondition: event => false,
 });
 
@@ -45,21 +46,13 @@ class Training extends React.PureComponent {
         ReactTooltip.rebuild();
     }
 
-    nextTab = e => {
-        this.props.nextTab(this.props.currQuestion.id);
-    };
+    nextTab = e => this.props.nextTab(this.props.currQuestion.id);
 
-    prevTab = e => {
-        this.props.prevTab(this.props.currQuestion.id);
-    };
+    prevTab = e => this.props.prevTab(this.props.currQuestion.id);
 
-    createNewTab = debounce(e => {
-        this.props.createNewTab(this.props.currQuestion.id);
-    }, 50);
+    createNewTab = debounce(e => this.props.createNewTab(this.props.currQuestion.id), 50);
 
-    deleteTab = debounce(e => {
-        this.props.deleteTab(this.props.currQuestion.id);
-    }, 50);
+    deleteTab = debounce(e => this.props.deleteTab(this.props.currQuestion.id), 50);
 
     checkSQL = e => {
         const { questions, currTab, currQuestionIndex, checkSQL, currTabIndex } = this.props;
@@ -71,15 +64,9 @@ class Training extends React.PureComponent {
         const { nextQuestion, prevQuestion } = this.props;
 
         return {
-            NEXT_QUESTION: e => {
-                nextQuestion();
-            },
-            PREVIOUS_QUESTION: e => {
-                prevQuestion();
-            },
-            TEST_STAT: e => {
-                this.setState({ isModalStatOpened: !this.state.isModalStatOpened });
-            },
+            NEXT_QUESTION: e => nextQuestion(),
+            PREVIOUS_QUESTION: e => prevQuestion(),
+            TEST_STAT: e => this.setState({ isModalStatOpened: !this.state.isModalStatOpened }),
             CHECK: this.checkSQL,
             NEXT_TAB: this.nextTab,
             PREVIOUS_TAB: this.prevTab,

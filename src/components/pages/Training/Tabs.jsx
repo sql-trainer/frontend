@@ -14,12 +14,12 @@ class Tabs extends Component {
     _deleteTab = e => {
         e.stopPropagation();
         this.props.deleteTab(this.props.currQuestion.id);
-        this.props.changeACVisibility(false);
+        this.props.changeAutocompletionVisibility(false);
     };
 
     _createTab = e => {
         this.props.createNewTab(this.props.currQuestion.id);
-        this.props.changeACVisibility(false);
+        this.props.changeAutocompletionVisibility(false);
     };
 
     render() {
@@ -31,7 +31,7 @@ class Tabs extends Component {
             currQuestion,
             openHelpModal,
             changeTab,
-            changeACVisibility,
+            changeAutocompletionVisibility,
         } = this.props;
 
         return (
@@ -43,7 +43,7 @@ class Tabs extends Component {
                                 className={classNames('tab', { active: currTabIndex === index })}
                                 onClick={e => {
                                     changeTab(index, currQuestion.id);
-                                    changeACVisibility(false);
+                                    changeAutocompletionVisibility(false);
                                 }}
                                 key={index}
                             >
