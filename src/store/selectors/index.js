@@ -5,6 +5,7 @@ export const getCurrentQuestion = ({ questions: { questions, currQuestionIndex }
 
 const getTabs = ({ tabs: { tabs } }) => tabs;
 const getDatabase = ({ database: { database } }) => database;
+const getShortcuts = ({ settings: { shortcuts } }) => shortcuts;
 
 export const getCurrentTabIndex = createSelector(
     [getCurrentQuestion, getTabs],
@@ -24,4 +25,24 @@ export const getCurrentTab = createSelector(
 export const getCurrentTables = createSelector(
     [getDatabase],
     database => database.tables.map(t => t.title),
+);
+
+export const getGlobalKeyMap = createSelector(
+    [getShortcuts],
+    shortcuts => {
+        const globalKeyMap = {};
+        Object.entries(shortcuts['global']).forEach(k => (globalKeyMap[k[0]] = k[1].sequence.join('+')));
+        return globalKeyMap;
+    },
+);
+
+export const getShortcutSequences = createSelector(
+    [getShortcuts],
+    shortcuts => {
+        const sequences = [];
+        Object.keys(shortcuts).forEach(env =>
+            Object.values(shortcuts[env]).forEach(key => sequences.push(key.sequence)),
+        );
+        return sequences;
+    },
 );

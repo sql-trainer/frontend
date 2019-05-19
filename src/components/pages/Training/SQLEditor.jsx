@@ -19,11 +19,11 @@ class SQLEditor extends Component {
             currQuestionIndex,
             changeSQLResponseType,
             currTab,
-            changeVisibility,
+            changeACVisibility,
         } = this.props;
 
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
-        changeVisibility(true);
+        changeACVisibility(true);
 
         if (currTab.SQLResponseType !== '') changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
     };
@@ -47,7 +47,7 @@ class SQLEditor extends Component {
     insertTransformation = keyword => (keyword.type !== 'table' ? keyword.label.toUpperCase() : keyword.label);
 
     render() {
-        const { currTab, editorTheme, keywords, options, visible, changeVisibility, isACAvailable } = this.props;
+        const { currTab, editorTheme, keywords, options, visible, changeACVisibility, isACAvailable } = this.props;
 
         return (
             <Autocompletion
@@ -58,13 +58,13 @@ class SQLEditor extends Component {
                 insertTransformation={this.insertTransformation}
                 scrollRef={this.inputScrollRef}
                 visible={visible}
-                visibleHandler={changeVisibility}
+                visibleHandler={changeACVisibility}
                 isACAvailable={isACAvailable}
             >
                 {(filterKeys, onPositionChange) => (
                     <CustomScrollbars
                         className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
-                        ref={ref => (this.inputScrollRef = ref)}
+                        scrollRef={ref => (this.inputScrollRef = ref)}
                         onScroll={onPositionChange}
                         prefix="editor"
                     >

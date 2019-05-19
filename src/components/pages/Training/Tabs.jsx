@@ -4,15 +4,22 @@ import classNames from 'classnames';
 import CustomScrollbars from './CustomScrollbars';
 
 class Tabs extends Component {
+    scrollRef = React.createRef();
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.tabs.length < this.props.tabs.length && prevProps.currQuestion.id === this.props.currQuestion.id)
+            this.scrollRef.current.scrollToRight();
+    }
+
     _deleteTab = e => {
         e.stopPropagation();
         this.props.deleteTab(this.props.currQuestion.id);
-        this.props.changeVisibility(false);
+        this.props.changeACVisibility(false);
     };
 
     _createTab = e => {
         this.props.createNewTab(this.props.currQuestion.id);
-        this.props.changeVisibility(false);
+        this.props.changeACVisibility(false);
     };
 
     render() {
@@ -24,19 +31,19 @@ class Tabs extends Component {
             currQuestion,
             openHelpModal,
             changeTab,
-            changeVisibility,
+            changeACVisibility,
         } = this.props;
 
         return (
             <>
                 <div className="tabs">
-                    <CustomScrollbars prefix="tabs">
+                    <CustomScrollbars prefix="tabs" scrollRef={this.scrollRef}>
                         {tabs.map((tab, index) => (
                             <div
                                 className={classNames('tab', { active: currTabIndex === index })}
                                 onClick={e => {
                                     changeTab(index, currQuestion.id);
-                                    changeVisibility(false);
+                                    changeACVisibility(false);
                                 }}
                                 key={index}
                             >

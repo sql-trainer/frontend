@@ -137,6 +137,9 @@
 }
 
 .training-component {
+    .header {
+        min-width: $min-width;
+    }
     .tools {
         display: flex !important;
     }

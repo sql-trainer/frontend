@@ -17,7 +17,7 @@ $copy-icon: $fa-var-clone;
     color: rgb(78, 211, 78);
 }
 
-div[tabindex='-1']:focus {
+*[tabindex='-1']:focus {
     outline: 0;
 }
 
@@ -255,6 +255,17 @@ div[tabindex='-1']:focus {
                 }
 
                 .table {
+                    &[data-opened='true'] {
+                        .table-title {
+                            &:after {
+                                margin-top: 0px;
+                                transform: scaleY(-1) rotate(0deg);
+                            }
+
+                            background: #fafafa;
+                        }
+                    }
+
                     .table-title {
                         padding: 7px 15px;
                         cursor: pointer;
@@ -263,13 +274,17 @@ div[tabindex='-1']:focus {
                         align-items: center;
                         position: relative;
                         font-weight: 501;
+                        outline: none;
 
                         &:after {
                             @extend %fa-icon;
                             @extend .fas;
                             content: fa-content($fa-var-angle-down);
+                            transform: scaleY(1) rotate(0deg);
+                            transform-origin: center;
                             color: $icon-color;
                             margin-right: 3px;
+                            margin-top: 2px;
                         }
 
                         &:hover {
@@ -283,8 +298,15 @@ div[tabindex='-1']:focus {
                         }
                     }
                     .table-props {
-                        display: flex;
+                        // display: flex;
                         flex-direction: column;
+                        // transform: scaleY(0);
+                        transform-origin: top;
+                        transition: all 0.2s ease-in-out;
+
+                        &[aria-hidden='false'] {
+                            // transform: scaleY(1);
+                        }
 
                         .table-prop {
                             padding: 7px 15px;
@@ -585,52 +607,12 @@ div[tabindex='-1']:focus {
     pointer-events: unset;
 }
 
-.notifications-tr {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: auto !important;
-}
-
-.notification {
-    border-radius: 10px !important;
-    background-color: #f6f6f6 !important;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.15) !important;
-    border: none !important;
-    width: max-content !important;
-}
-
-.notification-message {
-    height: max-content;
-    font-size: 16px;
-    color: white !important;
-    line-height: 1em;
-}
-
-.notification-success {
-    background: #5ea400 !important;
-}
-
-.notification-error {
-    background: #ec3d3d !important;
-}
-
-.notification-warning {
-    background: #ebad1a !important;
-}
-
-.notification-info {
-    background: #369cc7 !important;
-}
-
 .test-completed {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    // height: 100%;
     min-height: 100%;
-    // margin-top: -20px;
 
     h1,
     h2,
@@ -699,6 +681,7 @@ div[tabindex='-1']:focus {
             @extend .fas;
             content: fa-content($fa-var-map-pin);
         }
+
         animation: pinOut 0.4s ease-in-out forwards;
     }
 
@@ -795,6 +778,65 @@ div[tabindex='-1']:focus {
     }
 
     padding: 10px 20px;
+
+    &.table-props {
+        padding: 0;
+    }
+}
+
+.help-accordion-button {
+    padding: 10px 20px;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    font-weight: 501;
+    outline: none;
+    font-size: 16px;
+
+    &:hover {
+        background-color: lighten($icon-color, 40%);
+    }
+
+    &:after {
+        transform: scaleY(1) rotate(0deg);
+        transform-origin: center;
+        @extend %fa-icon;
+        @extend .fas;
+        content: fa-content($fa-var-angle-down);
+        color: currentColor;
+        margin-right: 3px;
+        margin-top: 3px;
+        height: 12px;
+    }
+}
+
+.help-accordion {
+    &[data-opened='true'] {
+        .help-accordion-button {
+            &:after {
+                margin-top: 6px;
+                transform: scaleY(-1) rotate(0deg);
+            }
+        }
+    }
+}
+
+.help-accordion-panel {
+    padding: 10px 20px;
+    p,
+    ul {
+        margin: 0;
+    }
+
+    ul {
+        padding-left: 30px;
+    }
+
+    p {
+        padding-left: 0px;
+    }
 
     &.table-props {
         padding: 0;
@@ -945,4 +987,107 @@ pre {
     white-space: pre-wrap;
     word-wrap: break-word;
     margin: 0;
+}
+
+.shortcuts {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-template-rows: 1fr;
+    grid-row-gap: 9px;
+    line-height: 1;
+    align-items: center;
+
+    .shortcut {
+        display: flex;
+        align-items: center;
+        padding: 3px;
+        margin-left: 16px;
+
+        &:before {
+            content: '';
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.235s ease-in-out;
+        }
+
+        .shortcut-keys {
+            display: flex;
+            align-items: center;
+
+            .key {
+                padding: 3px 5px;
+                margin: 0 6px;
+                border-radius: 4px;
+                background: #fafafa;
+                line-height: 1;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-bottom-color: #888;
+                border-left-color: #aaa;
+                border-right-color: #aaa;
+                min-width: 14px;
+                text-align: center;
+                transition: all 0.1s ease-in-out;
+                font-weight: 501;
+
+                &:first-of-type {
+                    margin-left: 0px;
+                }
+
+                &:last-of-type {
+                    margin-right: 0px;
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                .key {
+                    background: #efefef;
+                }
+            }
+
+            &.help-modal {
+                &:hover {
+                    cursor: default;
+
+                    .key {
+                        background: #fafafa;
+                    }
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+
+                .key {
+                    background: #efefef;
+                }
+            }
+        }
+
+        &.detector-enabled {
+            position: relative;
+            z-index: 99;
+
+            &:before {
+                left: 0;
+                top: 0;
+                width: 100vw;
+                height: 100vh;
+                position: fixed;
+                background: rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+                z-index: 98;
+            }
+
+            .shortcut-keys {
+                position: relative;
+                z-index: 99;
+
+                .key {
+                    background: #fff !important;
+                }
+            }
+        }
+    }
 }

@@ -1,19 +1,26 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Collapsible from 'react-collapsible';
+import classNames from 'classnames';
 
 const Panel = props => {
+    const [opened, setOpened] = useState(false);
+
     return (
-        <Collapsible
-            className="table"
-            openedClassName="table"
-            triggerClassName="table-title"
-            triggerOpenedClassName="table-title"
-            contentInnerClassName="table-props"
-            trigger={props.trigger}
+        <div
+            className={classNames('panel', props.panelClassName)}
+            onClick={e => props.scrollRef.current.updateScroll()}
+            data-opened={opened}
         >
-            {props.children}
-        </Collapsible>
+            <div className={classNames('panel-title', props.panelTitleClassName)} onClick={e => setOpened(!opened)}>
+                {props.title}
+            </div>
+            <div
+                className={classNames('panel-body', props.panelBodyClassName)}
+                style={{ display: opened ? 'block' : 'none' }}
+            >
+                {props.children}
+            </div>
+        </div>
     );
 };
 
@@ -36,7 +43,14 @@ class Database extends PureComponent {
                 {database !== undefined &&
                     database.tables.map((table, index) => {
                         return (
-                            <Panel trigger={table.title} className="table" key={index}>
+                            <Panel
+                                title={table.title}
+                                panelClassName="table"
+                                panelTitleClassName="table-title"
+                                panelBodyClassName="table-props"
+                                key={table.title}
+                                scrollRef={this.props.scrollRef}
+                            >
                                 {table.props.map((prop, index) => (
                                     <div className={`table-prop ${prop.isKey ? 'key' : ''}`} key={index}>
                                         <div>{prop.name}</div>

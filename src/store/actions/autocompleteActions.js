@@ -1,6 +1,6 @@
 import * as types from '../../constants';
 
-const changeVisibility = visible => ({ type: types.CHANGE_VISIBILITY, visible });
+const changeACVisibility = visible => ({ type: types.CHANGE_VISIBILITY, visible });
 
 const changeKeywords = keywords => ({ type: types.REPLACE_KEYWORDS, keywords });
 
@@ -38,4 +38,4 @@ const createDatabaseKeywords = () => {
     };
 };
 
-export { replaceKeywords, createDatabaseKeywords, changeVisibility };
+export { replaceKeywords, createDatabaseKeywords, changeACVisibility };

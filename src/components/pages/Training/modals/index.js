@@ -1,5 +1,5 @@
-import HelpModal from './Help';
-import SettingsModal from './Settings';
+import HelpModalContainer from './containers/Help';
+import SettingsModalContainer from './containers/Settings';
 import StatisticsModal from './Statistics';
 
-export { HelpModal, SettingsModal, StatisticsModal };
+export { HelpModalContainer as HelpModal, SettingsModalContainer as SettingsModal, StatisticsModal };
