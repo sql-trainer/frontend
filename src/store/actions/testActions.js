@@ -2,8 +2,8 @@ import * as types from '../../constants';
 import retryFetch from '../../modules/retry-fetch';
 import persist from '../index.js';
 
-import { changeSolvedQuestionSQL } from './questionActions';
-import { changeTabResponse, isChecking, changeSQLResponseType } from './tabsActions';
+import { changeQuestionAnswer } from './questionActions';
+import { changeTabResponse, isChecking, changeIndicatorType } from './tabsActions';
 import { addNotification } from './notificationActions';
 import { createDatabaseKeywords } from './autocompleteActions';
 import { loadDatabaseFromAPI } from './databaseActions';
@@ -61,7 +61,7 @@ const checkSQL = (qid, tid) => {
                         dispatch(addNotification(res.error.message, 'error'));
                     } else {
                         if (res.success) {
-                            dispatch(changeSolvedQuestionSQL(sql));
+                            dispatch(changeQuestionAnswer(sql));
                             responseType = 'success';
                             if (!isTestCompleted && checkTestResult(state.questions.questions)) {
                                 dispatch(changePopupVisibility(true));
@@ -77,7 +77,7 @@ const checkSQL = (qid, tid) => {
                 .catch(err => dispatch(addNotification('Ошибка сервера', 'error')))
                 .finally(() => {
                     dispatch(isChecking(currQuestion.id, currTabIndex, false));
-                    dispatch(changeSQLResponseType(responseType, currTabIndex, currQuestion.id));
+                    dispatch(changeIndicatorType(responseType, currTabIndex, currQuestion.id));
                 });
         }, 1000);
     };

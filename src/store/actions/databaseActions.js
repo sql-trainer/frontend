@@ -7,8 +7,6 @@ const setDatabase = payload => ({ type: types.DATABASE_LOADED, payload });
 
 const isLoading = payload => ({ type: types.DATABASE_LOADING, payload });
 
-const changeTableActivity = id => ({ type: types.CHANGE_TABLE_ACTIVITY, id });
-
 const loadDatabaseFromAPI = dbID => {
     return function(dispatch) {
         dispatch(isLoading(true));
@@ -31,4 +29,4 @@ const loadDatabaseFromAPI = dbID => {
     };
 };
 
-export { loadDatabaseFromAPI, changeTableActivity, isLoading };
+export { loadDatabaseFromAPI, isLoading };

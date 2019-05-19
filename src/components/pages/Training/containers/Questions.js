@@ -5,7 +5,7 @@ import {
     changeCurrQuestion,
     nextQuestion,
     prevQuestion,
-    changeAllQuestionsVisibility,
+    changeAllQuestionsBlockVisibility,
 } from '../../../../store/actions/questionActions';
 import { addNotification } from '../../../../store/actions/notificationActions';
 import * as selectors from '../../../../store/selectors';
@@ -31,7 +31,7 @@ const mapDispatchToProps = dispatch => {
         addNotification: (message, level) => dispatch(addNotification(message, level)),
         nextQuestion: () => dispatch(nextQuestion()),
         prevQuestion: () => dispatch(prevQuestion()),
-        changeAllQuestionsVisibility: () => dispatch(changeAllQuestionsVisibility()),
+        changeAllQuestionsBlockVisibility: () => dispatch(changeAllQuestionsBlockVisibility()),
         copyAnswerToClipboard: html => dispatch(copyAnswerToClipboard(html)),
     };
 };

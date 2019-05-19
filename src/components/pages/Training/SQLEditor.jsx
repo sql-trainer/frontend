@@ -17,15 +17,15 @@ class SQLEditor extends Component {
             currTabIndex,
             questions,
             currQuestionIndex,
-            changeSQLResponseType,
+            changeIndicatorType,
             currTab,
-            changeACVisibility,
+            changeAutocompletionVisibility,
         } = this.props;
 
         changeTabHtml(currTabIndex, value, questions[currQuestionIndex].id);
-        changeACVisibility(true);
+        changeAutocompletionVisibility(true);
 
-        if (currTab.SQLResponseType !== '') changeSQLResponseType('', currTabIndex, questions[currQuestionIndex].id);
+        if (currTab.indicatorType !== '') changeIndicatorType('', currTabIndex, questions[currQuestionIndex].id);
     };
 
     createReactElements = nodes =>
@@ -47,7 +47,15 @@ class SQLEditor extends Component {
     insertTransformation = keyword => (keyword.type !== 'table' ? keyword.label.toUpperCase() : keyword.label);
 
     render() {
-        const { currTab, editorTheme, keywords, options, visible, changeACVisibility, isACAvailable } = this.props;
+        const {
+            currTab,
+            editorTheme,
+            keywords,
+            options,
+            visible,
+            changeAutocompletionVisibility,
+            isACAvailable,
+        } = this.props;
 
         return (
             <Autocompletion
@@ -58,12 +66,12 @@ class SQLEditor extends Component {
                 insertTransformation={this.insertTransformation}
                 scrollRef={this.inputScrollRef}
                 visible={visible}
-                visibleHandler={changeACVisibility}
+                visibleHandler={changeAutocompletionVisibility}
                 isACAvailable={isACAvailable}
             >
                 {(filterKeys, onPositionChange) => (
                     <CustomScrollbars
-                        className={classNames('textarea-scrollbar', 'indicator', currTab.SQLResponseType)}
+                        className={classNames('textarea-scrollbar', 'indicator', currTab.indicatorType)}
                         scrollRef={ref => (this.inputScrollRef = ref)}
                         onScroll={onPositionChange}
                         prefix="editor"

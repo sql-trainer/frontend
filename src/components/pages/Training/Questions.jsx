@@ -18,7 +18,7 @@ class Questions extends PureComponent {
             nextQuestion,
             prevQuestion,
             currQuestion,
-            changeAllQuestionsVisibility,
+            changeAllQuestionsBlockVisibility,
             copyAnswerToClipboard,
             openStatModal,
         } = this.props;
@@ -31,7 +31,7 @@ class Questions extends PureComponent {
                         <div
                             className="menu-icon"
                             data-tip="Список всех вопросов"
-                            onClick={changeAllQuestionsVisibility}
+                            onClick={changeAllQuestionsBlockVisibility}
                         />
                         <div className={`question-counter`}>
                             Вопрос {!questionsLength ? '' : `#${currQuestionIndex + 1} из ${questionsLength}`}
