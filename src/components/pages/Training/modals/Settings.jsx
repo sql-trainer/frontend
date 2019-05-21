@@ -68,16 +68,29 @@ const SettingsModal = React.memo(props => {
     const [currShortcutLabel, setCurrShortcutLabel] = useState('');
     const [currShortcutEnv, setCurrShortcutEnv] = useState('');
 
-    const saveShortcut = shortcut => {
-        const shortcutSort = [...shortcut].sort();
+    const saveShortcut = (shortcut, keysNode) => {
+        const shortcutSort = [...shortcut]
+            .sort()
+            .join('')
+            .toLowerCase();
 
-        const find = shortcutSequences.find(key => [...key].sort().join('') === shortcutSort.join(''));
+        const find = shortcutSequences.find(
+            key =>
+                key
+                    .map(key => key.toLowerCase())
+                    .sort()
+                    .join('') === shortcutSort,
+        );
 
         if (find === undefined) {
             changeShortcut(currShortcutEnv, currShortcutLabel, shortcut);
+            keysNode.classList.remove('tremble');
             return true;
         } else {
             addNotification('Такое сочетание клавиш уже занято', 'warning');
+            keysNode.classList.remove('tremble');
+            void keysNode.offsetWidth;
+            keysNode.classList.add('tremble');
             return false;
         }
     };
@@ -91,7 +104,13 @@ const SettingsModal = React.memo(props => {
     const generateShortcutString = e => {
         if (!isDetectorEnabled) return false;
         e.stopPropagation();
-        if (e.which === 27) return enableShortcutDetectorMode(false);
+
+        const keysNode = e.target.querySelector('.shortcut-keys');
+
+        if (e.which === 27) {
+            keysNode.classList.remove('tremble');
+            return enableShortcutDetectorMode(false);
+        }
         if (![16, 17, 18, 91].includes(e.which)) {
             const shortcutString = [];
             if (e.ctrlKey) shortcutString.push('ctrl');
@@ -100,7 +119,7 @@ const SettingsModal = React.memo(props => {
             if (e.metaKey) shortcutString.push('meta');
             shortcutString.push(e.key);
 
-            if (saveShortcut(shortcutString)) enableShortcutDetectorMode(false);
+            if (saveShortcut(shortcutString, keysNode)) enableShortcutDetectorMode(false);
         }
     };
 
@@ -153,7 +172,8 @@ const SettingsModal = React.memo(props => {
                 </div>
                 <div className="settings-group">
                     <div className="settings-group-title">Сочетания клавиш</div>
-                    <div className="shortcuts" style={{ paddingTop: '5px' }}>
+                    <div>Для смены кликните на сочетание клавиш и нажмите нужную комбинацию на клавиатуре.</div>
+                    <div className="shortcuts" style={{ paddingTop: '20px' }}>
                         {Object.entries(shortcuts).map((type, index) =>
                             Object.entries(type[1]).map(shortcut => (
                                 <Fragment key={shortcut[0]}>

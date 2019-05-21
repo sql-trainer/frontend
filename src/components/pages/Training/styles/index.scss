@@ -269,7 +269,7 @@ $copy-icon: $fa-var-clone;
                     }
 
                     .table-title {
-                        padding: 7px 15px;
+                        padding: 8px 15px;
                         cursor: pointer;
                         display: flex;
                         justify-content: space-between;
@@ -287,7 +287,7 @@ $copy-icon: $fa-var-clone;
                             transform-origin: center;
                             color: $icon-color;
                             margin-right: 3px;
-                            margin-top: 2px;
+                            // margin-top: 2px;
                         }
 
                         &:hover {
@@ -303,7 +303,7 @@ $copy-icon: $fa-var-clone;
 
                     .table-props {
                         .table-prop {
-                            padding: 7px 15px;
+                            padding: 8px 15px;
                             padding-left: 35px;
                             position: relative;
                             word-break: break-all;
@@ -423,6 +423,7 @@ $copy-icon: $fa-var-clone;
                 .textarea {
                     padding: 10px 15px !important;
                     min-height: 220px;
+                    line-height: 1.3em;
                     font-family: 'Fira Mono', Arial, monospace !important;
                     font-size: 15px;
                     white-space: pre;
@@ -513,9 +514,12 @@ $copy-icon: $fa-var-clone;
     h2 {
         padding-left: 25px;
         color: white;
+        line-height: 1em;
     }
     .question {
         padding: 15px 25px;
+        line-height: 1.4;
+
         &.solved {
             padding-right: 40px;
             position: relative;
@@ -644,6 +648,12 @@ $copy-icon: $fa-var-clone;
     }
 }
 
+.panel-body {
+    // height: 0;
+    overflow: hidden;
+    // transition: height 0.2s ease-in-out;
+}
+
 .help-accordion-button {
     padding: 10px 20px;
     box-sizing: border-box;
@@ -667,7 +677,7 @@ $copy-icon: $fa-var-clone;
         content: fa-content($fa-var-angle-down);
         color: currentColor;
         margin-right: 3px;
-        margin-top: 3px;
+        // margin-top: 3px;
         height: 12px;
     }
 }
@@ -676,7 +686,7 @@ $copy-icon: $fa-var-clone;
     &[data-opened='true'] {
         .help-accordion-button {
             &:after {
-                margin-top: 6px;
+                margin-top: 3px;
                 transform: scaleY(-1) rotate(0deg);
             }
         }
@@ -684,7 +694,9 @@ $copy-icon: $fa-var-clone;
 }
 
 .help-accordion-panel {
-    padding: 10px 20px;
+    .panel-content {
+        padding: 10px 20px;
+    }
     p,
     ul {
         margin: 0;
@@ -727,8 +739,7 @@ $copy-icon: $fa-var-clone;
     flex-direction: column;
     z-index: 3;
     transform-origin: top left;
-    // transition: all 0.1s ease-in-out;
-    max-height: 200px;
+    max-height: 300px;
     font-family: 'Fira Mono', monospace;
     font-size: 15px;
     overflow-y: auto;
@@ -746,7 +757,7 @@ $copy-icon: $fa-var-clone;
     }
 
     .keyword {
-        height: 28px;
+        min-height: 28px;
         display: flex;
         align-items: center;
         padding: 0 7px;
@@ -828,7 +839,8 @@ $copy-icon: $fa-var-clone;
 
         b {
             font-weight: normal;
-            text-decoration: underline;
+            background: #ddd;
+            border-radius: 4px;
         }
     }
 }
@@ -847,6 +859,7 @@ pre {
     white-space: pre-wrap;
     word-wrap: break-word;
     margin: 0;
+    line-height: 1.3em;
 }
 
 .shortcuts {
@@ -886,7 +899,7 @@ pre {
                 border-right-color: #aaa;
                 min-width: 14px;
                 text-align: center;
-                transition: all 0.1s ease-in-out;
+                transition: all 0.05s ease-in-out;
                 font-weight: 501;
 
                 &:first-of-type {
@@ -944,10 +957,36 @@ pre {
                 position: relative;
                 z-index: 99;
 
+                &.tremble {
+                    animation: Tremble 0.15s ease-in-out;
+                }
+
                 .key {
                     background: #fff !important;
                 }
             }
         }
+    }
+}
+
+@keyframes Tremble {
+    0% {
+        transform: translateX(0px);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    50% {
+        transform: translateX(0px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+
+    100% {
+        transform: translateX(0px);
     }
 }

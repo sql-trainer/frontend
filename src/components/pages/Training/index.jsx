@@ -24,7 +24,7 @@ import './styles/index.scss';
 import './styles/media.scss';
 
 configure({
-    logLevel: 'debug',
+    // logLevel: 'debug',
     ignoreEventsCondition: event => false,
 });
 
