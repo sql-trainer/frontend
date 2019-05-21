@@ -1,28 +1,10 @@
-import React, { PureComponent, useState } from 'react';
+import React, { PureComponent } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classNames from 'classnames';
+import Panel from '../../common/Panel';
 
-const Panel = props => {
-    const [opened, setOpened] = useState(false);
-
-    return (
-        <div
-            className={classNames('panel', props.panelClassName)}
-            onClick={e => props.scrollRef.current.updateScroll()}
-            data-opened={opened}
-        >
-            <div className={classNames('panel-title', props.panelTitleClassName)} onClick={e => setOpened(!opened)}>
-                {props.title}
-            </div>
-            <div
-                className={classNames('panel-body', props.panelBodyClassName)}
-                style={{ display: opened ? 'block' : 'none' }}
-            >
-                {props.children}
-            </div>
-        </div>
-    );
-};
+const CustomPanel = props => (
+    <Panel panelClassName="table" panelTitleClassName="table-title" panelBodyClassName="table-props" {...props} />
+);
 
 class Database extends PureComponent {
     render() {
@@ -43,21 +25,14 @@ class Database extends PureComponent {
                 {database !== undefined &&
                     database.tables.map((table, index) => {
                         return (
-                            <Panel
-                                title={table.title}
-                                panelClassName="table"
-                                panelTitleClassName="table-title"
-                                panelBodyClassName="table-props"
-                                key={table.title}
-                                scrollRef={this.props.scrollRef}
-                            >
+                            <CustomPanel title={table.title} key={table.title} scrollRef={this.props.scrollRef}>
                                 {table.props.map((prop, index) => (
                                     <div className={`table-prop ${prop.isKey ? 'key' : ''}`} key={index}>
                                         <div>{prop.name}</div>
                                         <div>{prop.type.toUpperCase()}</div>
                                     </div>
                                 ))}
-                            </Panel>
+                            </CustomPanel>
                         );
                     })}
             </div>

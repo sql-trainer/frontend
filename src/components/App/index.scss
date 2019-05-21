@@ -6,8 +6,18 @@ body {
     margin: 0px;
     font-family: $main-font;
     color: #333;
+    // line-height: 1em;
+    font-size: 16px;
+}
+
+* {
+    line-height: 1em;
 }
 
 b {
     font-weight: 501;
+}
+
+p {
+    line-height: 1.4;
 }

@@ -1,24 +1,15 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import Modal from '../../../common/Modal';
-import classNames from 'classnames';
+import Panel from '../../../common/Panel';
 
-const Panel = props => {
-    const [opened, setOpened] = useState(false);
-
-    return (
-        <div className={classNames('panel', 'help-accordion')} data-opened={opened}>
-            <div className={classNames('panel-title', 'help-accordion-button')} onClick={e => setOpened(!opened)}>
-                {props.title}
-            </div>
-            <div
-                className={classNames('panel-body', 'help-accordion-panel')}
-                style={{ display: opened ? 'block' : 'none' }}
-            >
-                {props.children}
-            </div>
-        </div>
-    );
-};
+const CustomPanel = props => (
+    <Panel
+        panelClassName="help-accordion"
+        panelTitleClassName="help-accordion-button"
+        panelBodyClassName="help-accordion-panel"
+        {...props}
+    />
+);
 
 const createShortcutLayout = sequence => {
     return sequence.map((label, index) => (
@@ -34,7 +25,7 @@ const HelpModal = React.memo(props => {
 
     return (
         <Modal title="Справка" opened={visible} poseKey="help" onClose={onClose} maxHeight={500} maxWidth={600}>
-            <Panel title="Сочетания клавиш в приложении">
+            <CustomPanel title="Сочетания клавиш в приложении">
                 <div className="shortcuts">
                     {Object.entries(props.shortcuts).map((type, index) =>
                         Object.entries(type[1]).map(shortcut => (
@@ -49,10 +40,10 @@ const HelpModal = React.memo(props => {
                         )),
                     )}
                 </div>
-            </Panel>
-            <Panel title="Версия СУБД, использующаяся при проверке запросов">
+            </CustomPanel>
+            <CustomPanel title="Версия СУБД, использующаяся при проверке запросов">
                 <p>Для проверки ваших запросов используется СУБД MySQL 8.0.</p>
-            </Panel>
+            </CustomPanel>
         </Modal>
     );
 });

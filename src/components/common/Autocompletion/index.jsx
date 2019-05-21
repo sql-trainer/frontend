@@ -62,7 +62,7 @@ class Autocompletion extends Component {
 
         const isModified = e.altKey || e.shiftKey || e.metaKey || e.ctrlKey;
         if (!isModified) {
-            if (visible && keywordList.length && e.which === 9) e.preventDefault();
+            if (visible && keywordList.length && [9, 13].includes(e.which)) e.preventDefault();
             if (visible && keywordList.length && this.forbiddenKeyCodes.has(e.which)) visibleHandler(false);
         }
     };
@@ -216,7 +216,17 @@ class Autocompletion extends Component {
             else if (selectedPosition + direction >= keywordList.length) blockPosition = 0;
             else blockPosition = direction + selectedPosition;
 
-            this.setState({ selectedPosition: blockPosition });
+            this.setState({ selectedPosition: blockPosition }, () => {
+                const selectedNode = document.querySelector('div.selected');
+                const acBottomBoundary = this.acRef.scrollTop + this.acRef.offsetHeight;
+                const sNodeBottomBoundary = selectedNode.offsetTop + selectedNode.offsetHeight;
+
+                if (acBottomBoundary < sNodeBottomBoundary) {
+                    this.acRef.scrollTop = this.acRef.scrollTop + sNodeBottomBoundary - acBottomBoundary;
+                } else if (this.acRef.scrollTop > selectedNode.offsetTop) {
+                    this.acRef.scrollTop = selectedNode.offsetTop;
+                }
+            });
         }
     };
 
@@ -239,14 +249,14 @@ class Autocompletion extends Component {
     autocompletionKeys = {
         UP: 'Up',
         DOWN: 'Down',
-        TAB: 'Tab',
-        ESC: 'Escape',
+        ENTER: 'Enter',
+        INSERT: ['Tab', 'Enter'],
     };
 
     autocompletionHandlers = {
         UP: e => this.changeSelectedPosition(e, -1),
         DOWN: e => this.changeSelectedPosition(e, 1),
-        TAB: this.handleTab,
+        INSERT: this.handleTab,
         ESC: e => this.props.visibleHandler(false),
     };
 
