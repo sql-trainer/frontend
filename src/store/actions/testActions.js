@@ -50,7 +50,7 @@ const checkSQL = (qid, tid) => {
         dispatch(isChecking(currQuestion.id, currTabIndex, true));
 
         setTimeout(() => {
-            fetch(`http://localhost:8080/api/v1/tests/open/questions/${currQuestion.id}/check`, {
+            fetch(`/api/v1/tests/open/questions/${currQuestion.id}/check/`, {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sql }),
@@ -89,9 +89,7 @@ const loadTest = (testID = 'open') => {
             async () => {
                 const state = getState();
                 const timestamp = getState().test.testTimestamp;
-                const testMeta = await fetch(`http://localhost:8080/api/v1/tests/${testID}/meta/`).then(res =>
-                    res.json(),
-                );
+                const testMeta = await fetch(`/api/v1/tests/${testID}/meta/`).then(res => res.json());
 
                 if (timestamp !== testMeta.date_changed) {
                     dispatch(loadQuestions(testID));

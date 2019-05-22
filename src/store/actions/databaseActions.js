@@ -11,7 +11,7 @@ const loadDatabaseFromAPI = dbID => {
     return function(dispatch) {
         dispatch(isLoading(true));
 
-        fetch(`http://localhost:8080/api/v1/db/open/${dbID}`)
+        fetch(`/api/v1/db/open/${dbID}/`)
             .then(res => res.json())
             .then(res => {
                 if (res.error) {

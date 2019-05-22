@@ -23,7 +23,7 @@ const App = props => {
         <div className="app">
             <Switch>
                 <Route exact path="/" component={Home} key="home" />
-                <Route path="/training" component={TrainingContainer} key="training" />
+                <Route exact path="/training" component={TrainingContainer} key="training" />
                 <Route component={NotFound} />
             </Switch>
 

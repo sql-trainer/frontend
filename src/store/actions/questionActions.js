@@ -70,7 +70,7 @@ const mergeQuestions = (questions, state) => {
 
 const loadQuestions = testID => {
     return async function(dispatch, getState) {
-        const res = await fetch(`http://localhost:8080/api/v1/tests/${testID}/`).then(res => res.json());
+        const res = await fetch(`/api/v1/tests/${testID}/`).then(res => res.json());
 
         if (res.error) {
             dispatch(addNotification(res.error.message, 'error'));
