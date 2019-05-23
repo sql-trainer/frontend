@@ -103,7 +103,6 @@
             display: none;
             margin: 0 12px;
             .tool-icon {
-                font-size: 20px;
                 margin-right: 0 !important;
 
                 &:after {
@@ -114,6 +113,7 @@
 
                 &.settings-icon {
                     &:after {
+                        font-size: 20px;
                         @extend .fas;
                         content: fa-content($fa-var-cog);
                     }

@@ -115,7 +115,7 @@ $copy-icon: $fa-var-clone;
                 .title {
                     padding: 10px 0;
                     display: grid;
-                    grid-template-columns: 48px 1fr repeat(3, 25px);
+                    grid-template-columns: 48px 1fr 30px repeat(2, 25px);
                     align-items: center;
                     .question-counter {
                         display: flex;
@@ -198,8 +198,8 @@ $copy-icon: $fa-var-clone;
                     }
 
                     .question__nav {
-                        width: 15px;
-                        height: 15px;
+                        // width: 15px;
+                        // height: 15px;
                         justify-self: left;
                         cursor: pointer;
                         color: $icon-color;
@@ -211,7 +211,7 @@ $copy-icon: $fa-var-clone;
                                 @extend .fas;
                                 color: $icon-color;
                                 content: fa-content($fa-var-angle-left);
-                                // font-size: 14px;
+                                font-size: 15px;
                             }
 
                             &:hover {
@@ -372,10 +372,6 @@ $copy-icon: $fa-var-clone;
                     box-sizing: border-box;
                     height: 44px;
 
-                    .ps__rail-x,
-                    .ps__thumb-x {
-                        height: 2px;
-                    }
                     & > div > div {
                         display: flex;
 
@@ -419,7 +415,7 @@ $copy-icon: $fa-var-clone;
                                     @extend %fa-icon;
                                     @extend .fas;
                                     content: fa-content($fa-var-times);
-                                    font-size: 12px;
+                                    font-size: 11px;
                                     display: none;
                                     margin-left: 10px;
                                     height: 10px;
@@ -626,12 +622,14 @@ $copy-icon: $fa-var-clone;
     cursor: pointer;
 
     &:after {
+        font-size: 18px;
         @extend %fa-icon;
         // border-radius: 50%;
         background: transparent;
         transition: all 0.2s ease-in-out;
         padding: 5px;
         color: $icon-color;
+        transform: scale(1.04);
     }
 
     &:hover {
@@ -641,7 +639,6 @@ $copy-icon: $fa-var-clone;
     }
 
     &.questionmark-icon {
-        font-size: 20px;
         &:after {
             @extend .fas;
             content: fa-content($fa-var-question-circle);
@@ -650,6 +647,7 @@ $copy-icon: $fa-var-clone;
 
     &.pin {
         &:after {
+            font-size: 16px;
             @extend .fas;
             content: fa-content($fa-var-map-pin);
         }
@@ -663,6 +661,7 @@ $copy-icon: $fa-var-clone;
 
     &.add-tab {
         &:after {
+            font-size: 16px;
             @extend .fas;
             content: fa-content($fa-var-plus);
         }

@@ -51,18 +51,10 @@ class Tabs extends Component {
                             </div>
                         ))}
                     </CustomScrollbars>
-                    {/* 
-                    <FontAwesomeIcon
-                        className="tabs-icon add-tab"
-                        icon="plus"
-                        data-tip="Добавить новую вкладку"
-                        data-multiline={false}
-                        onClick={this._createTab}
-                    /> */}
 
                     <div className="tools">
                         <div
-                            className={classNames('tool-icon add-tab', { 'pin-active': isInputAreaPinned })}
+                            className={classNames('tool-icon add-tab')}
                             data-tip="Добавить новую вкладку"
                             onClick={this._createTab}
                         />
