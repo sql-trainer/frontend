@@ -20,6 +20,8 @@ class DynamicImport extends Component {
         const { Component, isLoaderVisible } = this.state;
         const { importKey } = this.props;
 
+        console.log(Component);
+
         return (
             <>
                 <Loader isLogoVisible isLoaderVisible={isLoaderVisible} importKey={importKey} />

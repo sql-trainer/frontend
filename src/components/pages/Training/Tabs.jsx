@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import CustomScrollbars from './CustomScrollbars';
 
@@ -47,21 +46,26 @@ class Tabs extends Component {
                                 }}
                                 key={index}
                             >
-                                {tab.title}
-                                <FontAwesomeIcon icon="times" className="tab-close" onClick={this._deleteTab} />
+                                <div>{tab.title}</div>
+                                <div className="tab-close" onClick={this._deleteTab} />
                             </div>
                         ))}
                     </CustomScrollbars>
-
+                    {/* 
                     <FontAwesomeIcon
                         className="tabs-icon add-tab"
                         icon="plus"
                         data-tip="Добавить новую вкладку"
                         data-multiline={false}
                         onClick={this._createTab}
-                    />
+                    /> */}
 
                     <div className="tools">
+                        <div
+                            className={classNames('tool-icon add-tab', { 'pin-active': isInputAreaPinned })}
+                            data-tip="Добавить новую вкладку"
+                            onClick={this._createTab}
+                        />
                         <div
                             className={classNames('tool-icon pin', { 'pin-active': isInputAreaPinned })}
                             data-tip={isInputAreaPinned ? 'Открепить' : 'Закрепить'}

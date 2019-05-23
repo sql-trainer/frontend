@@ -96,7 +96,7 @@ const loadTest = (testID = 'open') => {
                     dispatch(changeTestTimestamp(testMeta.date_changed));
                 } else {
                     const currQuestion = state.questions.questions[state.questions.currQuestionIndex];
-                    if (currQuestion.database !== state.database.id) {
+                    if (currQuestion.database !== state.database.database.id) {
                         dispatch(loadDatabaseFromAPI(currQuestion.database));
                     } else {
                         dispatch(createDatabaseKeywords());

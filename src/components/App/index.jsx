@@ -1,29 +1,37 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
+import Loadable from 'react-loadable';
 
+import Loader from '../common/Loader';
 import { NotificationsContainer as Notifications } from '../common/Notifications/containers';
-import DynamicImport from '../common/DynamicImport';
 
 import './index.scss';
 import '../../styles/scrollbar.scss';
 
 import '../../icons';
 
-const Home = props => <DynamicImport load={() => import('../pages/Home')} importKey="home" />;
+const Home = Loadable({
+    loader: () => import('../pages/Home'),
+    loading: Loader,
+});
 
-const TrainingContainer = props => (
-    <DynamicImport load={() => import('../pages/Training/containers')} importKey="training" />
-);
+const Training = Loadable({
+    loader: () => import('../pages/Training/containers'),
+    loading: Loader,
+});
 
-const NotFound = props => <DynamicImport load={() => import('../pages/NotFound')} importKey="notfound" />;
+const NotFound = Loadable({
+    loader: () => import('../pages/NotFound'),
+    loading: Loader,
+});
 
 const App = props => {
     return (
         <div className="app">
             <Switch>
                 <Route exact path="/" component={Home} key="home" />
-                <Route exact path="/training" component={TrainingContainer} key="training" />
+                <Route exact path="/training" component={Training} key="training" />
                 <Route component={NotFound} />
             </Switch>
 

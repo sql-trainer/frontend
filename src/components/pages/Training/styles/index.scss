@@ -204,6 +204,29 @@ $copy-icon: $fa-var-clone;
                         cursor: pointer;
                         color: $icon-color;
 
+                        &.question-prev-icon,
+                        &.question-next-icon {
+                            &:after {
+                                @extend %fa-icon;
+                                @extend .fas;
+                                color: $icon-color;
+                                content: fa-content($fa-var-angle-left);
+                                // font-size: 14px;
+                            }
+
+                            &:hover {
+                                &:after {
+                                    color: $icon-hover-color;
+                                }
+                            }
+                        }
+
+                        &.question-next-icon {
+                            &:after {
+                                content: fa-content($fa-var-angle-right);
+                            }
+                        }
+
                         &:hover {
                             color: $icon-hover-color;
                         }
@@ -241,11 +264,18 @@ $copy-icon: $fa-var-clone;
                     align-items: center;
 
                     .db-diagram-icon {
-                        width: 15px;
-                        color: $icon-color;
+                        &:after {
+                            @extend %fa-icon;
+                            @extend .fas;
+                            content: fa-content($fa-var-sitemap);
+                            color: $icon-color;
+                            font-size: 12px;
+                        }
 
                         &:hover {
-                            color: $icon-hover-color;
+                            &:after {
+                                color: $icon-hover-color;
+                            }
                         }
                     }
                 }
@@ -376,50 +406,35 @@ $copy-icon: $fa-var-clone;
                                 z-index: 2;
 
                                 .tab-close {
-                                    display: block;
+                                    &:after {
+                                        display: block;
+                                    }
                                 }
                             }
 
                             .tab-close {
-                                height: 10px;
-                                width: 10px;
-                                vertical-align: unset;
-                                margin-left: 10px;
-                                display: none;
-                                margin-top: 2px;
+                                display: flex;
+
+                                &:after {
+                                    @extend %fa-icon;
+                                    @extend .fas;
+                                    content: fa-content($fa-var-times);
+                                    font-size: 12px;
+                                    display: none;
+                                    margin-left: 10px;
+                                    height: 10px;
+                                }
                             }
                         }
                     }
-
-                    .tabs-icon {
-                        width: 13px;
-                        height: 13px;
-                        padding: 10px 15px;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        color: $icon-color;
-                        transition: all 0.15s ease-in-out;
-
-                        &.add-tab {
-                            width: 17px;
-                            height: 17px;
-                            margin-top: -2px;
-                        }
-
-                        &:hover {
-                            opacity: 1;
-                            color: $icon-hover-color;
-                        }
-                    }
                 }
+
                 .textarea-scrollbar {
                     height: 220px !important;
                     background: #f6f6f6;
                     border-radius: 0 0 0 4px;
-                    .ps__rail-y {
-                        right: 8px !important;
-                    }
                 }
+
                 .textarea {
                     padding: 10px 15px !important;
                     min-height: 220px;
@@ -475,7 +490,6 @@ $copy-icon: $fa-var-clone;
                             animation: fa-spin 2s infinite linear;
                             font-size: 16px;
                             content: fa-content($fa-var-spinner);
-                            // margin-bottom: 1px;
                         }
                     }
 
@@ -613,7 +627,7 @@ $copy-icon: $fa-var-clone;
 
     &:after {
         @extend %fa-icon;
-        border-radius: 50%;
+        // border-radius: 50%;
         background: transparent;
         transition: all 0.2s ease-in-out;
         padding: 5px;
@@ -645,6 +659,13 @@ $copy-icon: $fa-var-clone;
 
     &.pin-active {
         animation: pin 0.4s ease-in-out forwards;
+    }
+
+    &.add-tab {
+        &:after {
+            @extend .fas;
+            content: fa-content($fa-var-plus);
+        }
     }
 }
 

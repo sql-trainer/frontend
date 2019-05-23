@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Panel from '../../common/Panel';
 
 const CustomPanel = props => (
@@ -15,11 +14,7 @@ class Database extends PureComponent {
                 <div className="title">
                     Схема базы данных
                     <a href="/">
-                        <FontAwesomeIcon
-                            icon="sitemap"
-                            className="db-diagram-icon"
-                            data-tip="Подробная схема базы данных"
-                        />
+                        <div className="db-diagram-icon" />
                     </a>
                 </div>
                 {database !== undefined &&

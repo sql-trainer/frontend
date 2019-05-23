@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
 
 class Questions extends PureComponent {
@@ -53,18 +52,15 @@ class Questions extends PureComponent {
                                     onClick={openStatModal}
                                     data-tip="Статистика по тесту"
                                 />
-                                <FontAwesomeIcon
-                                    className="question__nav"
-                                    icon="angle-left"
-                                    data-tip="Предыдущий вопрос"
+                                <div
+                                    className="question__nav question-prev-icon"
                                     onClick={prevQuestion}
+                                    data-tip="Предыдущи вопрос"
                                 />
-                                <FontAwesomeIcon
-                                    className="question__nav"
-                                    icon="angle-left"
-                                    rotation={180}
-                                    data-tip="Следующий вопрос"
+                                <div
+                                    className="question__nav question-next-icon"
                                     onClick={nextQuestion}
+                                    data-tip="Следующий вопрос"
                                 />
                             </>
                         ) : null}
