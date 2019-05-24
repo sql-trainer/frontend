@@ -43,7 +43,6 @@ const checkSQL = (qid, tid) => {
         const currTabIndex = tid;
         const isTestCompleted = state.test.isTestCompleted;
         const sql = currTab.html;
-        console.log(sql);
 
         let responseType = 'error';
 

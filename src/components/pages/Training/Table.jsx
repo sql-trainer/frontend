@@ -3,13 +3,36 @@ import React, { Component } from 'react';
 import './styles/Table.scss';
 
 class Table extends Component {
+    tooltipRef = React.createRef();
+
+    mouseOver = (e, value) => {
+        console.log(e.target);
+
+        this.tooltipRef.current.textContent = value;
+        this.tooltipRef.current.style = `transform: translate(${e.target.offsetLeft}px, ${
+            e.target.offsetTop
+        }px); min-width: ${e.target.offsetWidth - 20}px`;
+    };
+
     getData() {
         const { rows, fields } = this.props;
 
         return rows.map((row, index) => (
-            <div className="row" key={index}>
+            <div
+                className="row"
+                key={index}
+                style={{ gridTemplateColumns: `repeat(${fields.length}, minmax(80px, 1fr))` }}
+            >
                 {fields.map((field, index) => (
-                    <div className="data" key={index}>
+                    <div
+                        className="data"
+                        key={index}
+                        data-value={row[field]}
+                        onMouseOver={e => {
+                            const f = this.mouseOver(e, row[field]);
+                            setTimeout(f, 200);
+                        }}
+                    >
                         {row[field]}
                     </div>
                 ))}
@@ -28,12 +51,22 @@ class Table extends Component {
     }
 
     render() {
-        const { className } = this.props;
+        const { className, fields } = this.props;
         return (
-            <div className={className || ''}>
-                <div className="fields">{this.getFields()}</div>
-                <div className="rows">{this.getData()}</div>
-            </div>
+            <>
+                <div className={className || ''}>
+                    <div
+                        className="fields"
+                        style={{ gridTemplateColumns: `repeat(${fields.length}, minmax(80px, 1fr))` }}
+                    >
+                        {this.getFields()}
+                    </div>
+                    <div className="rows">{this.getData()}</div>
+                </div>
+                <div className="table-tooltip" ref={this.tooltipRef}>
+                    asd
+                </div>
+            </>
         );
     }
 }

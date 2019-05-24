@@ -359,9 +359,10 @@ $copy-icon: $fa-var-clone;
             .inputbox {
                 z-index: 2;
                 background: white;
+                left: 0;
+                position: sticky;
 
                 &.pinned {
-                    position: sticky;
                     top: 0;
                 }
 
