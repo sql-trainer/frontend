@@ -23,7 +23,7 @@ class Home extends Component {
                     <div className="first-screen">
                         <div className="content">
                             <div className="title">
-                                Сервис для изучения языка SQL
+                                Сервис, помогающий изучить SQL
                                 <Link to="/training/" className="try-service">
                                     Попробовать
                                 </Link>
