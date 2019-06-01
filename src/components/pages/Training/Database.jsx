@@ -13,9 +13,9 @@ class Database extends PureComponent {
             <div className="tablesbox" data-loading={isDatabaseLoading}>
                 <div className="title">
                     Схема базы данных
-                    <a href="/">
+                    {/* <a href="/">
                         <div className="db-diagram-icon" />
-                    </a>
+                    </a> */}
                 </div>
                 {database !== undefined &&
                     database.tables.map((table, index) => {

@@ -1,5 +1,6 @@
 $min-width: 900px;
 $fa-font-path: '~@fortawesome/fontawesome-free/webfonts';
 $icon-color: #8255ca;
+$lighten-icon-color: lighten($icon-color, 40%);
 $icon-hover-color: #5e29b4;
 $arrow-size: 6px;

@@ -28,12 +28,20 @@ class Table extends Component {
     }
 
     render() {
-        const { className } = this.props;
+        const { className, fields } = this.props;
+
         return (
-            <div className={className || ''}>
-                <div className="fields">{this.getFields()}</div>
-                <div className="rows">{this.getData()}</div>
-            </div>
+            <>
+                <style>
+                    {`.fields, .row {
+                        grid-template-columns: repeat(${fields.length}, minmax(80px, 1fr));
+                    }`}
+                </style>
+                <div className={className || ''}>
+                    <div className="fields">{this.getFields()}</div>
+                    <div className="rows">{this.getData()}</div>
+                </div>
+            </>
         );
     }
 }

@@ -239,18 +239,13 @@ $copy-icon: $fa-var-clone;
                         display: flex;
                         flex-wrap: wrap;
 
-                        & > div {
+                        .question-field {
                             margin-left: 5px;
-                        }
 
-                        .alias-icon {
-                            &:after {
-                                @extend %fa-icon;
-                                @extend .fas;
-                                color: #333;
-                                content: fa-content($fa-var-mask);
-                                margin-left: 5px;
-                                font-size: 15px;
+                            &:not(:last-child) {
+                                &:after {
+                                    content: ',';
+                                }
                             }
                         }
                     }
@@ -327,7 +322,7 @@ $copy-icon: $fa-var-clone;
                         }
 
                         &:hover {
-                            background: lighten($icon-color, 40%);
+                            background: $lighten-icon-color;
                         }
                     }
 
@@ -359,9 +354,10 @@ $copy-icon: $fa-var-clone;
             .inputbox {
                 z-index: 2;
                 background: white;
+                left: 0;
+                position: sticky;
 
                 &.pinned {
-                    position: sticky;
                     top: 0;
                 }
 
@@ -429,6 +425,17 @@ $copy-icon: $fa-var-clone;
                     height: 220px !important;
                     background: #f6f6f6;
                     border-radius: 0 0 0 4px;
+                }
+
+                .autocompletion-wrapper {
+                    &:after {
+                        content: '';
+                        height: 10px;
+                        width: 100%;
+                        // margin-top: -10px;
+                        position: absolute;
+                        background: white;
+                    }
                 }
 
                 .textarea {
@@ -500,6 +507,8 @@ $copy-icon: $fa-var-clone;
             .resultbox {
                 opacity: 1;
                 transition: all 0.2s ease-in-out;
+                // margin-top: 0px !important;
+
                 &.checking {
                     opacity: 0.2;
                 }
@@ -686,7 +695,7 @@ $copy-icon: $fa-var-clone;
     font-size: 16px;
 
     &:hover {
-        background-color: lighten($icon-color, 40%);
+        background-color: $lighten-icon-color;
     }
 
     &:after {
@@ -790,7 +799,7 @@ $copy-icon: $fa-var-clone;
         }
 
         &.selected {
-            background: lighten($icon-color, 40%);
+            background: $lighten-icon-color;
         }
 
         &.star {

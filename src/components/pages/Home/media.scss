@@ -11,33 +11,82 @@
         }
     }
 
-    @media screen and (max-width: 723px) {
-        .title {
-            line-height: 42px;
+    @media screen and (max-width: 980px) {
+        .features-block {
+            margin-top: 40px !important;
+
+            .content {
+                grid-template: auto/1fr !important;
+                border: none !important;
+                grid-gap: 0 !important;
+                margin: 30px 0 0 0 !important;
+
+                .feature {
+                    padding: 15px 40px !important;
+                    flex-direction: row !important;
+
+                    &:hover {
+                        box-shadow: unset !important;
+                    }
+
+                    .feature__image {
+                        width: 80px !important;
+                        height: 80px !important;
+                        margin-right: 30px;
+                        margin-bottom: 0px !important;
+                    }
+
+                    .feature__title {
+                        margin: 0 !important;
+                        padding-top: 0 !important;
+                    }
+                }
+            }
         }
     }
 
     @media screen and (max-width: 646px) {
-        .feature {
-            grid-template-columns: 1fr !important;
+        .home > .main {
+            .features-block {
+                .feature {
+                    grid-template-columns: 1fr !important;
+                    // padding: 15px 20px !important;
+                    padding: 15px 40px !important;
 
-            .feature__title {
-                margin-top: 0 !important;
-                padding-top: 0 !important;
+                    .feature__title {
+                        margin-top: 0 !important;
+                        padding-top: 0 !important;
+                    }
+
+                    .feature__text {
+                        padding-left: 0 !important;
+                        font-size: 1rem !important;
+                    }
+
+                    .feature__image {
+                        display: none;
+                    }
+                }
             }
 
-            .feature__text {
-                padding-left: 0 !important;
-                font-size: 1rem !important;
+            .about-us-block {
+                margin-top: 20px !important;
+
+                .content {
+                    margin: 0 40px !important;
+                    padding-bottom: 0 !important;
+
+                    .about-us-block__text {
+                        font-size: 1rem !important;
+                    }
+                }
             }
 
-            .feature__image {
-                display: none;
+            .steps-block {
+                .content {
+                    margin: 0 40px !important;
+                }
             }
-        }
-
-        .about-us-block__text {
-            font-size: 1rem !important;
         }
     }
 
@@ -54,32 +103,31 @@
 
                         .step {
                             justify-self: center;
-                            height: 60px;
+                            margin-bottom: 30px !important;
+
+                            &:after {
+                                content: none;
+                            }
 
                             &:not(:last-child) {
                                 margin-bottom: 0px;
-                            }
-
-                            &:last-child {
-                                margin-bottom: 30px;
-
-                                .step__top {
-                                    &:after {
-                                        display: none;
-                                    }
-                                }
-                            }
-
-                            .step__top {
                                 &:after {
+                                    content: '';
+                                    transform-origin: top left;
                                     transform: rotateZ(90deg);
                                     width: 20px;
                                     border-top: 4px dotted #aaa;
                                     border-radius: 0;
-                                    top: 57px;
+                                    top: calc(100% + 12px);
                                     left: 50%;
                                 }
+                            }
 
+                            &:last-child {
+                                margin-bottom: 30px;
+                            }
+
+                            .step__top {
                                 .step__icon {
                                     display: none;
                                 }
@@ -108,7 +156,8 @@
                 grid-gap: 0 !important;
 
                 .feature {
-                    padding: 20px 40px !important;
+                    padding: 15px 40px !important;
+
                     &:hover {
                         box-shadow: unset !important;
                     }
@@ -116,6 +165,7 @@
 
                 .feature.question {
                     grid-area: unset !important;
+
                     a {
                         align-self: center !important;
                         font-size: 20px !important;
