@@ -297,7 +297,7 @@ class Autocompletion extends Component {
         };
 
         return isACAvailable ? (
-            <div ref={ref => (this.acWrapperRef = ref)}>
+            <div ref={ref => (this.acWrapperRef = ref)} className="autocompletion-wrapper">
                 <div className="autocompletion" style={autocompletionStyle} ref={ref => (this.acRef = ref)}>
                     {this.getKeywordList(keywordList)}
                 </div>

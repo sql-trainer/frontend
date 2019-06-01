@@ -15,7 +15,7 @@ class AllQuestions extends Component {
             <>
                 <div className={`all-questions ${isAllQOpen ? 'all-questions-active' : ''}`}>
                     <CustomScrollbars prefix="all-questions">
-                        <h2>{questionsLength ? 'Все вопросы' : 'Вопросы отстутствуют'}</h2>
+                        <h2>{questionsLength ? 'Список вопросов' : 'Вопросы не загружены'}</h2>
                         {questions.map((q, index) => {
                             const className = `question${index === currQuestionIndex ? ' active' : ''}${
                                 questions[index].sql !== undefined ? ' solved' : ''

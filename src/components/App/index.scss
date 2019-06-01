@@ -10,6 +10,14 @@ body {
     font-size: 16px;
 }
 
+.__react_component_tooltip {
+    white-space: nowrap;
+
+    &:after {
+        content: none !important;
+    }
+}
+
 * {
     line-height: 1em;
 }

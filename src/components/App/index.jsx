@@ -11,6 +11,8 @@ import '../../styles/scrollbar.scss';
 
 import '../../icons';
 
+import HandbookPlaceholder from '../pages/NotFound/HandbookPlaceholder';
+
 const Home = Loadable({
     loader: () => import('../pages/Home'),
     loading: Loader,
@@ -32,10 +34,11 @@ const App = props => {
             <Switch>
                 <Route exact path="/" component={Home} key="home" />
                 <Route exact path="/training" component={Training} key="training" />
+                <Route path="/handbook" component={HandbookPlaceholder} key="handbook" />
                 <Route component={NotFound} />
             </Switch>
 
-            <ReactTooltip type="info" effect="solid" delayShow={500} />
+            <ReactTooltip type="info" effect="solid" delayShow={300} multiline={false} />
             <Notifications />
         </div>
     );

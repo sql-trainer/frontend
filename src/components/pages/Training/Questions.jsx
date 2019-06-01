@@ -55,7 +55,7 @@ class Questions extends PureComponent {
                                 <div
                                     className="question__nav question-prev-icon"
                                     onClick={prevQuestion}
-                                    data-tip="Предыдущи вопрос"
+                                    data-tip="Предыдущий вопрос"
                                 />
                                 <div
                                     className="question__nav question-next-icon"
@@ -73,19 +73,24 @@ class Questions extends PureComponent {
                             {currQuestion.fields ? (
                                 <div className="show">
                                     <b>Вывести:</b>
-                                    {currQuestion.fields.map((f, index) => (
-                                        <div key={index}>
-                                            {f.endsWith('[alias]') ? (
-                                                <>
-                                                    {f.slice(0, f.length - 7)}
-                                                    <b>[alias]</b>
-                                                </>
-                                            ) : (
-                                                f
-                                            )}
-                                            {currQuestion.fields.length - 1 !== index ? ',' : ''}
-                                        </div>
-                                    ))}
+                                    {currQuestion.fields.map((f, index) => {
+                                        const field = f.slice(0, f.length - 7);
+                                        const tipText = `Для аггрегатной функции используйте конструкцию ' ... as ${field}'`;
+
+                                        return (
+                                            <div key={index} className="question-field">
+                                                {f.endsWith('[alias]') ? (
+                                                    <>
+                                                        {field}
+                                                        <b data-tip={tipText}>[alias]</b>
+                                                    </>
+                                                ) : (
+                                                    f
+                                                )}
+                                                {/* {currQuestion.fields.length - 1 !== index ? ',' : ''} */}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             ) : null}
                         </div>
