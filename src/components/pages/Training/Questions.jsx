@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
 
 class Questions extends PureComponent {
@@ -18,7 +17,7 @@ class Questions extends PureComponent {
             nextQuestion,
             prevQuestion,
             currQuestion,
-            changeAllQuestionsVisibility,
+            changeAllQuestionsBlockVisibility,
             copyAnswerToClipboard,
             openStatModal,
         } = this.props;
@@ -31,7 +30,7 @@ class Questions extends PureComponent {
                         <div
                             className="menu-icon"
                             data-tip="Список всех вопросов"
-                            onClick={changeAllQuestionsVisibility}
+                            onClick={changeAllQuestionsBlockVisibility}
                         />
                         <div className={`question-counter`}>
                             Вопрос {!questionsLength ? '' : `#${currQuestionIndex + 1} из ${questionsLength}`}
@@ -53,18 +52,15 @@ class Questions extends PureComponent {
                                     onClick={openStatModal}
                                     data-tip="Статистика по тесту"
                                 />
-                                <FontAwesomeIcon
-                                    className="question__nav"
-                                    icon="angle-left"
-                                    data-tip="Предыдущий вопрос"
+                                <div
+                                    className="question__nav question-prev-icon"
                                     onClick={prevQuestion}
+                                    data-tip="Предыдущий вопрос"
                                 />
-                                <FontAwesomeIcon
-                                    className="question__nav"
-                                    icon="angle-left"
-                                    rotation={180}
-                                    data-tip="Следующий вопрос"
+                                <div
+                                    className="question__nav question-next-icon"
                                     onClick={nextQuestion}
+                                    data-tip="Следующий вопрос"
                                 />
                             </>
                         ) : null}
@@ -77,19 +73,24 @@ class Questions extends PureComponent {
                             {currQuestion.fields ? (
                                 <div className="show">
                                     <b>Вывести:</b>
-                                    {currQuestion.fields.map((f, index) => (
-                                        <div key={index}>
-                                            {f.endsWith('[alias]') ? (
-                                                <>
-                                                    {f.slice(0, f.length - 7)}
-                                                    <b>[alias]</b>
-                                                </>
-                                            ) : (
-                                                f
-                                            )}
-                                            {currQuestion.fields.length - 1 !== index ? ',' : ''}
-                                        </div>
-                                    ))}
+                                    {currQuestion.fields.map((f, index) => {
+                                        const field = f.slice(0, f.length - 7);
+                                        const tipText = `Для аггрегатной функции используйте конструкцию ' ... as ${field}'`;
+
+                                        return (
+                                            <div key={index} className="question-field">
+                                                {f.endsWith('[alias]') ? (
+                                                    <>
+                                                        {field}
+                                                        <b data-tip={tipText}>[alias]</b>
+                                                    </>
+                                                ) : (
+                                                    f
+                                                )}
+                                                {/* {currQuestion.fields.length - 1 !== index ? ',' : ''} */}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             ) : null}
                         </div>

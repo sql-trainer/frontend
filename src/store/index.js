@@ -22,7 +22,7 @@ const appReducer = persistCombineReducers(persistConfig, {
     tabs: persistReducer({ key: 'test-tabs', storage }, tabs),
     test: persistReducer({ key: 'test-metadata', storage, whitelist: ['testTimestamp', 'isTestCompleted'] }, test),
     database: persistReducer({ key: 'test-database', storage, blacklist: ['isDatabaseLoading'] }, database),
-    settings: persistReducer({ key: 'app-settings', storage }, settings),
+    settings: persistReducer({ key: 'app-settings', blacklist: ['isDetectorEnabled'], storage }, settings),
 });
 
 const rootReducer = (state, action) => {

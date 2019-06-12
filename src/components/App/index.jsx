@@ -1,36 +1,54 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
+import Loadable from 'react-loadable';
 
-import { Handbook, HandbookPage } from '../pages/';
+import Loader from '../common/Loader';
 import { NotificationsContainer as Notifications } from '../common/Notifications/containers';
-import DynamicImport from '../common/DynamicImport';
 
 import './index.scss';
 import '../../styles/scrollbar.scss';
 
 import '../../icons';
 
-const Home = props => <DynamicImport load={() => import('../pages/Home')} importKey="home" />;
+const Home = Loadable({
+    loader: () => import('../pages/Home'),
+    loading: Loader,
+});
 
-const TrainingContainer = props => (
-    <DynamicImport load={() => import('../pages/Training/containers')} importKey="training" />
-);
+const Training = Loadable({
+    loader: () => import('../pages/Training/containers'),
+    loading: Loader,
+});
 
-const NotFound = props => <DynamicImport load={() => import('../pages/NotFound')} importKey="notfound" />;
+const Handbook = Loadable({
+    loader: () => import('../pages/Handbook'),
+    loading: Loader,
+});
+
+const HandbookPage = Loadable({
+    loader: () => import('../pages/HandbookPage'),
+    loading: Loader,
+});
+
+
+const NotFound = Loadable({
+    loader: () => import('../pages/NotFound'),
+    loading: Loader,
+});
 
 const App = props => {
     return (
         <div className="app">
             <Switch>
                 <Route exact path="/" component={Home} key="home" />
-                <Route path="/training" component={TrainingContainer} key="training" />
+                <Route path="/training" component={Training} key="training" />
                 <Route exact path="/handbook" component={Handbook} key="handbook" />
                 <Route path="/handbook" component={HandbookPage} />
                 <Route component={NotFound} />
             </Switch>
 
-            <ReactTooltip type="info" effect="solid" delayShow={500} />
+            <ReactTooltip type="info" effect="solid" delayShow={300} multiline={false} />
             <Notifications />
         </div>
     );

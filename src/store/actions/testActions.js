@@ -2,10 +2,11 @@ import * as types from '../../constants';
 import retryFetch from '../../modules/retry-fetch';
 import persist from '../index.js';
 
-import { changeSolvedQuestionSQL } from './questionActions';
-import { changeTabResponse, isChecking, changeSQLResponseType } from './tabsActions';
+import { changeQuestionAnswer } from './questionActions';
+import { changeTabResponse, isChecking, changeIndicatorType } from './tabsActions';
 import { addNotification } from './notificationActions';
 import { createDatabaseKeywords } from './autocompleteActions';
+import { loadDatabaseFromAPI } from './databaseActions';
 
 import { loadQuestions, isLoading as isQuestionsLoading } from './questionActions';
 import { isLoading as isDatabaseLoading } from './databaseActions';
@@ -42,14 +43,13 @@ const checkSQL = (qid, tid) => {
         const currTabIndex = tid;
         const isTestCompleted = state.test.isTestCompleted;
         const sql = currTab.html;
-        console.log(sql);
 
         let responseType = 'error';
 
         dispatch(isChecking(currQuestion.id, currTabIndex, true));
 
         setTimeout(() => {
-            fetch(`http://localhost:8080/api/v1/tests/open/questions/${currQuestion.id}/check`, {
+            fetch(`/api/v1/tests/open/questions/${currQuestion.id}/check/`, {
                 method: 'post',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sql }),
@@ -60,7 +60,7 @@ const checkSQL = (qid, tid) => {
                         dispatch(addNotification(res.error.message, 'error'));
                     } else {
                         if (res.success) {
-                            dispatch(changeSolvedQuestionSQL(sql));
+                            dispatch(changeQuestionAnswer(sql));
                             responseType = 'success';
                             if (!isTestCompleted && checkTestResult(state.questions.questions)) {
                                 dispatch(changePopupVisibility(true));
@@ -76,7 +76,7 @@ const checkSQL = (qid, tid) => {
                 .catch(err => dispatch(addNotification('Ошибка сервера', 'error')))
                 .finally(() => {
                     dispatch(isChecking(currQuestion.id, currTabIndex, false));
-                    dispatch(changeSQLResponseType(responseType, currTabIndex, currQuestion.id));
+                    dispatch(changeIndicatorType(responseType, currTabIndex, currQuestion.id));
                 });
         }, 1000);
     };
@@ -86,21 +86,21 @@ const loadTest = (testID = 'open') => {
     return async function(dispatch, getState) {
         retryFetch(
             async () => {
+                const state = getState();
                 const timestamp = getState().test.testTimestamp;
-                const testMeta = await fetch(`http://localhost:8080/api/v1/tests/${testID}/meta/`).then(res =>
-                    res.json(),
-                );
+                const testMeta = await fetch(`/api/v1/tests/${testID}/meta/`).then(res => res.json());
 
                 if (timestamp !== testMeta.date_changed) {
-                    if (timestamp !== null) {
-                        // dispatch({ type: types.RESET_TEST });
-                        // persist().persistor.flush();
-                    }
                     dispatch(loadQuestions(testID));
                     dispatch(changeTestTimestamp(testMeta.date_changed));
                 } else {
-                    dispatch(createDatabaseKeywords());
-                    dispatch(changeLoaderVisibility(false));
+                    const currQuestion = state.questions.questions[state.questions.currQuestionIndex];
+                    if (currQuestion.database !== state.database.database.id) {
+                        dispatch(loadDatabaseFromAPI(currQuestion.database));
+                    } else {
+                        dispatch(createDatabaseKeywords());
+                        dispatch(changeLoaderVisibility(false));
+                    }
                 }
             },
             {

@@ -75,7 +75,7 @@ const tabs = (state = initialState, action) => {
 
         case types.CHANGE_SQL_RESPONSE_TYPE: {
             const tabs = cloneDeep(state.tabs);
-            tabs[action.qid].tabs[action.tid].SQLResponseType = action.SQLResponseType;
+            tabs[action.qid].tabs[action.tid].indicatorType = action.indicatorType;
 
             return { ...state, tabs };
         }

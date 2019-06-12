@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const AboutUs = props => (
     <div className="about-us-block">
@@ -6,14 +7,18 @@ const AboutUs = props => (
             <h1>Что ты такое?</h1>
             <div className="about-us-block__text">
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi voluptatibus laboriosam nisi
-                    natus maxime odio rem quod aliquid assumenda itaque vel architecto adipisci, mollitia ullam est
-                    voluptatem et. Reiciendis, quas!
+                    Если вы попали сюда с целью изучить язык SQL, то не ошиблись кликнув именно на эту ссылку в
+                    поисковой системе. Здесь вы сможете как изучить SQL с нуля, так и отточить свои навыки, если вы уже
+                    знакомы с ним.
                 </p>
                 <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero itaque blanditiis, dolorum, placeat
-                    dicta natus non exercitationem provident deleniti error pariatur! Corporis quo iure ratione eveniet,
-                    illum tempora sed maxime!
+                    Сервис предоставляет <Link to="/training/">подробный справочник</Link> по всем возможностям языка
+                    SQL с различными интерактивными примерами и <Link to="/training/">тренажёр</Link> с большим
+                    количеством различных вопросов и баз данных.
+                </p>
+                <p>
+                    Сервис абсолютно <b>бесплатен</b>(и будет таким всегда!) и не требует регистрации для того, чтобы
+                    начать им пользоваться.
                 </p>
             </div>
         </div>

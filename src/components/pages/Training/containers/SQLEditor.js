@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { changeTabHtml, changeSQLResponseType } from '../../../../store/actions/tabsActions';
-import { replaceKeywords, changeVisibility } from '../../../../store/actions/autocompleteActions';
+import { changeTabHtml, changeIndicatorType } from '../../../../store/actions/tabsActions';
+import { replaceKeywords, changeAutocompletionVisibility } from '../../../../store/actions/autocompleteActions';
 import * as selectors from '../../../../store/selectors';
 
 import SQLEditor from '../SQLEditor';
@@ -25,9 +25,8 @@ const mapDispatchToProps = dispatch => {
     return {
         changeTabHtml: (index, html, id) => dispatch(changeTabHtml(index, html, id)),
         replaceKeywords: (keywords, type) => dispatch(replaceKeywords(keywords, type)),
-        changeVisibility: visible => dispatch(changeVisibility(visible)),
-        changeSQLResponseType: (SQLResponseType, tid, qid) =>
-            dispatch(changeSQLResponseType(SQLResponseType, tid, qid)),
+        changeAutocompletionVisibility: visible => dispatch(changeAutocompletionVisibility(visible)),
+        changeIndicatorType: (indicatorType, tid, qid) => dispatch(changeIndicatorType(indicatorType, tid, qid)),
     };
 };
 

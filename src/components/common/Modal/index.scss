@@ -67,7 +67,7 @@
     padding-top: 0;
     .settings-group-title {
         font-weight: 501;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 }
 
@@ -76,7 +76,7 @@
         font-weight: 501;
         margin: 20px 0 10px 0;
         display: flex;
-        line-height: 20px;
+        // line-height: 20px;
         align-items: center;
     }
 
@@ -115,7 +115,8 @@
 
             .stat-info {
                 font-size: 40px;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
+                line-height: 1em;
             }
 
             .stat-title {

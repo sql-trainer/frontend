@@ -52,7 +52,7 @@
 .navbar-track-horizontal,
 .tabs-track-horizontal {
     height: 2px !important;
-    bottom: 19px;
+    bottom: 4px;
 }
 
 .tabs-track-horizontal {
@@ -81,4 +81,14 @@
 
 .all-questions-thumb-vertical {
     background: white;
+    opacity: 0.3;
+}
+
+.view:hover {
+    & + .track-horizontal {
+        & > .thumb-horizontal,
+        & + .track-vertical > .thumb-vertical {
+            opacity: 0.2;
+        }
+    }
 }

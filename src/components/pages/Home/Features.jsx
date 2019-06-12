@@ -1,40 +1,39 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import feathers from '../../../images/feathers.svg';
-import reflection from '../../../images/reflection.svg';
-import sweat from '../../../images/sweat.svg';
-import layers from '../../../images/layers.svg';
+import tasks from '../../../images/tasks.svg';
+import books from '../../../images/books.svg';
+import pie from '../../../images/pie.svg';
 
 const Features = props => (
     <div className="features-block">
         <div className="content">
             <div className="feature">
-                <img className="feature__image" alt="" src={feathers} />
-                <div className="feature__title">Feature #1</div>
-                <div className="feature__text">Кратенькое описание первой особенности.</div>
+                <img className="feature__image" alt="" src={books} />
+                <div>
+                    <div className="feature__title">Подробный справочник</div>
+                    <div className="feature__text">
+                        Мы составили подробный справочник с интерактивными примерами по всем особенностям языка SQL
+                    </div>
+                </div>
             </div>
             <div className="feature">
-                <img className="feature__image" alt="" src={reflection} />
-                <div className="feature__title">Feature #2</div>
-                <div className="feature__text">Кратенькое описание второй особенности.</div>
+                <img className="feature__image" alt="" src={tasks} />
+                <div>
+                    <div className="feature__title">Большое количество заданий</div>
+                    <div className="feature__text">
+                        Вам будет доступно множество вопросов и баз данных для оттачивания своих навыков в построении
+                        запросов
+                    </div>
+                </div>
             </div>
             <div className="feature">
-                <img className="feature__image" alt="" src={sweat} />
-                <div className="feature__title">Feature #3</div>
-                <div className="feature__text">Кратенькое описание третьей особенности.</div>
-            </div>
-            <div className="feature">
-                <img className="feature__image" alt="" src={layers} />
-                <div className="feature__title">Feature #4</div>
-                <div className="feature__text">Кратенькое описание четвёртой особенности.</div>
-            </div>
-            <div className="feature question">
-                <div className="feature__title">Новичок в программировании?</div>
-                <div className="feature__text">Тогда этот сервис для тебя! (или шото типа того)</div>
-                <Link to="/training" className="feature__button">
-                    Начать
-                </Link>
+                <img className="feature__image" alt="" src={pie} />
+                <div>
+                    <div className="feature__title">Удобный интерфейс</div>
+                    <div className="feature__text">
+                        Мы разработали отличный интерфейс, чтобы вы могли полностью сконцентрироваться на тренировках
+                    </div>
+                </div>
             </div>
         </div>
     </div>

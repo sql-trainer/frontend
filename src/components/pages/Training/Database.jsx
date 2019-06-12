@@ -1,21 +1,9 @@
 import React, { PureComponent } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Collapsible from 'react-collapsible';
+import Panel from '../../common/Panel';
 
-const Panel = props => {
-    return (
-        <Collapsible
-            className="table"
-            openedClassName="table"
-            triggerClassName="table-title"
-            triggerOpenedClassName="table-title"
-            contentInnerClassName="table-props"
-            trigger={props.trigger}
-        >
-            {props.children}
-        </Collapsible>
-    );
-};
+const CustomPanel = props => (
+    <Panel panelClassName="table" panelTitleClassName="table-title" panelBodyClassName="table-props" {...props} />
+);
 
 class Database extends PureComponent {
     render() {
@@ -25,25 +13,21 @@ class Database extends PureComponent {
             <div className="tablesbox" data-loading={isDatabaseLoading}>
                 <div className="title">
                     Схема базы данных
-                    <a href="/">
-                        <FontAwesomeIcon
-                            icon="sitemap"
-                            className="db-diagram-icon"
-                            data-tip="Подробная схема базы данных"
-                        />
-                    </a>
+                    {/* <a href="/">
+                        <div className="db-diagram-icon" />
+                    </a> */}
                 </div>
                 {database !== undefined &&
                     database.tables.map((table, index) => {
                         return (
-                            <Panel trigger={table.title} className="table" key={index}>
+                            <CustomPanel title={table.title} key={table.title} scrollRef={this.props.scrollRef}>
                                 {table.props.map((prop, index) => (
                                     <div className={`table-prop ${prop.isKey ? 'key' : ''}`} key={index}>
                                         <div>{prop.name}</div>
                                         <div>{prop.type.toUpperCase()}</div>
                                     </div>
                                 ))}
-                            </Panel>
+                            </CustomPanel>
                         );
                     })}
             </div>

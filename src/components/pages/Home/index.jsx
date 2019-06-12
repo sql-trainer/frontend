@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Header, Footer } from '../../common';
 
 import Features from './Features';
-import Steps from './Steps';
 import AboutUs from './AboutUs';
 
 import './index.scss';
@@ -23,9 +22,10 @@ class Home extends Component {
                     <div className="first-screen">
                         <div className="content">
                             <div className="title">
-                                Система контроля знаний SQL
-                                <br />
-                                <Link to="/training">Попробовать</Link>
+                                Сервис, помогающий изучить SQL
+                                <Link to="/training/" className="try-service">
+                                    Попробовать
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@ class Home extends Component {
 
                     <AboutUs />
 
-                    <Steps />
+                    {/* <Steps /> */}
                 </main>
                 <Footer />
             </div>

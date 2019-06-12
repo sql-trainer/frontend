@@ -8,7 +8,6 @@ const setQuestions = payload => ({ type: types.QUESTIONS_LOADED, payload });
 const loadDatabaseOnChange = index => {
     return function(dispatch, getState) {
         const state = getState();
-        console.log(state.questions.questions[index].database);
         if (!state.database.database || state.questions.questions[index].database !== state.database.database.id) {
             dispatch(loadDatabaseFromAPI(state.questions.questions[index].database));
         }
@@ -44,13 +43,11 @@ const changeCurrQuestion = id => {
     return { type: types.CHANGE_QUESTION, id };
 };
 
-const changeQuestionStatus = status => ({ type: types.CHANGE_QUESTION_STATUS, status });
-
-const changeSolvedQuestionSQL = sql => ({ type: types.CHANGE_SOLVED_QUESTION_SQL, sql });
+const changeQuestionAnswer = sql => ({ type: types.CHANGE_SOLVED_QUESTION_SQL, sql });
 
 const isLoading = payload => ({ type: types.QUESTIONS_LOADING, payload });
 
-const changeAllQuestionsVisibility = () => ({ type: types.CHANGE_ALL_QUESTIONS_VISIBILITY });
+const changeAllQuestionsBlockVisibility = () => ({ type: types.CHANGE_ALL_QUESTIONS_VISIBILITY });
 
 const mergeQuestions = (questions, state) => {
     const oldQuestions = state.questions.questions;
@@ -73,7 +70,7 @@ const mergeQuestions = (questions, state) => {
 
 const loadQuestions = testID => {
     return async function(dispatch, getState) {
-        const res = await fetch(`http://localhost:8080/api/v1/tests/${testID}/`).then(res => res.json());
+        const res = await fetch(`/api/v1/tests/${testID}/`).then(res => res.json());
 
         if (res.error) {
             dispatch(addNotification(res.error.message, 'error'));
@@ -95,11 +92,10 @@ export {
     isLoading,
     setQuestions,
     changeCurrQuestion,
-    changeQuestionStatus,
-    changeSolvedQuestionSQL,
+    changeQuestionAnswer,
     nextQuestion,
     prevQuestion,
     loadQuestions,
-    changeAllQuestionsVisibility,
+    changeAllQuestionsBlockVisibility,
     loadDatabaseOnChange,
 };

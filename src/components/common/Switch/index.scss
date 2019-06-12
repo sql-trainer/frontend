@@ -5,7 +5,7 @@
     position: relative;
     border-radius: 10px;
     margin-left: 10px;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.1s ease-in-out;
     cursor: pointer;
 
     &:before {
@@ -18,7 +18,6 @@
         left: 0px;
         transform: translateX(1px);
         border-radius: 50%;
-        transition: all 0.2s ease-in-out;
         box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.5);
     }
 
@@ -26,7 +25,7 @@
         background: #8255ca;
 
         &:before {
-            animation: switch 0.2s linear forwards;
+            animation: switch 0.1s linear forwards;
         }
     }
 
@@ -34,13 +33,14 @@
         background: #ec3d3d;
 
         &:before {
-            animation: switchOff 0.2s linear forwards;
+            animation: switchOff 0.1s linear forwards;
         }
     }
 
     input {
         width: 0;
         height: 0;
+        visibility: hidden;
     }
 }
 

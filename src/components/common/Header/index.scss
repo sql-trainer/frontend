@@ -6,18 +6,20 @@
 .header {
     .content {
         display: flex;
-        min-height: 60px;
+        min-height: 20px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 15px 40px;
         justify-content: space-between;
         overflow-x: hidden;
+
         .header__logo {
             display: flex;
             align-items: center;
             position: relative;
+            height: 30px;
 
             .logo {
-                height: 40px;
+                height: 30px;
                 width: 180px;
                 display: grid;
                 grid-template-columns: calc(26% - 4px) calc(12% - 4px) calc(21% - 4px) 41%;
@@ -49,6 +51,7 @@
             width: 100%;
             align-items: center;
             padding-left: 20px;
+            position: relative;
 
             .nav-links {
                 .navbar-view {
@@ -68,19 +71,9 @@
                     }
                 }
             }
+
             .nav-item {
                 white-space: nowrap;
-                &.login-button {
-                    margin-left: 20px;
-                    position: relative;
-                    &:after {
-                        @extend %fa-icon;
-                        @extend .far;
-                        content: fa-content($fa-var-user-circle);
-                        color: #3d3d3d;
-                        font-size: 30px;
-                    }
-                }
 
                 .nav-link-active {
                     font-weight: 700;
@@ -91,7 +84,7 @@
                     color: #3d3d3d;
                     text-decoration: none;
                     text-transform: uppercase;
-                    font-weight: 500;
+                    font-weight: 501;
                     &:hover {
                         text-decoration: underline;
                     }
@@ -101,9 +94,9 @@
 
         .tools {
             display: none;
-            margin: 0 12px;
+            margin-left: 12px;
+
             .tool-icon {
-                font-size: 20px;
                 margin-right: 0 !important;
 
                 &:after {
@@ -114,8 +107,28 @@
 
                 &.settings-icon {
                     &:after {
+                        font-size: 20px;
                         @extend .fas;
                         content: fa-content($fa-var-cog);
+                    }
+                }
+
+                &.login-button {
+                    margin-left: 10px;
+                    position: relative;
+                    &:after {
+                        @extend %fa-icon;
+                        @extend .far;
+                        content: fa-content($fa-var-user-circle);
+                        color: #3d3d3d;
+                        font-size: 30px;
+                        padding: 0;
+                    }
+
+                    &:hover {
+                        &:after {
+                            background: transparent !important;
+                        }
                     }
                 }
             }
@@ -137,6 +150,14 @@
 }
 
 .training-component {
+    .header {
+        min-width: $min-width;
+
+        .content {
+            padding: 15px 20px;
+        }
+    }
+
     .tools {
         display: flex !important;
     }
@@ -144,8 +165,23 @@
     .header__nav {
         grid-template-columns: 1fr max-content max-content !important;
     }
+}
 
-    .login-button {
-        margin-left: 0 !important;
+.logo-link {
+    text-decoration: none;
+}
+
+.logo-sa {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+
+    .dot {
+        font-size: 40px;
+        margin-top: -15px;
+        color: $icon-color;
+        transform: scaleX(0.9);
     }
 }
